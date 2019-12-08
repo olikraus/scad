@@ -1,4 +1,4 @@
 # scad
 
-Projects and openSCAD tools
+My own openSCAD projects and openSCAD tools
 
