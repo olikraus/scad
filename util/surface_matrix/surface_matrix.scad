@@ -1,3 +1,4 @@
+
 //
 // surface_matrix.scad (OpenSCAD)
 // 
@@ -135,5 +136,7 @@ module surface_matrix(matrix=[[1,1],[1,1]], scale=[1,1,1]) {
         convexity=10 );
 }
 
-m = [ [ 1, 2, 3, 2], [2, 4, -1, 1], [4, 3, 2, 2] ];
-surface_matrix(m, scale=[1,1,1]);
+hm = [ for( y=[0:4:360*2] )
+ [ for( x=[0:4:360*2] ) sin(y)*cos(x)*40+40+1 ]
+ ];
+surface_matrix(hm, scale=[1,1,1]);
