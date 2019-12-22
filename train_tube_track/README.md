@@ -24,4 +24,4 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 
 # Examples
 
-![img/ttt_circle_parts.gif](jpg/ttt_circle_parts.jpg)
+![img/ttt_circle_parts.jpg](img/ttt_circle_parts.jpg)
