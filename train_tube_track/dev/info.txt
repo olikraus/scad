@@ -1,0 +1,3 @@
+
+Image postprocessing 
+  Gimp: brightness +20, contrast +30, downscale to 15% (610x460)
