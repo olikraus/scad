@@ -18,7 +18,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 ![gif/ttt_animation.gif](gif/ttt_animation.gif)
 
 
+| TTT Part | Alternative TTT Part |
 |---|---|
 | ttt_curve180_ramp_3_led_platform.scad ![png/ttt_curve180_ramp_3_led_platform.png](png/ttt_curve180_ramp_3_led_platform.png) | ttt_curve180m_ramp_3_led_platform.scad ![png/ttt_curve180m_ramp_3_led_platform.png](png/ttt_curve180m_ramp_3_led_platform.png) |
-|---|---|
 
