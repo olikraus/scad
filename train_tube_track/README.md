@@ -20,7 +20,6 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 
 | TTT Part | TTT Part |
 |---|---|
-
 | [stl/ttt_motor_holder_plain.stl](stl/ttt_motor_holder_plain.stl) ![png/ttt_motor_holder_plain.png](png/ttt_motor_holder_plain.png) | [stl/ttt_motor_holder_grove.stl](stl/ttt_motor_holder_grove.stl) ![png/ttt_motor_holder_grove.png](png/ttt_motor_holder_grove.png) |
 | [stl/ttt_motor_holder_grove_platform.stl](stl/ttt_motor_holder_grove_platform.stl) ![png/ttt_motor_holder_grove_platform.png](png/ttt_motor_holder_grove_platform.png) | [stl/ttt_gear.stl](stl/ttt_gear.stl) ![png/ttt_gear.png](png/ttt_gear.png) 	|
 
