@@ -4,6 +4,8 @@
 
 "Train Tube Track" adds a movable thing (usually a train or railway engine) to a miniature diorama (https://en.wikipedia.org/wiki/Diorama).
 
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
  * "Train Tube Track" contains multiple pieces (see below)
  * All parts are available as 3D printer STL files
  * Many different tracks can be created
