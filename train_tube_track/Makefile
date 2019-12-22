@@ -3,21 +3,23 @@
 
 
 # SCAD=ttt_straight_1.scad
-SCAD=$(wildcard ttt*.scad)
-STL=$(SCAD:.scad=.stl)
-PNG=$(SCAD:.scad=.png)
+SCAD=$(wildcard scad/ttt*.scad)
+STL=$(addprefix stl/, $(notdir $(SCAD:.scad=.stl)))
+PNG=$(addprefix png/, $(notdir $(SCAD:.scad=.png)))
 
 
-%.stl: %.scad
+stl/%.stl: scad/%.scad
 	openscad $< -o tmp.stl
 	admesh tmp.stl -b $@
 	rm tmp.stl
 
-%.png: %.scad
+png/%.png: scad/%.scad
 	openscad $<  --render --autocenter --viewall --imgsize=320,240 -o $@
 
 .PHONY: all
 all: $(STL) $(PNG)
+#	-echo $(STL) $(PNG)
+  
 
 .PHONY: clean
 clean: 
