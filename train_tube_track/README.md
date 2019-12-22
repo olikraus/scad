@@ -2,8 +2,15 @@
 # Train Tube Track
 
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+"Train Tube Track" adds a movable thing (usually a train or railway engine) to a miniature diorama (https://en.wikipedia.org/wiki/Diorama).
 
+ * "Train Tube Track" contains multiple pieces (see below)
+ * All parts are available as 3D printer STL files
+ * Many different tracks can be created
+ * "Train Tube Track" requires a DC Gear Motor. The motor holder is designed for a "N20 DC Gear Motor". Use 50 RPM version.
+ * The "track" is actually a tube. The tube is filled with small "ships". The ships are moved forward by the DC Motor (see animation below)
+ * One or more ships may carry (transport) the movable thing.
+ 
 
 ![gif/ttt_animation.gif](gif/ttt_animation.gif)
 
