@@ -75,10 +75,10 @@ ship_tooth_profile = [
 ];
 
 gear_tooth_profile = [
-    [ -(ship_length/4)/2+1.5*ship_tw, 0],
+    [ -(ship_length/3.6)/2+1.5*ship_tw, 0],
     [ -(ship_length/32)/2, 3*ship_height/4+0.5 ],	// chaned from 0.5 to 0.6, back to 0.5
     [ +(ship_length/32)/2, 3*ship_height/4+0.5 ],
-    [ +(ship_length/4)/2-1.5*ship_tw, 0],    
+    [ +(ship_length/3.6)/2-1.5*ship_tw, 0],    
 ];
 
 tube_profile = [

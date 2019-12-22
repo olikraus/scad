@@ -15,7 +15,7 @@
 include <train_tube_track.scad>;
 
 
-for( j=[0:2] ) {
+for( j=[0:1] ) {
     translate([0, ship_length*1.5*j, 0])
     union() {
         ttt_ship_body_m_4();
@@ -25,7 +25,7 @@ for( j=[0:2] ) {
     }
 }
 
-
+/*
 for( j=[0:2] ) {
     translate([ship_width*2, ship_length*1.5*j, 0])
     union() {
@@ -37,9 +37,10 @@ for( j=[0:2] ) {
         }
     }
 }
+*/
 
-for( j=[0:2] ) {
-    translate([ship_width*4, ship_length*1.5*j, 0])
+for( j=[0:3] ) {
+    translate([ship_width*2, ship_length*1.5*j, 0])
     union() {
         ttt_ship_body_m_4();
         translate([0,ship_length/3-3,ship_height/2-d])
