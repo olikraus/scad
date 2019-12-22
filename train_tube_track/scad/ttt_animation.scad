@@ -84,8 +84,8 @@ rotate([0,-90,0])
 rotate([0,0,(y/2)*180/3.1415/(gear_radius+1)])
 ttt_gear(3+0.2, 0.5+0.1);  
 
-for( j=[-4:4] ) {
-    translate([0, ship_length*1.5*j+y/2-1.2, 1])
+for( j=[-6:4] ) {
+    translate([0, ship_length*1.03*j+y/2-1.2, 1])
         ttt_ship_body_m_4();
 }
 
