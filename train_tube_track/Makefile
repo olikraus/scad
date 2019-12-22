@@ -14,7 +14,7 @@ PNG=$(SCAD:.scad=.png)
 	rm tmp.stl
 
 %.png: %.scad
-	openscad $<  --render --autocenter --viewall --imgsize=640,480 -o $@
+	openscad $<  --render --autocenter --viewall --imgsize=320,240 -o $@
 
 .PHONY: all
 all: $(STL) $(PNG)
