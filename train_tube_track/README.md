@@ -21,7 +21,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 | TTT Part | TTT Part |
 |---|---|
 | [stl/ttt_motor_holder_plain.stl](stl/ttt_motor_holder_plain.stl) ![png/ttt_motor_holder_plain.png](png/ttt_motor_holder_plain.png) | [stl/ttt_motor_holder_grove.stl](stl/ttt_motor_holder_grove.stl) ![png/ttt_motor_holder_grove.png](png/ttt_motor_holder_grove.png) |
-| [stl/ttt_motor_holder_grove_platform.stl](stl/ttt_motor_holder_grove_platform.stl) ![png/ttt_motor_holder_grove_platform.png](png/ttt_motor_holder_grove_platform.png) | [stl/ttt_gear.stl](stl/ttt_gear.stl) ![png/ttt_gear.png](png/ttt_gear.png) |
+| [stl/ttt_motor_holder_grove_platform.stl](stl/ttt_motor_holder_grove_platform.stl) ![png/ttt_motor_holder_grove_platform.png](png/ttt_motor_holder_grove_platform.png) | [stl/ttt_gear.stl](stl/ttt_gear.stl) <br> ![png/ttt_gear.png](png/ttt_gear.png) |
 | [stl/ttt_curve180_ramp_3_led_platform.stl](stl/ttt_curve180_ramp_3_led_platform.stl) ![png/ttt_curve180_ramp_3_led_platform.png](png/ttt_curve180_ramp_3_led_platform.png) | [stl/ttt_curve180m_ramp_3_led_platform.stl](stl/ttt_curve180m_ramp_3_led_platform.stl) ![png/ttt_curve180m_ramp_3_led_platform.png](png/ttt_curve180m_ramp_3_led_platform.png) |
 | [stl/ttt_curve180_ramp_3_led.stl](stl/ttt_curve180_ramp_3_led.stl) ![png/ttt_curve180_ramp_3_led.png](png/ttt_curve180_ramp_3_led.png) | [stl/ttt_curve180m_ramp_3_led.stl](stl/ttt_curve180m_ramp_3_led.stl) ![png/ttt_curve180m_ramp_3_led.png](png/ttt_curve180m_ramp_3_led.png) |
 | [stl/ttt_curve180_ramp_3.stl](stl/ttt_curve180_ramp_3.stl) ![png/ttt_curve180_ramp_3.png](png/ttt_curve180_ramp_3.png) | [stl/ttt_curve180m_ramp_3.stl](stl/ttt_curve180m_ramp_3.stl) ![png/ttt_curve180m_ramp_3.png](png/ttt_curve180m_ramp_3.png) |
