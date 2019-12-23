@@ -30,6 +30,23 @@ difference() {
     translate([0,0,-inner_height+d])
     cube([ship_width*house_gear_width_factor,
     ship_length*1.95, inner_height], center=true);
+    
+    /* cut out a ramp for the ships */
+    
+    translate([0,
+        ship_length*1.95/2+2, 
+        -(outer_height-inner_height)+2.5])
+    rotate([-75,0,0])
+    cube([ship_width*house_gear_width_factor,
+    3, 8], center=true);
+
+    translate([0,
+        -ship_length*1.95/2-2, 
+        -(outer_height-inner_height)+2.5])
+    rotate([75,0,0])
+    cube([ship_width*house_gear_width_factor,
+    3, 8], center=true);
+    
 }
 
 difference() {
