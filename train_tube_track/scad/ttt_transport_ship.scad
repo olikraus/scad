@@ -33,7 +33,7 @@ for( j=[0:2] ) {
         translate([0,ship_length/3,ship_height/2-d])
         union() {
             cylinder(h=10, d=1.7);
-            cylinder(r1=1.8, r2=0, h=1.5);
+            cylinder(r1=1.3, r2=0, h=1.5);
         }
     }
 }
@@ -46,12 +46,12 @@ for( j=[0:3] ) {
         translate([0,ship_length/3-3,ship_height/2-d])
         union() {
             cylinder(h=10, d=1.7);
-            cylinder(r1=1.8, r2=0, h=1.5);
+            cylinder(r1=1.4, r2=0, h=1.5);
         }
         translate([0,ship_length/3+2,ship_height/2-d])
         union() {
             cylinder(h=10, d=1.7);
-            cylinder(r1=1.8, r2=0, h=1.5);
+            cylinder(r1=1.4, r2=0, h=1.5);
         }
     }
 }

@@ -47,12 +47,12 @@ height = 32;	// height of the second level track above ground. Probably trains s
 ship_width = inner_width-1.5;
 ship_length = 12;       // longer then inner_width
 ship_height = inner_height-0.4;		// changed from -1 to 0.4
-ship_tooth_width_factor = 0.46;  // width of the tooth cutout rel. to ship width
-house_gear_width_factor = 0.6;  // must be higher than ship_tooth_width_factor
+ship_tooth_width_factor = 0.66;  // width of the tooth cutout rel. to ship width
+house_gear_width_factor = 0.6;  // ???
 ship_end_dia_extend = 1;    // diameter extension of the ship end cutout
 
 gear_radius = 8;  // this is fixed and must not be changed
-gear_thickness = ship_width*ship_tooth_width_factor/2;
+gear_thickness = ship_width*0.5/2;
 //gear_center_hole_diameter = 1;  // anything which fits on the dc motor axis
 
 // end of curve straight track length
@@ -76,8 +76,8 @@ ship_tooth_profile = [
 
 gear_tooth_profile = [
     [ -(ship_length/3.6)/2+1.5*ship_tw, 0],
-    [ -(ship_length/32)/2, 3*ship_height/4+0.5 ],	// chaned from 0.5 to 0.6, back to 0.5
-    [ +(ship_length/32)/2, 3*ship_height/4+0.5 ],
+    [ -(ship_length/32)/2, 3*ship_height/4+0 ],	// chaned from 0.5 to 0
+    [ +(ship_length/32)/2, 3*ship_height/4+0 ],
     [ +(ship_length/3.6)/2-1.5*ship_tw, 0],    
 ];
 
@@ -646,28 +646,32 @@ module ttt_ship_body_m_3() {
 
 
 module ttt_gear(gear_center_hole_diameter, flat_area_depth) {
-    union() {
-        difference() {
-	    union() {
-	      cylinder(h=gear_thickness, 
-		  r=gear_radius+0.1, center=true);
-	      cylinder(h=gear_thickness*2, r=gear_center_hole_diameter);
-	    }
-	    difference() {
-		cylinder(d=gear_center_hole_diameter, 
-		    h=gear_thickness*4+d, center=true);
-		translate([gear_center_hole_diameter-flat_area_depth,0,0])
-		cube([gear_center_hole_diameter,
-		      gear_center_hole_diameter,
-		      gear_thickness*4+2*d], center=true);
-	    }
-        }
-        for(i=[0:20:360]) {
-        rotate([0,0,i])
-        translate([0,gear_radius,0])
-        linear_extrude(height=gear_thickness, center=true) polygon(gear_tooth_profile);
-        }
-    }
+  intersection() {
+      union() {
+	  difference() {
+	      union() {
+		cylinder(h=gear_thickness, 
+		    r=gear_radius+0.1, center=true);
+		cylinder(h=gear_thickness*2, r=gear_center_hole_diameter);
+	      }
+	      difference() {
+		  cylinder(d=gear_center_hole_diameter, 
+		      h=gear_thickness*4+d, center=true);
+		  translate([gear_center_hole_diameter-flat_area_depth,0,0])
+		  cube([gear_center_hole_diameter,
+			gear_center_hole_diameter,
+			gear_thickness*4+2*d], center=true);
+	      }
+	  }
+	  for(i=[0:20:360]) {
+	  rotate([0,0,i])
+	  translate([0,gear_radius,0])
+	  linear_extrude(height=gear_thickness, center=true) polygon(gear_tooth_profile);
+	  }
+      }
+	translate([0,0,-gear_thickness/2])
+	cylinder(h=gear_thickness*3.5, r1=1.2*gear_radius+4, r2=0);
+  }
 }
 
 /*=====================================================*/
