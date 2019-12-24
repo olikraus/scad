@@ -4,7 +4,11 @@
 
 "Train Tube Track" adds a movable thing (usually a train or railway engine) to a miniature diorama (https://en.wikipedia.org/wiki/Diorama).
 
+
 This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
+![gif/ttt_animation.gif](gif/ttt_animation.gif)
+
 
  * "Train Tube Track" contains multiple pieces (see below)
  * All parts are available as 3D printer STL files
@@ -41,7 +45,8 @@ Use silicone grease for the tracks
 
 ![img/ttt_track_silicone_grease.jpg](img/ttt_track_silicone_grease.jpg)
 
-Also add silicone grease to all the ships (which will be later inside the track tube)
+Also add silicone grease to all the ships. Basically all moving parts should
+get some silicone grease.
 
 ![img/ttt_ship_silicone_grease.jpg](img/ttt_ship_silicone_grease.jpg)
 
@@ -56,8 +61,6 @@ Here is a video of the assembled track:
 
 
 ## Part Overview
-
-![gif/ttt_animation.gif](gif/ttt_animation.gif)
 
 
 | TTT Part | TTT Part |
