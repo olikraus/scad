@@ -16,16 +16,18 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 
 ## Howto build a track?
 
-<a href="https://raw.githubusercontent.com/olikraus/scad/master/train_tube_track/img/ttt_plain_circle_track.mp4">Video</a>
 
+Select the parts: This example uses simple circle together with the motor holder and a straight track.
 
-Select the parts: For this example we will build a simple circle. 
 
 ![img/ttt_circle_parts.jpg](img/ttt_circle_parts.jpg)
 
-Test whether the gear fits on the N20 DC motor shaft. If not, remove some material from the gear shaft hole.
+Before putting everything together, 
+test whether the gear fits on the N20 DC motor shaft. 
+If not, remove some material from the gear shaft hole.
 
-Put the N20 gear (55 RPM) motor into the holder. This can be a little bit tricky.
+Once done, remove the gear and put the N20 (55 RPM) DC motor into the holder. 
+This can be a little bit tricky.
 
 ![img/ttt_motor_holder_1.jpg](img/ttt_motor_holder_1.jpg)
 
@@ -46,6 +48,10 @@ Also add silicone grease to all the ships (which will be later inside the track 
 Put the track pieces together and insert the ships. Apply a voltage source to the N20 motor
 to forward the ships while adding more ships to it. The complete tube must be filled with 
 those little ships. In this example you need to add thee 3/4 ships. All other ships are 4/4 ships.
+
+
+Here is a video of the assembled track:
+<a href="https://raw.githubusercontent.com/olikraus/scad/master/train_tube_track/img/ttt_plain_circle_track.mp4">Video</a>
 
 
 
