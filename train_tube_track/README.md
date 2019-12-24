@@ -19,6 +19,36 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 <a href="https://raw.githubusercontent.com/olikraus/scad/master/train_tube_track/img/ttt_plain_circle_track.mp4">Video</a>
 
 
+Select the parts: For this example we will build a simple circle. 
+
+![img/ttt_circle_parts.jpg](img/ttt_circle_parts.jpg)
+
+Test whether the gear fits on the N20 DC motor shaft. If not, remove some material from the gear shaft hole.
+
+Put the N20 gear (55 RPM) motor into the holder. This can be a little bit tricky.
+
+![img/ttt_motor_holder_1.jpg](img/ttt_motor_holder_1.jpg)
+
+![img/ttt_motor_holder_2.jpg](img/ttt_motor_holder_2.jpg)
+
+Add the gear to it (can be done later also)
+
+![img/ttt_motor_holder_with_gear.jpg](img/ttt_motor_holder_with_gear.jpg)
+
+Use silicone grease for the tracks
+
+![img/ttt_track_silicone_grease.jpg](img/ttt_track_silicone_grease.jpg)
+
+Also add silicone grease to all the ships (which will be later inside the track tube)
+
+![img/ttt_ship_silicone_grease.jpg](img/ttt_ship_silicone_grease.jpg)
+
+Put the track pieces together and insert the ships. Apply a voltage source to the N20 motor
+to forward the ships while adding more ships to it. The complete tube must be filled with 
+those little ships. In this example you need to add thee 3/4 ships. All other ships are 4/4 ships.
+
+
+
 ## Part Overview
 
 ![gif/ttt_animation.gif](gif/ttt_animation.gif)
