@@ -18,6 +18,8 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 
 <video src="img/ttt_plain_circle_track.mp4" controls><a href="img/ttt_plain_circle_track.mp4">img/ttt_plain_circle_track.mp4</a></video>
 
+![img/ttt_plain_circle_track.mp4](img/ttt_plain_circle_track.mp4)
+
 
 ## Part Overview
 
