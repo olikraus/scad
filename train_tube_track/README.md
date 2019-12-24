@@ -80,4 +80,5 @@ Here is a video of the assembled track:
 | [stl/ttt_curve180_ramp_3_led.stl](stl/ttt_curve180_ramp_3_led.stl) ![png/ttt_curve180_ramp_3_led.png](png/ttt_curve180_ramp_3_led.png) | [stl/ttt_curve180m_ramp_3_led.stl](stl/ttt_curve180m_ramp_3_led.stl) ![png/ttt_curve180m_ramp_3_led.png](png/ttt_curve180m_ramp_3_led.png) |
 | [stl/ttt_curve180_ramp_3.stl](stl/ttt_curve180_ramp_3.stl) ![png/ttt_curve180_ramp_3.png](png/ttt_curve180_ramp_3.png) | [stl/ttt_curve180m_ramp_3.stl](stl/ttt_curve180m_ramp_3.stl) ![png/ttt_curve180m_ramp_3.png](png/ttt_curve180m_ramp_3.png) |
 | [stl/ttt_curve270_ramp_3.stl](stl/ttt_curve270_ramp_3.stl) ![png/ttt_curve270_ramp_3.png](png/ttt_curve270_ramp_3.png) | [stl/ttt_curve270m_ramp_3.stl](stl/ttt_curve270m_ramp_3.stl) ![png/ttt_curve270m_ramp_3.png](png/ttt_curve270m_ramp_3.png) |
+| [stl/ttt_platform.stl](stl/ttt_platform.stl) ![png/ttt_platform.png](png/ttt_platform.png) | [stl/ttt_base_1_5.stl](stl/ttt_base_1_5.stl) ![png/ttt_base_1_5.png](png/ttt_base_1_5.png) |
 
