@@ -15,7 +15,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
  * Many different tracks can be created
  * "Train Tube Track" requires a DC Gear Motor. The motor holder is designed for a "N20 DC Gear Motor". Use 50 RPM version.
  * Some parts include holder for the Grove Toolset (https://www.seeedstudio.com): LED lights, DC Motor controller.
- * The "track" is actually a tube. The tube is filled with small "ships". The ships are moved forward by the DC Motor (see animation below)
+ * The "track" is actually a tube. The tube is filled with small "ships". The ships are moved forward by the DC Motor (see animation above)
  * One or more ships may carry (transport) the movable thing.
 
 ## Howto build a track?
@@ -72,7 +72,7 @@ Here is a video of the assembled track:
 |---|---|
 | [stl/ttt_motor_holder_plain.stl](stl/ttt_motor_holder_plain.stl) ![png/ttt_motor_holder_plain.png](png/ttt_motor_holder_plain.png) | [stl/ttt_motor_holder_grove.stl](stl/ttt_motor_holder_grove.stl) ![png/ttt_motor_holder_grove.png](png/ttt_motor_holder_grove.png) |
 | [stl/ttt_motor_holder_grove_platform.stl](stl/ttt_motor_holder_grove_platform.stl) ![png/ttt_motor_holder_grove_platform.png](png/ttt_motor_holder_grove_platform.png) | [stl/ttt_gear.stl](stl/ttt_gear.stl): Can be printed with skirt or with brim <br>  ![png/ttt_gear.png](png/ttt_gear.png) |
-| [stl/ttt_ships_no_brim.stl](stl/ttt_ships_no_brim.stl): No "brim", just "skirt" ![png/ttt_ships_no_brim.png](png/ttt_ships_no_brim.png) | [stl/ttt_transport_ship.stl](stl/ttt_transport_ship.stl): Use with "brim"! ![png/ttt_transport_ship.png](png/ttt_transport_ship.png) |
+| [stl/ttt_ships_no_brim.stl](stl/ttt_ships_no_brim.stl): No "brim", just "skirt" ![png/ttt_ships_no_brim.png](png/ttt_ships_no_brim.png) | [stl/ttt_transport_ship.stl](stl/ttt_transport_ship.stl): Use with "brim"! Carefully remove all brim later. Especially ensure that the bottom has four holes for the gear tooths. <br> ![png/ttt_transport_ship.png](png/ttt_transport_ship.png) |
 | [stl/ttt_straight_1.stl](stl/ttt_straight_1.stl) ![png/ttt_straight_1.png](png/ttt_straight_1.png) | [stl/ttt_high_straight_1.stl](stl/ttt_high_straight_1.stl) ![png/ttt_high_straight_1.png](png/ttt_high_straight_1.png) |
 | [stl/ttt_straight_2.stl](stl/ttt_straight_2.stl) ![png/ttt_straight_2.png](png/ttt_straight_2.png) | [stl/ttt_high_straight_2.stl](stl/ttt_high_straight_2.stl) ![png/ttt_high_straight_2.png](png/ttt_high_straight_2.png) |
 | [stl/ttt_curve90_1.stl](stl/ttt_curve90_1.stl) ![png/ttt_curve90_1.png](png/ttt_curve90_1.png) | [stl/ttt_curve180_2.stl](stl/ttt_curve180_2.stl) ![png/ttt_curve180_2.png](png/ttt_curve180_2.png) |
