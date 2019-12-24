@@ -13,7 +13,13 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
  * Some parts include holder for the Grove Toolset (https://www.seeedstudio.com): LED lights, DC Motor controller.
  * The "track" is actually a tube. The tube is filled with small "ships". The ships are moved forward by the DC Motor (see animation below)
  * One or more ships may carry (transport) the movable thing.
- 
+
+## Howto build a track?
+
+<video src="img/ttt_plain_circle_track.mp4" controls><a href="img/ttt_plain_circle_track.mp4">img/ttt_plain_circle_track.mp4</a></video>
+
+
+## Part Overview
 
 ![gif/ttt_animation.gif](gif/ttt_animation.gif)
 
