@@ -21,8 +21,13 @@ for( j=[0:3] ) {
     union() {
         ttt_ship_body_m_4();
         translate([0,ship_length/5,ship_height/2-d])
-        translate([-0.75,0,0])
-        cube([1.5,4,10]);
+        translate([-0.75,0,-0.5])
+        cube([1.5,4,10.5]);
+        
+        translate([0,ship_length/3+0.5,ship_height/2-d])
+        scale([1.2,2.2,1])
+        cylinder(r1=1.4, r2=0, h=1.2);
+        
     }
 }
 
@@ -40,7 +45,7 @@ for( j=[0:2] ) {
 }
 */
 
-for( j=[0:3] ) {
+for( j=[0:1] ) {
     translate([ship_width*2, ship_length*1.5*j, 0])
     union() {
         ttt_ship_body_m_4();

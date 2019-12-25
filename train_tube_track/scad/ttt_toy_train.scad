@@ -313,17 +313,17 @@ module engine(length=32) {
 
 difference() {
     engine(length=30);
-    cube([4.6,2.2,12], center=true);
+    cube([4.6,2.2,16], center=true);
 }
 
 translate([30,0,0])
 difference() {
     wagon(length=12*2-2);
-    cube([4.6,2.2,12], center=true);
+    cube([4.6,2.2,16], center=true);
 }
 
 translate([60,0,0])
 difference() {
     wagon(length=12*2-2);
-    cube([4.6,2.2,12], center=true);
+    cube([4.6,2.2,16], center=true);
 }
