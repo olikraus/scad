@@ -62,4 +62,4 @@ A special box for the Wiz-War wizard life tracker.
 
 ## h41_3sep
 
-![png/h41_sep.png](png/h41_sep.png)
+![png/h41_3sep.png](png/h41_3sep.png)
