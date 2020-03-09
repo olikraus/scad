@@ -27,17 +27,17 @@
 */
 include <29x29box.scad>;
 
-floor=3;
+floor=3.5;
 intersection()
 {
     cube([2*xt, yt, 2*zt], center=true);
     difference() {
         union() {
             box(2,1,2);
-            cylinder(d=63+2*wall, h=zt*2, center=true, $fn=128);
+            cylinder(d=65+2*wall, h=zt*2, center=true, $fn=128);
         }
         translate([0,0,floor+0.5])
-        cylinder(d=63, h=zt*2+1, center=true, $fn=128);
+        cylinder(d=65, h=zt*2+1, center=true, $fn=128);
     }
 }
 
