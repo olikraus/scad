@@ -26,19 +26,21 @@ Design & Print
 
 ![png/f11_sep.png](png/f11_sep.png)
 
-## f11_2sep
-
-![png/f21_2sep.png](png/f21_2sep.png)
-
-## f11_3sep
-
-![png/f21_3sep.png](png/f21_3sep.png)
-
 ## f21_sep
 
 ![png/f21_sep.png](png/f21_sep.png)
 
+## f21_2sep
+
+![png/f21_2sep.png](png/f21_2sep.png)
+
+## f21_3sep
+
+![png/f21_3sep.png](png/f21_3sep.png)
+
 ## f21_wiz_war_life_tracker
+
+A special box for the Wiz-War wizard life tracker.
 
 ![png/f21_wiz_war_life_tracker.png](png/f21_wiz_war_life_tracker.png)
 
@@ -50,7 +52,14 @@ Design & Print
 
 ![png/f41_5slot.png](png/f41_5slot.png)
 
+## h41_knob
+
+![png/h41_knob.png](png/h41_knob.png)
+
 ## h41_sep
 
 ![png/h41_sep.png](png/h41_sep.png)
 
+## h41_3sep
+
+![png/h41_sep.png](png/h41_sep.png)

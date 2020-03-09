@@ -70,7 +70,7 @@ module box(xg=1, yg=1, zg=1, mesh=true) {
       
       for(z=[0:zg*4-1]) {  
 	for(x=[0:xg*4-1]) {
-	    translate([(x-(xg*4-1)/2)*xt/4.9, 0,(z-(zg*4-1)/2)*zt/4.5])
+	    translate([(x-(xg*4-1)/2)*xt/4.5, 0,(z-(zg*4-1)/2)*zt/4.5])
 	    rotate([90,0,0])
 	    cylinder(d=5, h=yg*yt+0.1, center=true, $fn=12);
 	}
@@ -78,7 +78,7 @@ module box(xg=1, yg=1, zg=1, mesh=true) {
 
       for(z=[0:zg*4-1]) {  
 	for(y=[0:yg*12-1]) {  
-	    translate([0, (y-(yg*12-1)/2)*yt/13,(z-(zg*4-1)/2)*zt/4.5])
+	    translate([0, (y-(yg*12-1)/2)*yt/12.8,(z-(zg*4-1)/2)*zt/4.5])
 	    rotate([0,90,0])
 	    cylinder(d=5, h=xg*yt+0.1, center=true, $fn=12);
 	}
@@ -128,6 +128,15 @@ module ysep(yg=1, zg=1) {
     rawysep(yg*yt, zg*zt);
 }
 
+module rawypsep(yl=31, zl=28) {
+        cube([wall, yl, zl], center=true);
+}
+
+module ypsep(yg=1, zg=1) {
+    rawypsep(yg*yt, zg*zt);
+}
+
+
 module cardslot(plain=0) {
     translate([0,0,-5.8])
     rotate([0,34,0])
@@ -141,3 +150,28 @@ module cardslot(plain=0) {
     }
 }
 
+module knob(zg=1) {
+    knob_d=4.0; // flat upper area
+    knob_r=4.0; // radius of the knob itself
+    knob_f=1.3; // thinkness extension for the knob axis
+
+    translate([0,0,-zt*zg/2])
+    cylinder(r=knob_d*knob_f,h=zt*zg-knob_r/2, $fn=48);
+
+    translate([0,0,zt*zg/2-knob_r])
+    union() {
+        cylinder(r=knob_d,h=knob_r*2, center=true);
+        rotate_extrude(convexity = 10, $fn = 48)
+        translate([knob_d,0,0]) 
+        circle(r=knob_r-0.01, $fn=32);
+    }
+
+    translate([0,0,-zt*zg/2+knob_r+floor])
+    difference() {
+        translate([0,0,-knob_r])
+        cylinder(h=knob_r,r=knob_d*knob_f+knob_r, $fn=48);
+        rotate_extrude(convexity = 10, $fn = 48)
+        translate([knob_d*knob_f+knob_r,0,0]) 
+        circle(r=knob_r, $fn=32);
+    }
+}
