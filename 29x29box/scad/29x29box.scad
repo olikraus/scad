@@ -175,3 +175,38 @@ module knob(zg=1) {
         circle(r=knob_r, $fn=32);
     }
 }
+
+module knob2(zg=1) {
+    knob_d=5.0; // flat upper area
+    knob_r=2; // radius of the knob itself
+    knob_br=6; 
+
+
+    cylinder(r=knob_d-knob_r, h=zt*zg-floor*2-0.01, center=true, $fn=48);
+    
+    translate([0,0,zt*zg/2-knob_r])
+    union() {
+        cylinder(r=knob_d,h=knob_r*2, center=true);
+        rotate_extrude(convexity = 10, $fn = 48)
+        translate([knob_d,0,0]) 
+        circle(r=knob_r-0.01, $fn=32);
+    }
+
+    translate([0,0,zt*zg/2-knob_r*3+0.05-1.28])
+    difference() {
+        cylinder(h=knob_r+1.5,r=knob_d+0.6, $fn=48);
+        rotate_extrude(convexity = 10, $fn = 48)
+        translate([knob_d+1.5,0,0]) 
+        circle(r=knob_r+1.5-0.01, $fn=32);
+    }
+
+    translate([0,0,knob_br-zt*zg/2+floor ])
+    difference() {
+        translate([0,0,-knob_br])
+        cylinder(h=knob_br,r=knob_d-knob_r+knob_br, $fn=48);
+        rotate_extrude(convexity = 10, $fn = 48)
+        translate([knob_d-knob_r+knob_br,0,0]) 
+        circle(r=knob_br, $fn=48);
+    }
+
+}
