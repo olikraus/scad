@@ -44,6 +44,10 @@ A special box for the Wiz-War wizard life tracker.
 
 ![png/f21_wiz_war_life_tracker.png](png/f21_wiz_war_life_tracker.png)
 
+## f41_sep
+
+![png/f41_sep.png](png/f41_sep.png)
+
 ## f41_2slot
 
 ![png/f41_2slot.png](png/f41_2slot.png)
