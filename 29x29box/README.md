@@ -18,6 +18,13 @@ Design & Print
  * Not so think bottom (excption: Wiz War Life Tracker, f41_plain)
  * 0.4mm Nozzle, 0.2mm Layers, Infill 20%
 
+## Example
+
+![jpg/29x29_example.jpg](jpg/29x29_example.jpg)
+
+![jpg/29x29_wiz_war.jpg](jpg/29x29_wiz_war.jpg)
+
+
 ## f11_plain
 
 ![png/f11_plain.png](png/f11_plain.png)
