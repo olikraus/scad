@@ -15,7 +15,7 @@ Concept
 Design & Print
 
  * Mesh walls to save material
- * Not so think bottom (excption: Wiz War Life Tracker)
+ * Not so think bottom (excption: Wiz War Life Tracker, f41_plain)
  * 0.4mm Nozzle, 0.2mm Layers, Infill 20%
 
 ## f11_plain
