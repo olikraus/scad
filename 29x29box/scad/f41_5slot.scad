@@ -1,6 +1,6 @@
 /*
 
-  f41_4slot.scad
+  f41_5slot.scad
 
   (c) olikraus@gmail.com
 
