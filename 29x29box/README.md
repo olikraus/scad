@@ -79,3 +79,9 @@ A special box for the Wiz-War wizard life tracker.
 ## h41_3sep
 
 ![png/h41_3sep.png](png/h41_3sep.png)
+
+## f51_5slot
+
+Longer than f41_5slot with the same number of slots. Should fit for Imperial Settlers.
+
+![png/f51_5slot.png](png/f51_5slot.png)
