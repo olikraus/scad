@@ -11,8 +11,9 @@
     1. Place the Ikoria paper token into the inner octagon
     2. Put both parts together
 
+![ikoria_keyword_counter_holder.png](ikoria_keyword_counter_holder.png)
+
 "Ikoria Keyword Counter Holder" is unofficial Fan Content permitted under the Fan Content Policy. 
 Not approved/endorsed by Wizards. Portions of the materials used are property of 
 Wizards of the Coast. ©Wizards of the Coast LLC. (see [https://company.wizards.com/fancontentpolicy](https://company.wizards.com/fancontentpolicy))
 
-![ikoria_keyword_counter_holder.png](ikoria_keyword_counter_holder.png)
