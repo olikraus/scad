@@ -5,11 +5,12 @@
  * Places a flat ring around the paper keyword counter
  * Protects the keyword counter
  * Better handling of the keyword counter
- * Easier to identify if additional colors are used during 3d print
+ * Easier to identify, if additional colors are used during 3d print
  * Press fit connection (no glue required)
  * How to use:
-    1. Place the Ikoria paper token into the inner octagon
-    2. Put both parts together
+    1. 3D Print the [stl file](ikoria_keyword_counter_holder.stl)
+    2. Place the Ikoria paper token into the inner octagon
+    3. Put both parts together
 
 ![ikoria_keyword_counter_holder.png](ikoria_keyword_counter_holder.png)
 
