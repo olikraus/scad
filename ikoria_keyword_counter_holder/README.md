@@ -1,8 +1,7 @@
 
 # Ikoria Keyword Counter Holder
 
- * Holder / Chip for MTG keyword counter introduced in Ikoria: Lair of the Behemoths 
-      ([Ikoria: Lair of the Behemoths](https://magic.wizards.com/en/articles/archive/feature/ikoria-lair-behemoths-mechanics-2020-04-02))
+ * Holder / Chip for MTG keyword counter introduced in [Ikoria: Lair of the Behemoths](https://magic.wizards.com/en/articles/archive/feature/ikoria-lair-behemoths-mechanics-2020-04-02)
  * Places a flat ring around the paper keyword counter
  * Protects the keyword counter
  * Better handling of the keyword counter
