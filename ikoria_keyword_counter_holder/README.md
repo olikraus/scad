@@ -14,6 +14,12 @@
 
 ![ikoria_keyword_counter_holder.png](ikoria_keyword_counter_holder.png)
 
+![ikch_1.png](ikch_1.png)
+
+![ikch_2.png](ikch_2.png)
+
+
+
 "Ikoria Keyword Counter Holder" is unofficial Fan Content permitted under the Fan Content Policy. 
 Not approved/endorsed by Wizards. Portions of the materials used are property of 
 Wizards of the Coast. ©Wizards of the Coast LLC. (see [https://company.wizards.com/fancontentpolicy](https://company.wizards.com/fancontentpolicy))
