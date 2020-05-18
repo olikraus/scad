@@ -14,9 +14,9 @@
 
 ![ikoria_keyword_counter_holder.png](ikoria_keyword_counter_holder.png)
 
-![ikch_1.png](ikch_1.png)
+![ikch_1.jpg](ikch_1.jpg)
 
-![ikch_2.png](ikch_2.png)
+![ikch_2.jpg](ikch_2.jpg)
 
 
 
