@@ -1,8 +1,8 @@
 /*
 
-  puzzle_start.scad
+  puzzle_step2.scad
 
-  Winston Freer Tile Puzzle: Start Setup
+  Winston Freer Tile Puzzle: Step 2, two tiles removed
       
   (c) olikraus@gmail.com
 
@@ -16,12 +16,12 @@ include <winston_freer.scad>;
 
 translate([0,4,0]) part1();
 translate([0,2,0]) part2pre();
-part3();
-translate([2,0,0]) part4();
-translate([4,0,0]) part5();
-translate([6,0,0]) part6();
-translate([2,-2,0])part7();
-translate([4,-2,0])part8();
-translate([6,-2,0])part9();
-translate([6,-1,0])part10();
+translate([-6*ts,-2*ts,0]) part6();
+translate([2+ts,0,0]) part3();
+translate([4+1*ts,0,0]) part4();
+translate([6+1*ts,0,0]) part5();
+translate([2+ts,-2,0])part7();
+translate([4+ts,-2,0])part8();
+//translate([6,-1+ts,0])part9();
+//translate([6+3*ts,-1,0]) part10();
 

@@ -1,6 +1,6 @@
 /*
 
-  winston_freer_magic.scad
+  puzzle_step3.scad
 
   Winston Freer Tile Puzzle: Magic Setup
       
@@ -15,7 +15,7 @@ include <winston_freer.scad>;
 
 
 o=0;
-f=0;
+f=1;
 translate([o+0,f*4,0]) part1();
 translate([o+0,f*2,0]) part2();
 translate([o+5*ts+f*6,ts+f*2,0]) part3();
