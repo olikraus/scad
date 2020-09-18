@@ -1,7 +1,7 @@
 /*
-    Ikoria Token Holder (ith)
+    Ikoria Keyword Counter Holder (ikch)
     
-    Intended for the octagon paper ikoria tokens
+    Intended for the octagon paper ikoria keyword counter
 */
 
 $fn=128;
