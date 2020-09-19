@@ -345,7 +345,7 @@ module part10() {
 }
 
 module frame() {
-    translate([0,0,-height/2-ledge_height])
+    //translate([0,0,-height/2-ledge_height])
     difference() {
         translate([-4, -4, 0])
         cube([tx*ts+8, ty*ts+8, height+ledge_height*2]);
@@ -355,37 +355,14 @@ module frame() {
 }
 
 
-/*
-translate([0,4,0]) p1();
-translate([0,2,0]) p2();
-p3();
-translate([2,0,0]) p4();
-translate([4,0,0]) p5();
-translate([6,0,0]) p6();
-translate([2,-2,0])p7();
-translate([4,-2,0])p8();
-translate([6,-2,0])p9();
-translate([6,-1,0])p10();
+module box() {
+    bh=0.4;
+    //translate([0,0,-height/2-ledge_height])
+    difference() {
+        translate([-4, -4, 0])
+        cube([tx*ts+8, ty*ts+8, height+ledge_height*2+bh]);
+        translate([-0.6,-0.6,bh-0.01])
+        cube([tx*ts+1.2, ty*ts+1.2, height+ledge_height*2+0.02]);
+    }
+}
 
-translate([0,4,0]) part1();
-translate([0,2,0]) part2pre();
-part3();
-translate([2,0,0]) part4();
-translate([4,0,0]) part5();
-translate([6,0,0]) part6();
-translate([2,-2,0])part7();
-translate([4,-2,0])part8();
-translate([6,-2,0])part9();
-translate([6,-1,0])part10();
-
-
-
-o=ts*10;
-translate([o+0,0,0]) part1();
-translate([o+0,0,0]) part2();
-translate([o+5*ts,ts,0]) part3();
-translate([o-2*ts,-ts,0]) part4();
-translate([o-2*ts,-ts,0]) part5();
-translate([o-2*ts,-ts,0]) part6();
-translate([o+2*ts,0,0])part7();
-*/

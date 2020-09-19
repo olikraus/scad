@@ -30,7 +30,7 @@ gcode/%.gcode: stl/%.stl start.gcode
 	slic3r $(SLIC3R_FLAGS) $< -o $@
 	
 png/%.png: scad/%.scad
-	openscad $<  --render --autocenter --viewall --imgsize=640,480 -o $@
+	openscad $<  --render --autocenter --viewall --imgsize=800,600 -o $@
 
 
 

@@ -1,6 +1,6 @@
 /*
 
-  puzzle_all_parts_with_frame.scad
+  puzzle_all_parts_with.scad
 
   Winston Freer Tile Puzzle: All In One Setup for 3D Printer
       
@@ -69,5 +69,3 @@ translate([-7*ts,-ts,0])
 part10();
 
 
-frame();
-//box();
