@@ -28,7 +28,7 @@
 //================================
 // The following variables can be modified
 
-ts=14;	// size in mm of one quadratic tile.
+ts=12;	// size in mm of one quadratic tile.
 
 height=10; // height of the inner body of the tile in mm
 ledge_height=1;	// upper and lower ledge of a tile in mm. The total height of a puzzle piece is height+2*ledge_height
