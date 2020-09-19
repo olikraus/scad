@@ -33,7 +33,7 @@ ts=12;	// size in mm of one quadratic tile.
 height=10; // height of the inner body of the tile in mm
 ledge_height=1;	// upper and lower ledge of a tile in mm. The total height of a puzzle piece is height+2*ledge_height
 
-gapw=1.6;			// width of one grid line in mm. This value should be small compared to ts. It must be smaller than ts/2
+gapw=2.6;			// width of one grid line in mm. This value should be small compared to ts. It must be smaller than ts/2
 gaph=0.6;			// depth of the grid into the ledge. This value should be lesser or equal to ledge_height
 
 
@@ -42,7 +42,7 @@ gaph=0.6;			// depth of the grid into the ledge. This value should be lesser or 
 
 $fn=32;
 
-fontsize=6*ts/11;	// font size, could be changed, but the current value will grow/srink with ts
+fontsize=8*ts/17;	// font size, could be changed, but the current value will grow/srink with ts
 
 tx=7;	// x-size of the puzzle in tile size. real size in mm is tx*ts. This value is fixed and must not be modified.
 ty=9;	// y-size of the puzzle in tile size. real size in mm is tx*ts. This value is fixed and must not be modified.
@@ -340,7 +340,7 @@ module part10() {
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
             text("10", halign="center", 
-                valign="center", spacing=0.8, size=6*ts/11);
+                valign="center", spacing=0.8, size=fontsize);
     }
 }
 
