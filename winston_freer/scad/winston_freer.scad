@@ -36,6 +36,7 @@ ledge_height=1;	// upper and lower ledge of a tile in mm. The total height of a 
 gapw=2.6;			// width of one grid line in mm. This value should be small compared to ts. It must be smaller than ts/2
 gaph=0.6;			// depth of the grid into the ledge. This value should be lesser or equal to ledge_height
 
+frame_gap=0.8;		// gap (mm) between puzzle and frame or box. 1.2 is very loose
 
 //================================
 // The following constants should not be modified
@@ -158,8 +159,8 @@ module p10(lh=1) {
 
 module mash() {
         for( x=[0:tx]) {
-            translate([x*ts-gapw/2,0,-gaph/2])
-            cube([gapw, ty*ts, gaph]);
+            translate([x*ts-gapw/2,-gapw/2,-gaph/2])
+            cube([gapw, ty*ts+gapw, gaph]);
         }
         for( y=[0:ty]) {
             translate([0,y*ts-gapw/2,-gaph/2])
@@ -346,23 +347,32 @@ module part10() {
 
 module frame() {
     //translate([0,0,-height/2-ledge_height])
+    gap=frame_gap;
     difference() {
         translate([-4, -4, 0])
         cube([tx*ts+8, ty*ts+8, height+ledge_height*2]);
-        translate([-0.6,-0.6,-0.01])
-        cube([tx*ts+1.2, ty*ts+1.2, height+ledge_height*2+0.02]);
+        translate([-gap/2,-gap/2,-0.01])
+        cube([tx*ts+gap, ty*ts+gap, height+ledge_height*2+0.02]);
+
+        translate([0,0,height+2*ledge_height-gaph/2+0.01])
+        mash();
+
     }
 }
 
 
 module box() {
     bh=0.4;
+    gap=frame_gap;
     //translate([0,0,-height/2-ledge_height])
     difference() {
         translate([-4, -4, 0])
         cube([tx*ts+8, ty*ts+8, height+ledge_height*2+bh]);
-        translate([-0.6,-0.6,bh-0.01])
-        cube([tx*ts+1.2, ty*ts+1.2, height+ledge_height*2+0.02]);
+        translate([-gap/2,-gap/2,bh-0.01])
+        cube([tx*ts+gap, ty*ts+gap, height+ledge_height*2+0.02]);	
+	
+        translate([0,0,height+2*ledge_height-gaph/2+bh+0.01])
+        mash();
     }
 }
 
