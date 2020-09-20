@@ -26,4 +26,4 @@ translate([4,-2,0])part8();
 translate([6,-2,0])part9();
 translate([6,-1,0])part10();
 }
-box();
+//box();
