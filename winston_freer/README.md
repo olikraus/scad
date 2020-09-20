@@ -10,8 +10,9 @@
 * There are two special layouts, one with [all pieces](https://github.com/olikraus/scad/blob/master/winston_freer/png/puzzle_start.png) 
  and another layout with [parts one to seven](https://github.com/olikraus/scad/blob/master/winston_freer/png/puzzle_step3.png):
  Both layouts form a perfect 7x9 grid and will fit perfectly into the provided frame.
+* A good tutorial is here: [https://www.youtube.com/watch?v=QbpfjM0NP7Q](https://www.youtube.com/watch?v=QbpfjM0NP7Q)
  
- ## 3D Printing
+## 3D Printing
 
 For the puzzle only the ten pieces and a frame or a box is required.
 
