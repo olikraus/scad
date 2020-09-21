@@ -5,7 +5,7 @@
 
 * The puzzle contains ten parts, numberd from one to ten
 * A grid is printed on the puzzle pieces
-* There are several layouts to form rectangle from those pieces. 
+* There are several layouts to form a rectangle from those pieces. 
 * Rectangles can also be formed with parts one to seven, one to eight or one to nine.
 * There are two special layouts, one with [all pieces](https://github.com/olikraus/scad/blob/master/winston_freer/png/puzzle_start.png) 
  and another layout with [parts one to seven](https://github.com/olikraus/scad/blob/master/winston_freer/png/puzzle_step3.png):
