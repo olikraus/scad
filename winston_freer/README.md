@@ -11,6 +11,7 @@
  and another layout with [parts one to seven](https://github.com/olikraus/scad/blob/master/winston_freer/png/puzzle_step3.png):
  Both layouts form a perfect 7x9 grid and will fit perfectly into the provided frame.
 * A good tutorial is here: [https://www.youtube.com/watch?v=QbpfjM0NP7Q](https://www.youtube.com/watch?v=QbpfjM0NP7Q)
+* Available on [Thingiverse](https://www.thingiverse.com/thing:4602265)
  
 ## 3D Printing
 
