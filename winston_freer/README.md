@@ -25,7 +25,7 @@ Additionally all parts are available in separate files.
 ## Suggested Postprocessing
 
 * Use black filament
-* Clean all parts with grade 80 sendpaper or emery paper
+* Clean all parts with grade 80 sandpaper or emery paper
 * Paint all sides of all parts with black color
 * Use a bright color to paint the detached tiles on the parts
 
