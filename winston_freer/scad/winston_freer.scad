@@ -362,12 +362,12 @@ module frame() {
 
 
 module box() {
-    bh=0.4;
+    bh=0.8;
     gap=frame_gap;
     //translate([0,0,-height/2-ledge_height])
     difference() {
-        translate([-4, -4, 0])
-        cube([tx*ts+8, ty*ts+8, height+ledge_height*2+bh]);
+        translate([-3, -3, 0])
+        cube([tx*ts+6, ty*ts+6, height+ledge_height*2+bh]);
         translate([-gap/2,-gap/2,bh-0.01])
         cube([tx*ts+gap, ty*ts+gap, height+ledge_height*2+0.02]);	
 	
