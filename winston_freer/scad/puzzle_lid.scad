@@ -1,8 +1,8 @@
 /*
 
-  puzzle_box.scad
+  puzzle_lid.scad
 
-  Winston Freer Tile Puzzle: Box
+  Winston Freer Tile Puzzle: Lid
       
   (c) olikraus@gmail.com
 
@@ -14,5 +14,5 @@
 include <winston_freer.scad>;
 
 
-box();
+lid();
 

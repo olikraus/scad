@@ -37,6 +37,9 @@ gapw=2.6;			// width of one grid line in mm. This value should be small compared
 gaph=0.6;			// depth of the grid into the ledge. This value should be lesser or equal to ledge_height
 
 frame_gap=0.8;		// gap (mm) between puzzle and frame or box. 1.2 is very loose
+frame_wall=3;		// wall size of the frame or box
+
+is_bottom_mesh = true;
 
 //================================
 // The following constants should not be modified
@@ -157,7 +160,7 @@ module p10(lh=1) {
         cube([ts,ts,height+2*lh]);
 }
 
-module mash() {
+module mesh() {
         for( x=[0:tx]) {
             translate([x*ts-gapw/2,-gapw/2,-gaph/2])
             cube([gapw, ty*ts+gapw, gaph]);
@@ -173,9 +176,11 @@ module part1() {
     difference() {
         p1();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+	}
         translate([4*ts+ts/2, 
             8*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -189,7 +194,7 @@ module part2pre() {
     difference() {
         p2();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
+        mesh();
         translate([1*ts+ts/2, 
             6*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -207,7 +212,7 @@ module part2() {
         translate([0,-5.894*ts,0])
         part2pre();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
+        mesh();
         translate([1*ts+ts/2, 
             6*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -221,9 +226,11 @@ module part3() {
     difference() {
         p3();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+	}
         translate([0*ts+ts/2, 
             1*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -237,9 +244,11 @@ module part4() {
     difference() {
         p4();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+	}
         translate([2*ts+ts/2, 
             2*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -253,9 +262,11 @@ module part5() {
     difference() {
         p5();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+	}
         translate([4*ts+ts/2, 
             2*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -269,9 +280,11 @@ module part6() {
     difference() {
         p6();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+	}
         translate([6*ts+ts/2, 
             3*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -285,9 +298,11 @@ module part7() {
     difference() {
         p7();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+	}
         translate([3*ts+ts/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -301,9 +316,11 @@ module part8() {
     difference() {
         p8();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+	}
         translate([5*ts+ts/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -317,9 +334,11 @@ module part9() {
     difference() {
         p9();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+	}
         translate([6*ts+ts/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -333,9 +352,11 @@ module part10() {
     difference() {
         p10();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
-        mash();
-        translate([0,0,-height/2-ledge_height+gaph/2-0.01])
-        mash();
+        mesh();
+	if ( is_bottom_mesh ) {
+	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
+	  mesh();
+        }
         translate([6*ts+ts/2-0.5, 
             1*ts+ts/2, 
             height/2+ledge_height-gaph]) 
@@ -349,13 +370,13 @@ module frame() {
     //translate([0,0,-height/2-ledge_height])
     gap=frame_gap;
     difference() {
-        translate([-4, -4, 0])
-        cube([tx*ts+8, ty*ts+8, height+ledge_height*2]);
+        translate([-frame_wall, -frame_wall, 0])
+        cube([tx*ts+frame_wall*2, ty*ts+frame_wall*2, height+ledge_height*2]);
         translate([-gap/2,-gap/2,-0.01])
         cube([tx*ts+gap, ty*ts+gap, height+ledge_height*2+0.02]);
 
         translate([0,0,height+2*ledge_height-gaph/2+0.01])
-        mash();
+        mesh();
 
     }
 }
@@ -366,13 +387,25 @@ module box() {
     gap=frame_gap;
     //translate([0,0,-height/2-ledge_height])
     difference() {
-        translate([-3, -3, 0])
-        cube([tx*ts+6, ty*ts+6, height+ledge_height*2+bh]);
+        translate([-frame_wall, -frame_wall, 0])
+        cube([tx*ts+frame_wall*2, ty*ts+frame_wall*2, height+ledge_height*2+bh]);
         translate([-gap/2,-gap/2,bh-0.01])
         cube([tx*ts+gap, ty*ts+gap, height+ledge_height*2+0.02]);	
 	
         translate([0,0,height+2*ledge_height-gaph/2+bh+0.01])
-        mash();
+        mesh();
     }
 }
 
+module lid() {
+    bh=0.8;
+    gap=frame_gap;
+    //translate([0,0,-height/2-ledge_height])
+    difference() {
+        translate([-frame_wall*2, -frame_wall*2, 0])
+        cube([tx*ts+frame_wall*4, ty*ts+frame_wall*4, height+ledge_height*2+2*bh]);
+    
+        translate([-frame_wall-gap/2, -frame_wall-gap/2, bh+0.01])
+        cube([tx*ts+frame_wall*2+gap, ty*ts+frame_wall*2+gap, height+ledge_height*2+bh]);
+    }
+}
