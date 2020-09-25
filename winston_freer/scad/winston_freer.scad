@@ -39,7 +39,7 @@ gaph=0.6;			// depth of the grid into the ledge. This value should be lesser or 
 frame_gap=0.8;		// gap (mm) between puzzle and frame or box. 1.2 is very loose
 frame_wall=3;		// wall size of the frame or box
 
-is_bottom_mesh = true;
+is_bottom_mesh = true;   // whether the grid is printed on the bottom of the parts (except for part 2, which always as the grid on top AND bottom) 
 
 //================================
 // The following constants should not be modified
