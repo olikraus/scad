@@ -29,17 +29,18 @@
 // The following variables can be modified
 
 ts=19.85;	// size in mm of one quadratic tile.
+tw=19.85;	// size in x direction
 
 height=17.6; // height of the inner body of the tile in mm
 ledge_height=1.2;	// upper and lower ledge of a tile in mm. The total height of a puzzle piece is height+2*ledge_height
 
-gapw=3.8;			// width of one grid line in mm. This value should be small compared to ts. It must be smaller than ts/2
-gaph=0.8;			// depth of the grid into the ledge. This value should be lesser or equal to ledge_height
+gapw=4.0;			// width of one grid line in mm. This value should be small compared to ts. It must be smaller than ts/2
+gaph=1.2;			// depth of the grid into the ledge. This value should be lesser or equal to ledge_height
 
 frame_gap=0.8;		// gap (mm) between puzzle and frame or box. 1.2 is very loose
 frame_wall=3;		// wall size of the frame or box
 
-is_bottom_mesh = false;   // whether the grid is printed on the bottom of the parts (except for part 2, which always as the grid on top AND bottom) 
+is_bottom_mesh = true;   // whether the grid is printed on the bottom of the parts (except for part 2, which always as the grid on top AND bottom) 
 
 //================================
 // The following constants should not be modified
@@ -49,12 +50,12 @@ $fn=32;
 fontsize=8*ts/17;	// font size, could be changed, but the current value will grow/srink with ts
 
 tx=7;	// x-size of the puzzle in tile size. real size in mm is tx*ts. This value is fixed and must not be modified.
-ty=9;	// y-size of the puzzle in tile size. real size in mm is tx*ts. This value is fixed and must not be modified.
+ty=9;	// y-size of the puzzle in tile size. real size in mm is ty*ts. This value is fixed and must not be modified.
 extend=3/(2*tx);	// extend of part 2 in tile size. This has to be multiplied with ts to get the real size, value is 0.21428
 
 echo("slope: ", atan(extend*ts/height));
 
-echo(str("total size: ", tx*ts, " x ", ty*ts));
+echo(str("total size: ", tx*tw, " x ", ty*ts));
 
 //================================
 
@@ -62,15 +63,15 @@ echo(str("total size: ", tx*ts, " x ", ty*ts));
 module p2(lh=1,d=0) {
     p= 
 [
- [ ts*tx+d, ts/2, height/2+lh+d ],
- [ ts*tx+d, ts/2, height/2+d],
- [ ts*tx+d, ts/2+extend*ts, -height/2-d],
- [ ts*tx+d, ts/2+extend*ts, -height/2-lh-d],
+ [ tw*tx+d, ts/2, height/2+lh+d ],
+ [ tw*tx+d, ts/2, height/2+d],
+ [ tw*tx+d, ts/2+extend*ts, -height/2-d],
+ [ tw*tx+d, ts/2+extend*ts, -height/2-lh-d],
 
- [ ts*tx+d, -ts/2-extend*ts, -height/2-lh-d],
- [ ts*tx+d, -ts/2-extend*ts, -height/2-d],
- [ ts*tx+d, -ts/2, height/2+d],
- [ ts*tx+d, -ts/2, height/2+lh+d],
+ [ tw*tx+d, -ts/2-extend*ts, -height/2-lh-d],
+ [ tw*tx+d, -ts/2-extend*ts, -height/2-d],
+ [ tw*tx+d, -ts/2, height/2+d],
+ [ tw*tx+d, -ts/2, height/2+lh+d],
 
  [ 0-d, 5*ts/2, height/2+lh+d ],
  [ 0-d, 5*ts/2, height/2+d],
@@ -103,7 +104,7 @@ module p2(lh=1,d=0) {
 module p1(lh=1) {
     difference() {
         translate([0,6*ts,-(height+2*lh)/2])
-        cube([tx*ts,3*ts,height+2*lh]);
+        cube([tx*tw,3*ts,height+2*lh]);
         p2(lh, 0.01);
     }
 }
@@ -111,63 +112,63 @@ module p1(lh=1) {
 module p3(lh=1) {
     difference() {
         translate([0,0,-(height+2*lh)/2])
-        cube([2*ts,5*ts,height+2*lh]);
+        cube([2*tw,5*ts,height+2*lh]);
         p2(lh, 0.01);
     }
 }
 
 module p4(lh=1) {
     difference() {
-        translate([2*ts,ts,-(height+2*lh)/2])
-        cube([ts,5*ts,height+2*lh]);
+        translate([2*tw,ts,-(height+2*lh)/2])
+        cube([tw,5*ts,height+2*lh]);
         p2(lh, 0.01);
     }
 }
 
 module p5(lh=1) {
     difference() {
-        translate([3*ts,ts,-(height+2*lh)/2])
-        cube([3*ts,5*ts,height+2*lh]);
+        translate([3*tw,ts,-(height+2*lh)/2])
+        cube([3*tw,5*ts,height+2*lh]);
         p2(lh, 0.01);
     }
 }
 
 module p6(lh=1) {
     difference() {
-        translate([6*ts,2*ts,-(height+2*lh)/2])
-        cube([ts,4*ts,height+2*lh]);
+        translate([6*tw,2*ts,-(height+2*lh)/2])
+        cube([tw,4*ts,height+2*lh]);
         p2(lh, 0.01);
     }
 }
 
 module p7(lh=1) {
-        translate([2*ts,0,-(height+2*lh)/2])
-        cube([3*ts,ts,height+2*lh]);
+        translate([2*tw,0,-(height+2*lh)/2])
+        cube([3*tw,ts,height+2*lh]);
 }
 
 module p8(lh=1) {
-        translate([5*ts,0,-(height+2*lh)/2])
-        cube([ts,ts,height+2*lh]);
+        translate([5*tw,0,-(height+2*lh)/2])
+        cube([tw,ts,height+2*lh]);
 }
 
 module p9(lh=1) {
-        translate([6*ts,0,-(height+2*lh)/2])
-        cube([ts,ts,height+2*lh]);
+        translate([6*tw,0,-(height+2*lh)/2])
+        cube([tw,ts,height+2*lh]);
 }
 
 module p10(lh=1) {
-        translate([6*ts,ts,-(height+2*lh)/2])
-        cube([ts,ts,height+2*lh]);
+        translate([6*tw,ts,-(height+2*lh)/2])
+        cube([tw,ts,height+2*lh]);
 }
 
 module mesh() {
         for( x=[0:tx]) {
-            translate([x*ts-gapw/2,-gapw/2,-gaph/2])
+            translate([x*tw-gapw/2,-gapw/2,-gaph/2])
             cube([gapw, ty*ts+gapw, gaph]);
         }
         for( y=[0:ty]) {
             translate([0,y*ts-gapw/2,-gaph/2])
-            cube([tx*ts, gapw, gaph]);
+            cube([tx*tw, gapw, gaph]);
         }
 }
 
@@ -181,7 +182,7 @@ module part1() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
 	}
-        translate([4*ts+ts/2, 
+        translate([4*tw+tw/2, 
             8*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -195,7 +196,7 @@ module part2pre() {
         p2();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
         mesh();
-        translate([1*ts+ts/2, 
+        translate([1*tw+tw/2, 
             6*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -213,7 +214,7 @@ module part2() {
         part2pre();
         translate([0,0,height/2+ledge_height-gaph/2+0.01])
         mesh();
-        translate([1*ts+ts/2, 
+        translate([1*tw+tw/2, 
             6*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -231,7 +232,7 @@ module part3() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
 	}
-        translate([0*ts+ts/2, 
+        translate([0*tw+tw/2, 
             1*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -249,7 +250,7 @@ module part4() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
 	}
-        translate([2*ts+ts/2, 
+        translate([2*tw+tw/2, 
             2*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -267,7 +268,7 @@ module part5() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
 	}
-        translate([4*ts+ts/2, 
+        translate([4*tw+tw/2, 
             2*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -285,7 +286,7 @@ module part6() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
 	}
-        translate([6*ts+ts/2, 
+        translate([6*tw+tw/2, 
             3*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -303,7 +304,7 @@ module part7() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
 	}
-        translate([3*ts+ts/2, 
+        translate([3*tw+tw/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -321,7 +322,7 @@ module part8() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
 	}
-        translate([5*ts+ts/2, 
+        translate([5*tw+tw/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -339,7 +340,7 @@ module part9() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
 	}
-        translate([6*ts+ts/2, 
+        translate([6*tw+tw/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -357,7 +358,7 @@ module part10() {
 	  translate([0,0,-height/2-ledge_height+gaph/2-0.01])
 	  mesh();
         }
-        translate([6*ts+ts/2-0.5, 
+        translate([6*tw+tw/2-0.5, 
             1*ts+ts/2, 
             height/2+ledge_height-gaph]) 
             linear_extrude(gaph+0.01) 
@@ -371,9 +372,9 @@ module frame() {
     gap=frame_gap;
     difference() {
         translate([-frame_wall, -frame_wall, 0])
-        cube([tx*ts+frame_wall*2, ty*ts+frame_wall*2, height+ledge_height*2]);
+        cube([tx*tw+frame_wall*2, ty*ts+frame_wall*2, height+ledge_height*2]);
         translate([-gap/2,-gap/2,-0.01])
-        cube([tx*ts+gap, ty*ts+gap, height+ledge_height*2+0.02]);
+        cube([tx*tw+gap, ty*ts+gap, height+ledge_height*2+0.02]);
 
         translate([0,0,height+2*ledge_height-gaph/2+0.01])
         mesh();
@@ -388,9 +389,9 @@ module box() {
     //translate([0,0,-height/2-ledge_height])
     difference() {
         translate([-frame_wall, -frame_wall, 0])
-        cube([tx*ts+frame_wall*2, ty*ts+frame_wall*2, height+ledge_height*2+bh]);
+        cube([tx*tw+frame_wall*2, ty*ts+frame_wall*2, height+ledge_height*2+bh]);
         translate([-gap/2,-gap/2,bh-0.01])
-        cube([tx*ts+gap, ty*ts+gap, height+ledge_height*2+0.02]);	
+        cube([tx*tw+gap, ty*ts+gap, height+ledge_height*2+0.02]);	
 	
         translate([0,0,height+2*ledge_height-gaph/2+bh+0.01])
         mesh();
@@ -403,9 +404,9 @@ module lid() {
     //translate([0,0,-height/2-ledge_height])
     difference() {
         translate([-frame_wall*2, -frame_wall*2, 0])
-        cube([tx*ts+frame_wall*4, ty*ts+frame_wall*4, height+ledge_height*2+2*bh]);
+        cube([tx*tw+frame_wall*4, ty*ts+frame_wall*4, height+ledge_height*2+2*bh]);
     
         translate([-frame_wall-gap/2, -frame_wall-gap/2, bh+0.01])
-        cube([tx*ts+frame_wall*2+gap, ty*ts+frame_wall*2+gap, height+ledge_height*2+bh]);
+        cube([tx*tw+frame_wall*2+gap, ty*ts+frame_wall*2+gap, height+ledge_height*2+bh]);
     }
 }

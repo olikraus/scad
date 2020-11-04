@@ -4,8 +4,8 @@ use <moonrune.ttf>;
 
 $fn=48;
 
-f = 0.5;
-fontsize=12*f;
+f = 1.0;
+fontsize=13*f;
 height = 86*f;
 width = 56*f;
 ogap=2;
@@ -35,13 +35,12 @@ difference() {
 }
 */
 
-translate([0,0,-2])
 difference() {
     //translate([0,0,0.7])
     //cube([width,height,1.4], center=true);
     rplate(5, 5, 1.4);
     
-    translate([0,0,0.5])
+    translate([0,0,0.8])
     union() {
     translate([0,(30-2)*f,0])
     linear_extrude(2) 
