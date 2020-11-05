@@ -28,8 +28,10 @@
 //================================
 // The following variables can be modified
 
-ts=19.85;	// size in mm of one quadratic tile.
-tw=19.85;	// size in x direction
+//ts=19.85;	// size in mm in y direction
+ts=19.73;		// 5 Nov 2020
+//tw=19.85;	// size in x direction
+tw=20;	// 5 Nov 2020
 
 height=17.6; // height of the inner body of the tile in mm
 ledge_height=1.2;	// upper and lower ledge of a tile in mm. The total height of a puzzle piece is height+2*ledge_height
