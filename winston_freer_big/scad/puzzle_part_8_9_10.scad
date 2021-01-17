@@ -15,17 +15,17 @@ include <winston_freer.scad>;
 
 
 rotate([0,90,-90]) 
-translate([-6*ts,0,0]) 
+translate([-6*tw,0,0]) 
 part8();
 
-translate([1.5*ts,0,0])
+translate([1.5*tw,0,0])
 rotate([0,90,-90]) 
-translate([-7*ts,0,0]) 
+translate([-7*tw,0,0]) 
 part9();
 
 
-translate([3*ts,0,0])
+translate([3*tw,0,0])
 rotate([0,90,-90]) 
-translate([-7*ts,-ts,0]) 
+translate([-7*tw,-ts,0]) 
 part10();
 

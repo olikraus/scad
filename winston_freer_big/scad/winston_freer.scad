@@ -29,7 +29,8 @@
 // The following variables can be modified
 
 //ts=19.85;	// size in mm in y direction
-ts=19.73;		// 5 Nov 2020
+//ts=19.73;		// 5 Nov 2020
+ts=19.6;		// 15 Nov 2020
 //tw=19.85;	// size in x direction
 tw=20;	// 5 Nov 2020
 
@@ -42,7 +43,7 @@ gaph=1.2;			// depth of the grid into the ledge. This value should be lesser or 
 frame_gap=0.8;		// gap (mm) between puzzle and frame or box. 1.2 is very loose
 frame_wall=3;		// wall size of the frame or box
 
-is_bottom_mesh = true;   // whether the grid is printed on the bottom of the parts (except for part 2, which always as the grid on top AND bottom) 
+is_bottom_mesh = false;   // whether the grid is printed on the bottom of the parts (except for part 2, which always as the grid on top AND bottom) 
 
 //================================
 // The following constants should not be modified
