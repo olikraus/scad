@@ -12,6 +12,11 @@
 
 $fn=32;
 
+wall_thickness=3.2;
+wall_height=170;
+wall_width=80;
+
+
 clip_len=40;
 clip_height=8;
 clip_thickness=2;
@@ -32,10 +37,6 @@ hook_len=6;
 hook_nose_height=3;
 hook_nose_width=2;
 hook_thickness=3;
-
-wall_thickness=4;
-wall_height=70;
-wall_width=60;
 
 press_fit_len=5;
 press_fit_diameter=clip_height-2;
