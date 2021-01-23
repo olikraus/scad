@@ -1,6 +1,6 @@
 /*
 
-  middle_wall.scad
+  middle.scad
 
   (c) olikraus@gmail.com
 

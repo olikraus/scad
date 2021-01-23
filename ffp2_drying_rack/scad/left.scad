@@ -1,6 +1,6 @@
 /*
 
-  left_wall.scad
+  left.scad
 
   (c) olikraus@gmail.com
 
