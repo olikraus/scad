@@ -1,6 +1,6 @@
 /*
 
-  left_wall.scad
+  middle_wall.scad
 
   (c) olikraus@gmail.com
 
@@ -11,3 +11,5 @@
 include <ffp2_drying_rack.scad>
 
 wall(1,1);
+
+

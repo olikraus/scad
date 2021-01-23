@@ -47,6 +47,13 @@ module triangle_block() {
     polygon(points=[[0,0],[clip_triangle_len,0],[0,clip_triangle_len]]);
 }
 
+module wall_support() {
+  translate([0,clip_thickness,0])
+  rotate([90,0,0])
+  linear_extrude(height=clip_thickness)
+  polygon(points=[[0,0],[clip_triangle_len*3/7,0],[0,clip_triangle_len*2]]);
+}
+
 module clip_m() {
     union() {
         translate([0,clip_thickness,0])
@@ -196,7 +203,13 @@ module wall(is_left=1, is_right=1) {
                     wall_width/2,
                     wall_height-hook_nose_height])            
             hook();
-                      
+	    
+            translate([wall_thickness/2,clip_thickness*2.5,clip_height])
+	    wall_support();
+
+            translate([wall_thickness/2,wall_width-clip_thickness*3.5,clip_height])
+	    wall_support();
+
         }
 
         if ( is_left) {
@@ -216,7 +229,15 @@ module wall(is_left=1, is_right=1) {
                     wall_width/2,
                     wall_height-hook_nose_height])
             hook();
-            
+
+            mirror([1,0,0])
+            translate([wall_thickness/2,clip_thickness*2.5,clip_height])
+	    wall_support();
+
+            mirror([1,0,0])
+            translate([wall_thickness/2,wall_width-clip_thickness*3.5,clip_height])
+	    wall_support();
+
         }
     }
 }
