@@ -383,15 +383,15 @@ function curved_ramp_genpoints_cos(poly2d, radius, angle, ylen, cnt) = flatten([
             ), 
         i*angle/(cnt-1))
 ]);
-    
-    
+
+
 /*
   rotate the given polygon around the y axis.
   "radius": rotation extrude radius
   "angle": rotation extrude angle
   "ylen" is the total strech towards y direction.
   "cnt" number of point sets to use, similar to $fn
-*/        
+*/
 module curved_ramp_raw(radius, angle, ylen, cnt) {
     pts = curved_ramp_genpoints_cos(tube_profile_h, 
             radius, angle, ylen, cnt);
