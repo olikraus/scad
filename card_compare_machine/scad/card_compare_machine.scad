@@ -42,7 +42,7 @@ wheel_diameter = 65;
 wheel_card_lift = 0.5;
 
 /* thickness of all the walls */
-wall=3;
+wall=2;
 
 /* Extra gap so that the tray can be stacked on the motor house */
 pile_gap = 0.2;
@@ -316,6 +316,7 @@ module eject_house(isMotor=false) {
       CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
     }
     // main inner cutout
+    translate([0,0,-0.01])
     CenterCube([iw,ih,house_height+0.02], ChamferBody=wall);
     
     // translated cutout to open the front
@@ -332,6 +333,7 @@ module eject_house(isMotor=false) {
   }
   
   // the motor will be mounted on top of this block
+  
   translate([mmx, mmy,0])
   difference() {
     CenterCube([33,33,mh], ChamferBody=1);
@@ -349,6 +351,8 @@ module eject_house(isMotor=false) {
     cylinder(h=20,d=mhd, center=false, $fn=16);
   }
   
+  // add some inner chamfer to add more stability to the motor mount block
+  
   translate([card_width/2+wall,mmy-33/2,0])
   ChamferZCube(w=wall,h=mh);
 
@@ -360,6 +364,14 @@ module eject_house(isMotor=false) {
 
   translate([card_width/2,mmy+33/2,0])
   ChamferZCube(w=wall,h=mh);
+
+  // add extra support for the complete block on the z=0 plane
+  
+  translate([0,th/4,0])
+  CenterCube([tw, 6, wall], ChamferTop=1);
+
+  translate([0,-th/4,0])
+  CenterCube([tw, 6, wall], ChamferTop=1);
 
 }
 

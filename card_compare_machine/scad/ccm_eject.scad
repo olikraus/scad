@@ -12,9 +12,11 @@
 
 include <card_compare_machine.scad>;
 
+/*
 rotate([0,0,180])
 translate([90,0,0])
 eject_house_old(false);
+*/
 
 eject_house(false);
 
