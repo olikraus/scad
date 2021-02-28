@@ -289,6 +289,8 @@ module sorter_house(isMotor = true) {
 
 }
 
+/*==============================================*/
+/* card eject house */
 
 module eject_house(isMotor=false) {
 
