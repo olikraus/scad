@@ -18,5 +18,5 @@ translate([90,0,0])
 eject_house_old(false);
 */
 
-eject_house(false);
+eject_house(true);
 

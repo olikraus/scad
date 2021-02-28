@@ -13,8 +13,6 @@ include <base_objects.scad>;
 
 $fn=20;
 
-
-
 /* dimensions of the cards */
 card_width = 63;
 card_height = 88;
@@ -53,6 +51,12 @@ pile_holder_height = 10;
 /* mount hole diameter */
 mhd = 2.8;
 
+/* The height of the left and right eject slot for the sorter */
+sorter_card_slot_height = 3;
+
+/* The width of the outside rails in the sorter */
+sorter_rail_width = 10;
+
 
 /* derived: the height of the card cast edge above reference level 0 */
 cast_edge_z = wall+sin(card_tray_angle)*(card_height-card_front_gap);
@@ -60,7 +64,10 @@ cast_edge_z = wall+sin(card_tray_angle)*(card_height-card_front_gap);
 /* derived: motor block height. This is the overall height of the eject house and the sorter house */
 house_height = wheel_diameter/2+20+20;
 
+
+/*==============================================*/
 /* helper objects */
+
 module motor_mount_bracket() {
     color("DarkSlateGray", 0.4)
     difference() {
@@ -94,16 +101,16 @@ module motor_mount_bracket() {
         
         cylinder(h=8,d=10, center=true);
         
-        translate([7,8,0])
+        translate([8,7,0])
         cylinder(h=8,d=3.4, center=true, $fn=16);
         
-        translate([7,-8,0])
+        translate([8,-7,0])
         cylinder(h=8,d=3.4, center=true, $fn=16);
 
-        translate([-7,8,0])
+        translate([-8,7,0])
         cylinder(h=8,d=3.4, center=true, $fn=16);
         
-        translate([-7,-8,0])
+        translate([-8,-7,0])
         cylinder(h=8,d=3.4, center=true, $fn=16);
     }
 }
@@ -133,6 +140,10 @@ module triangle(h) {
   linear_extrude(height=h)
   polygon([[0,0],[wall,0],[0,wall]]);
 }
+
+/*==============================================*/
+/* card tray for the eject block */
+
 
 module tray() {
   iw = card_width+card_gap;
@@ -173,7 +184,7 @@ module tray() {
   }
 }
 
-module sorter_house(isMotor = true) {
+module sorter_house_old(isMotor = true) {
 
   mh = house_height+cast_edge_z+wheel_card_lift-wheel_diameter/2-20;
 
@@ -285,7 +296,58 @@ module sorter_house(isMotor = true) {
       motor();
     }
   }
+}
 
+/*==============================================*/
+/* card sorter house */
+
+
+module sorter_house(isMotor = false) {
+  // height of the motor mount block
+  mh = house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-20;
+
+  // inner dimensions of the house. 
+  iw = card_width+card_gap;
+  ih = card_height+card_gap;
+
+  // outer dimensions of the house
+  tw = card_width+card_gap+2*wall;
+  th = card_height+card_gap+2*wall;
+
+  difference() {
+    union() {
+      // the main volume of the house
+      CenterCube([tw,th,house_height], ChamferBody=1);
+      
+      // the pedestal for the tray
+      translate([0,0,house_height-wall])
+      CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
+    }
+    // main inner cutout
+    translate([0,0,-0.01])
+    CenterCube([iw,ih,house_height-sorter_card_slot_height+0.02], ChamferBody=wall, ChamferTop=sorter_rail_width);
+
+    // cutout for the tray holder extention (pedestal)
+    translate([0,0,house_height])
+    CenterCube([tw,th,pile_holder_height+0.01]);
+    
+    translate([0,0,house_height-sorter_card_slot_height])
+    CenterCube([iw*2, ih,pile_holder_height*2]);
+
+    // cutout portal on both walls for the dc motor and usage of screw drivers
+    //translate([0,  -(card_height/2-card_front_gap),  mh])
+    translate([0,  0,  mh])
+    rotate([0,0,90])
+    Archoid(r=33/2, b=house_height-33/2-4-mh, l=2*card_height);
+  }
+
+
+  if ( isMotor )
+  {
+      translate([0,-card_height/2+8,mh])
+      //rotate([0,0,180])
+      motor();
+  }
 
 }
 
@@ -311,7 +373,10 @@ module eject_house(isMotor=false) {
   
   difference() {
     union() {
+      // the main volume of the house
       CenterCube([tw,th,house_height], ChamferBody=1);
+      
+      // the pedestal for the tray
       translate([0,0,house_height-wall])
       CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
     }
@@ -323,7 +388,7 @@ module eject_house(isMotor=false) {
     translate([0,-3*wall,house_height/4])
     CenterCube([iw,ih,house_height+0.02]);
     
-    // cutout for the tray holder extention
+    // cutout for the tray holder extention (pedestal)
     translate([0,0,house_height])
     CenterCube([tw,th,pile_holder_height+0.01]);
 
@@ -333,21 +398,23 @@ module eject_house(isMotor=false) {
   }
   
   // the motor will be mounted on top of this block
-  
+
   translate([mmx, mmy,0])
   difference() {
     CenterCube([33,33,mh], ChamferBody=1);
 
-    translate([8,7,mh-16])
+    // screw holes updated, 28 Feb 14:24
+
+    translate([7,8,mh-16])
     cylinder(h=20,d=mhd, center=false, $fn=16);
     
-    translate([8,-7,mh-16])
+    translate([7,-8,mh-16])
     cylinder(h=20,d=mhd, center=false, $fn=16);
 
-    translate([-8,7,mh-16])
+    translate([-7,8,mh-16])
     cylinder(h=20,d=mhd, center=false, $fn=16);
     
-    translate([-8,-7,mh-16])
+    translate([-7,-8,mh-16])
     cylinder(h=20,d=mhd, center=false, $fn=16);
   }
   
@@ -373,128 +440,12 @@ module eject_house(isMotor=false) {
   translate([0,-th/4,0])
   CenterCube([tw, 6, wall], ChamferTop=1);
 
-}
-
-module eject_house_old(isMotor=false) {
-
-  mh = house_height+cast_edge_z+wheel_card_lift-wheel_diameter/2-20;
-
-  iw = card_width+card_gap;
-  ih = card_height+card_gap-wall;
-
-  tw = card_width+card_gap+2*wall;
-  th = card_height+card_gap+wall;
-
-  difference() {
-    translate([-tw/2,0,0])
-    cube([tw, th, house_height]);
-    
-    translate([-iw/2,wall,-0.01])
-    cube([iw+0.02, ih+0.02, house_height+0.02]);
-
-    translate([-iw/2,3*wall,house_height/4])
-    cube([iw+0.02, ih+0.02, house_height]);  
-
-    /* upper round cutout of the motor */
-    translate([0,card_height-card_front_gap,house_height-33/2-4])
-    difference() {
-      rotate([0,90,0])
-      cylinder(d=33, h=2*card_width, center=true);
-      
-      translate([0,0,-card_height/2])
-      cube([2*card_height,2*card_height,card_height], center=true);
-      
-    }
-
-    /* lower block cutout of the motor */
-
-    translate([-2*card_width/2,card_height-card_front_gap-33/2,mh])
-    cube([2*card_width,33,house_height-33/2-4-mh]);
-    
-  }
-
-  /* 4x inner chamfer for the motor house */
-  translate([card_width/2+0.5,wall,0])
-  rotate([0,0,90])
-  triangle(house_height);
-  
-  translate([-card_width/2-0.5,wall,0])
-  rotate([0,0,0])
-  triangle(house_height);
-  
-  translate([card_width/2+0.52,card_height+1.02,0])
-  rotate([0,0,180])
-  triangle(house_height/4);
-  
-  translate([-card_width/2-0.52,card_height+1.02,0])
-  rotate([0,0,-90])
-  triangle(house_height/4);
-
-  /* the motor will be mounted on top of this block */
-
-  translate([-card_width/2-33/2-wall,card_height-card_front_gap-33/2,0])
-  difference() {
-    cube([33,33,mh]);
-
-    translate([8+33/2,7+33/2,mh-16])
-    cylinder(h=20,d=mhd, center=false, $fn=16);
-    
-    translate([8+33/2,-7+33/2,mh-16])
-    cylinder(h=20,d=mhd, center=false, $fn=16);
-
-    translate([-8+33/2,7+33/2,mh-16])
-    cylinder(h=20,d=mhd, center=false, $fn=16);
-    
-    translate([-8+33/2,-7+33/2,mh-16])
-    cylinder(h=20,d=mhd, center=false, $fn=16);
-  }
-
-  /* 4x inner chamfer for the motor mount block */
-  translate([-card_width/2-wall-0.5,card_height-card_front_gap-33/2,0])
-  rotate([0,0,180])
-  triangle(mh);
-
-  translate([-card_width/2-0.5,card_height-card_front_gap-33/2,0])
-  rotate([0,0,-90])
-  triangle(mh);
-
-  translate([-card_width/2-0.5,card_height-card_front_gap+33/2,0])
-  rotate([0,0,0])
-  triangle(mh);
-
-  translate([-card_width/2-wall-0.5,card_height-card_front_gap+33/2,0])
-  rotate([0,0,90])
-  triangle(mh);
-
-  /* upper pedestal */
-  difference() {
-    translate([-(card_width+wall*4)/2,-wall,house_height-wall])
-    cube([card_width+wall*4, card_height+wall*2+1, wall*3]);
-    
-    translate([-(card_width+wall*2+pile_gap*2)/2,0,house_height-wall-0.01])
-    cube([card_width+wall*2+pile_gap*2, card_height+wall*2+1, wall*3+0.02]);
-
-    translate([-card_width/2-wall*2-0.01,card_height*1.5,house_height-wall-0.01])
-    rotate([90,0,0])
-    triangle(card_height*2);
-
-    translate([+card_width/2+wall*2+0.01,card_height*1.5,house_height-wall-0.01])
-    rotate([90,-90,0])
-    triangle(card_height*2);
-
-    translate([-card_width,-wall-0.01,house_height-wall-0.01])
-    rotate([90,0,90])
-    triangle(card_width*2);
-    
-  }
-  
-  
   if ( isMotor )
   {
     union() {
-      translate([0,card_height-card_front_gap,mh])
-      translate([-35.5,0])
-      rotate([0,0,-90])
+      translate([0,mmy,mh])
+      translate([mmx,0])
+      rotate([0,0,90])
       motor();
     }
   }

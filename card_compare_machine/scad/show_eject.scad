@@ -14,13 +14,4 @@
 
 include <card_compare_machine.scad>;
 
-rotate([0,0,180])
-union() {
-  
-  color("Silver", 0.4)
-  translate([0,0,motor_block_height])
-  tray();
-
-  eject_house(true);
-
-}
+eject_house(true);
