@@ -11,5 +11,5 @@
 
 include <card_compare_machine.scad>;
 
-sorter_house(true);
+sorter_house(false);
 

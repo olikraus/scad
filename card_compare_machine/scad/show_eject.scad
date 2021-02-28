@@ -14,4 +14,8 @@
 
 include <card_compare_machine.scad>;
 
+translate([0,(card_height+card_gap+2*wall)/2,house_height])
+rotate([0,0,180])
+tray();
+
 eject_house(true);

@@ -20,7 +20,7 @@ SLIC3R_FLAGS=--gcode-flavor reprap --nozzle-diameter 0.4 --filament-diameter 1.7
 SLIC3R_FLAGS+=--print-center 75,75 --start-gcode start.gcode
 SLIC3R_FLAGS+=--brim-width 4
 # 80%: ca 2mm löcher
-SLIC3R_FLAGS+=--fill-density 40%
+SLIC3R_FLAGS+=--fill-density 30%
 #SLIC3R_FLAGS+=--solid-infill-every-layers 1
 SLIC3R_FLAGS+=--layer-height 0.2 --first-layer-height 0.3 
 SLIC3R_FLAGS+=--duplicate 1

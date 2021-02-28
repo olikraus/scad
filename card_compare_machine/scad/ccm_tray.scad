@@ -11,6 +11,5 @@
 
 include <card_compare_machine.scad>;
 
-rotate([0,0,180])
 tray();
 

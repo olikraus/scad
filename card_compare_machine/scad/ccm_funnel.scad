@@ -1,6 +1,6 @@
 /*
 
-  ccm_eject.scad
+  ccm_sorter.scad
   
   (c) olikraus@gmail.com
 
@@ -9,8 +9,10 @@
 
 */
 
-
 include <card_compare_machine.scad>;
 
-eject_house(false);
+translate([-80,0,0])
+sorter_house(false);
+
+funnel();
 
