@@ -24,7 +24,7 @@ card_rail = 10;
 card_front_gap = card_height/4;
 
 /* the height of the tray */
-tray_height = 70;
+tray_height = 30;
 
 /* card tray angle: Must be < 11 Degree */
 card_tray_angle = 10;
@@ -164,6 +164,122 @@ module tray() {
   }
 }
 
+module sorter_house(isMotor = true) {
+
+  mh = motor_block_height+cast_edge_z+wheel_card_lift-wheel_diameter/2-20;
+
+  iw = card_width+card_gap;
+  ih = card_height+card_gap;
+
+  tw = card_width+card_gap+2*wall;
+  th = card_height+card_gap+2*wall;
+
+  difference() {
+    translate([-tw/2,0,0])
+    cube([tw, th, motor_block_height]);
+
+    translate([-iw/2,wall,-0.01])
+    cube([iw+0.02, ih+0.02, motor_block_height+0.02]);
+
+    /*
+    translate([-iw/2,3*wall,motor_block_height/4])
+    cube([iw+0.02, ih+0.02, motor_block_height]);  
+  */
+
+    /* upper round cutout of the motor */
+    translate([0,card_height-card_front_gap,motor_block_height-33/2-4])
+    difference() {
+      rotate([0,90,90])
+      cylinder(d=33, h=2*card_height, center=true);
+      
+      translate([0,0,-card_height/2])
+      cube([2*card_height,2*card_height,card_height], center=true);
+      
+    }
+    
+    /* lower block cutout of the motor */
+
+    //rotate([0,0,90])
+    //translate([-2*card_width/2,card_height-card_front_gap-33/2,mh])
+    //cube([3*card_height,33,motor_block_height-33/2-4-mh]);
+    
+    translate([-33/2,-card_height,  mh+0.01])
+    cube([33, 3*card_height,motor_block_height-33/2-4-mh+0.01]);
+
+  }
+
+  /* the motor will be mounted on top of this block */
+
+  translate([-33/2,card_height-33/2-5,0])
+  difference() {
+    cube([33,33,mh]);
+
+    translate([7+33/2,8+33/2,mh-16])
+    cylinder(h=20,d=mhd, center=false, $fn=16);
+    
+    translate([7+33/2,-8+33/2,mh-16])
+    cylinder(h=20,d=mhd, center=false, $fn=16);
+
+    translate([-7+33/2,8+33/2,mh-16])
+    cylinder(h=20,d=mhd, center=false, $fn=16);
+    
+    translate([-7+33/2,-8+33/2,mh-16])
+    cylinder(h=20,d=mhd, center=false, $fn=16);
+  }
+
+
+  /* 4x inner chamfer for the motor house */
+  translate([card_width/2+0.5,wall,0])
+  rotate([0,0,90])
+  triangle(motor_block_height);
+  
+  translate([-card_width/2-0.5,wall,0])
+  rotate([0,0,0])
+  triangle(motor_block_height);
+  
+  translate([card_width/2+0.52,card_height+wall+1.02,0])
+  rotate([0,0,180])
+  triangle(motor_block_height);
+  
+  translate([-card_width/2-0.52,card_height+wall+1.02,0])
+  rotate([0,0,-90])
+  triangle(motor_block_height);
+  
+  /* upper pedestal */
+  difference() {
+    translate([-(card_width+wall*4)/2,-wall,motor_block_height-wall])
+    cube([card_width+wall*4, card_height+wall*4, wall*3]);
+    
+    translate([-(card_width+wall*2+pile_gap*2)/2,0,motor_block_height-wall-0.01])
+    cube([card_width+wall*2+pile_gap*2, card_height+wall*2+pile_gap*2, wall*3+0.02]);
+
+    translate([-card_width/2-wall*2-0.01,card_height*1.5,motor_block_height-wall-0.01])
+    rotate([90,0,0])
+    triangle(card_height*2);
+
+    translate([+card_width/2+wall*2+0.01,card_height*1.5,motor_block_height-wall-0.01])
+    rotate([90,-90,0])
+    triangle(card_height*2);
+
+    translate([-card_width,-wall-0.01,motor_block_height-wall-0.01])
+    rotate([90,0,90])
+    triangle(card_width*2);
+    
+  }
+  
+
+  if ( isMotor )
+  {
+    union() {
+      translate([0,card_height-5,mh])
+      rotate([0,0,180])
+      motor();
+    }
+  }
+
+
+}
+
 
 
 module eject_house(isMotor=false) {
@@ -257,6 +373,7 @@ module eject_house(isMotor=false) {
   rotate([0,0,90])
   triangle(mh);
 
+  /* upper pedestal */
   difference() {
     translate([-(card_width+wall*4)/2,-wall,motor_block_height-wall])
     cube([card_width+wall*4, card_height+wall*2+1, wall*3]);

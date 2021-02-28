@@ -1,6 +1,6 @@
 /*
 
-  ccm_eject.scad
+  ccm_tray.scad
   
   (c) olikraus@gmail.com
 
@@ -9,8 +9,8 @@
 
 */
 
-
 include <card_compare_machine.scad>;
 
-eject_house(false);
+rotate([0,0,180])
+tray();
 
