@@ -214,7 +214,7 @@ module Archoid(r=10, b=20, l=30) {
       cube([2*l,2*l,2*r], center=true);
     }
     translate([0,0,b/2])
-    cube([l,2*r,b], center=true);
+    cube([l,2*r,b+0.01], center=true);
   }
 }
 
