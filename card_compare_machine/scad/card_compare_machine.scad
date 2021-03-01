@@ -18,7 +18,7 @@ card_width = 63;
 card_height = 88;
 
 /* outer gap of the cards */
-card_gap = 1;   
+card_gap = 1;
 
 /* inner rail size, must be greater than card_gap */
 card_rail = 10;
@@ -31,13 +31,13 @@ card_front_gap = card_height/4;
 tray_height = 30;
 
 /* card tray angle: Must be < 11 Degree */
-card_tray_angle = 10;
+card_tray_angle = 22;
 
 /* diameter of the drive wheel */
 wheel_diameter = 65;
 
 /* how much should the wheel lift the cards beyond tray rails */
-wheel_card_lift = 0.5;
+wheel_card_lift = 1;
 
 /* thickness of all the walls */
 wall=2;
@@ -59,10 +59,12 @@ sorter_rail_width = 10;
 
 
 /* derived: the height of the card cast edge above reference level 0 */
-cast_edge_z = wall+sin(card_tray_angle)*(card_height-card_front_gap);
+cast_edge_z = card_rail+sin(card_tray_angle)*(card_height-card_front_gap);
 
-/* derived: motor block height. This is the overall height of the eject house and the sorter house */
-house_height = wheel_diameter/2+20+20;
+/* This is the overall height of the eject house and the sorter house */
+house_height = 100;
+
+motor_mount_height = 40;
 
 
 /*==============================================*/
@@ -138,7 +140,7 @@ module motor() {
     cylinder(h=70,d=25, $fn=16);
 
     color("Silver",0.3)
-    translate([0,36,33-26.5/2])
+    translate([0,36+4,33-26.5/2])
     rotate([90,0,0])
     cylinder(h=27,d=wheel_diameter, center=true, $fn=32);
 }
@@ -299,7 +301,9 @@ module sorter_house(isMotor = false) {
 module eject_house(isMotor=false) {
 
   // height of the motor mount block
-  mh = house_height+cast_edge_z+wheel_card_lift-wheel_diameter/2-20;
+  //mh = house_height+cast_edge_z+wheel_card_lift-wheel_diameter/2-20;
+  
+  mh = motor_mount_height;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap;
@@ -310,33 +314,66 @@ module eject_house(isMotor=false) {
   th = card_height+card_gap+2*wall;
   
   // center position of the motor mount block 
-  mmx = card_width/2+wall;
+  mmx = card_width/2+7;
   mmy = -(card_height/2-card_front_gap);
-  
+
+       
+
   difference() {
     union() {
-      // the main volume of the house
-      CenterCube([tw,th,house_height], ChamferBody=1);
+      difference() {
+	union() {
+	  // the main volume of the house
+	  CenterCube([tw,th,house_height], ChamferBody=1);
+	  
+	  // the pedestal for the tray
+	  translate([0,0,house_height-wall])
+	  CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
+	  
+	  
+	}
+	// main inner cutout
+	translate([0,0,-0.01])
+	CenterCube([iw,ih,house_height+0.02], ChamferBody=wall);
+	
+	// translated cutout to open the front
+	translate([0,-3*wall,house_height/4])
+	CenterCube([iw,ih,house_height+0.02]);
+	
+	// cutout for the tray holder extention (pedestal)
+	translate([0,0,house_height])
+	CenterCube([tw,th,pile_holder_height+0.01]);
+
+      }
+
+
+       // add the card rail at the top
+       // lift is upper edge of the wheel minus cast_edge_z
+      rail_lift = mh+wheel_diameter/2+20-cast_edge_z-wheel_card_lift; 
       
-      // the pedestal for the tray
-      translate([0,0,house_height-wall])
-      CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
+      translate([0,0,rail_lift])
+      difference() {
+	intersection() {
+	  translate([0,card_height/2,card_rail])
+	  rotate([-card_tray_angle,0,0])
+	  translate([0,0,-card_height*2/2])
+	  cube([card_height*4, card_height*4, card_height*2], center = true);
+	  translate([0,card_front_gap/2,0])
+	  CenterCube([card_width+card_gap, card_height-card_front_gap+card_gap, house_height]);
+	}
+	translate([0,0,-0.01])
+	CenterCube([card_width+card_gap-card_rail*2, card_height+card_gap+0.02, house_height]);
+	translate([0,0,-1])
+	CenterCube([card_width+card_gap, card_height*2,card_rail+1], ChamferTop=card_rail);      
+	rotate([-card_tray_angle,0,0])
+	translate([0,0,card_rail*0.8-100])
+	CenterCube([card_width+card_gap+0.02, card_height*2,card_rail+100], ChamferTop=card_rail);    
+      }
     }
-    // main inner cutout
-    translate([0,0,-0.01])
-    CenterCube([iw,ih,house_height+0.02], ChamferBody=wall);
-    
-    // translated cutout to open the front
-    translate([0,-3*wall,house_height/4])
-    CenterCube([iw,ih,house_height+0.02]);
-    
-    // cutout for the tray holder extention (pedestal)
-    translate([0,0,house_height])
-    CenterCube([tw,th,pile_holder_height+0.01]);
 
     // cutout portal on both walls for the dc motor and usage of screw drivers
     translate([0,  -(card_height/2-card_front_gap),  mh])
-    Archoid(r=33/2, b=house_height-33/2-4-mh, l=2*card_width);    
+    Archoid(r=33/2, b=33/2+2, l=2*card_width);    
   }
   
   // the motor will be mounted on top of this block
@@ -374,6 +411,8 @@ module eject_house(isMotor=false) {
 
   translate([0,-th/4,0])
   CenterCube([tw, 6, wall], ChamferTop=1);
+
+
 
   if ( isMotor )
   {
