@@ -18,7 +18,7 @@ card_width = 63;
 card_height = 88;
 
 /* outer gap of the cards */
-card_gap = 1;
+card_gap = 2;  // 7 Mar 21: increased 1->2
 
 /* inner rail size, must be greater than card_gap */
 card_rail = 10;
@@ -49,7 +49,7 @@ pile_gap = 0.2;
 pile_holder_height = 10;
 
 /* mount hole diameter */
-mhd = 2.8;
+mhd = 2.9;	// 7 Mar 2020 increased from 2.8 to 2.9
 
 /* The height of the left and right eject slot for the sorter */
 sorter_card_slot_height = 3;
@@ -62,9 +62,9 @@ sorter_rail_width = 10;
 cast_edge_z = card_rail+sin(card_tray_angle)*(card_height-card_front_gap);
 
 /* This is the overall height of the eject house and the sorter house */
-house_height = 100;
+house_height = 90;
 
-motor_mount_height = 40;
+motor_mount_height = 25;
 
 
 /*==============================================*/
@@ -202,7 +202,7 @@ module tray() {
 
 module sorter_house(isMotor = false) {
   // height of the motor mount block
-  mh = house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-20;
+  mh = house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-21;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap;
@@ -300,8 +300,6 @@ module sorter_house(isMotor = false) {
 
 module eject_house(isMotor=false) {
 
-  // height of the motor mount block
-  //mh = house_height+cast_edge_z+wheel_card_lift-wheel_diameter/2-20;
   
   mh = motor_mount_height;
 
@@ -317,6 +315,8 @@ module eject_house(isMotor=false) {
   mmx = card_width/2+7;
   mmy = -(card_height/2-card_front_gap);
 
+   // lift is upper edge of the wheel minus cast_edge_z
+  rail_lift = mh+wheel_diameter/2+21-cast_edge_z-wheel_card_lift; 
        
 
   difference() {
@@ -337,9 +337,14 @@ module eject_house(isMotor=false) {
 	CenterCube([iw,ih,house_height+0.02], ChamferBody=wall);
 	
 	// translated cutout to open the front
-	translate([0,-3*wall,house_height/4])
+	translate([0,-3*wall,mh-10])
+	CenterCube([iw-2*wall,ih,house_height+0.02]);
+
+	// open front cutout: full width, height a rail level and above
+	// rail starting point is very low, but has a high slope, so add 10
+	translate([0,-3*wall,rail_lift+15])
 	CenterCube([iw,ih,house_height+0.02]);
-	
+
 	// cutout for the tray holder extention (pedestal)
 	translate([0,0,house_height])
 	CenterCube([tw,th,pile_holder_height+0.01]);
@@ -348,8 +353,6 @@ module eject_house(isMotor=false) {
 
 
        // add the card rail at the top
-       // lift is upper edge of the wheel minus cast_edge_z
-      rail_lift = mh+wheel_diameter/2+20-cast_edge_z-wheel_card_lift; 
       
       translate([0,0,rail_lift])
       difference() {
