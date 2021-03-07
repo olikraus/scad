@@ -17,6 +17,10 @@ include <card_compare_machine.scad>;
 
 eject_house(true);
 
+translate([0,-card_height-20,0])
+sorter_house(true);
+
+
 
 /*
 difference() {
