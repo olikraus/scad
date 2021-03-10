@@ -11,12 +11,12 @@
 
 include <card_compare_machine.scad>;
 
-translate([-2*card_width, 0,0])
+//translate([-2*card_width, 0,0])
 sorter_house(false);
 
 
 
-module SlopeCube(w = 10, l = 35, zs = 20, hs = 20, ze = 50, he = 10) {
+module xSlopeCube(w = 10, l = 35, zs = 20, hs = 10, ze = 50, he = 10) {
 /*
 w = 10;
 l = 35;
@@ -27,10 +27,10 @@ he = 10;  // height on eject side
 */
 
 p = [
-  [ -w/2, 0,  0 ],  //0
-  [ w/2,  0,  0 ],  //1
-  [ w/2,  l,  ze-10 ],  //2
-  [ -w/2, l,  ze-10 ],  //3
+  [ -w/2, 0,  zs-hs ],  //0
+  [ w/2,  0,  zs-hs ],  //1
+  [ w/2,  l,  ze-he ],  //2
+  [ -w/2, l,  ze-he ],  //3
   [ -w/2, 0,  zs ],  //4
   [ w/2,  0,  zs ],  //5
   [ w/2,  l,  ze ],  //6
@@ -46,4 +46,4 @@ f = [
 polyhedron( p, f );
 }
 
-SlopeCube();
+//SlopeCube();

@@ -197,6 +197,38 @@ module tray() {
   }
 }
 
+/*==============================================*/
+/* card sorter house */
+module SlopeCube(w = 10, l = 35, zs = 20, hs = 10, ze = 50, he = 10) {
+/*
+w = 10;
+l = 35;
+zs = 20;  // upper position on sorter side
+hs = 20;   // height on sorter side
+ze = 50;  // upper position on eject side
+he = 10;  // height on eject side
+*/
+
+p = [
+  [ -w/2, 0,  zs-hs ],  //0
+  [ w/2,  0,  zs-hs ],  //1
+  [ w/2,  l,  ze-he ],  //2
+  [ -w/2, l,  ze-he ],  //3
+  [ -w/2, 0,  zs ],  //4
+  [ w/2,  0,  zs ],  //5
+  [ w/2,  l,  ze ],  //6
+  [ -w/2, l,  ze ]]; //7
+  
+f = [
+  [0,1,2,3],  // bottom
+  [4,5,1,0],  // front
+  [7,6,5,4],  // top
+  [5,6,2,1],  // right
+  [6,7,3,2],  // back
+  [7,4,0,3]]; // left
+polyhedron( p, f );
+}
+
 
 /*==============================================*/
 /* card sorter house */
@@ -292,7 +324,19 @@ module sorter_house(isMotor = false) {
 
 
   // cat rail
-  
+
+translate([(iw-card_rail)/2,th/2,0])
+SlopeCube(w = card_rail, l = 35, 
+  zs = sorter_house_height+pile_holder_height,  hs = 40, 
+  ze = motor_mount_height+wheel_diameter/2+21, he = 10);
+
+translate([-(iw-card_rail)/2,th/2,0])
+SlopeCube(w = card_rail, l = 35, 
+  zs = sorter_house_height+pile_holder_height,  hs = 40, 
+  ze = motor_mount_height+wheel_diameter/2+21, he = 10);
+
+
+/*
   catch_rail_cut=5;
   catch_rail_len=40;  // the real length is catch_rail_len-catch_rail_cut
   translate([0,card_height/2+card_gap/2+wall, sorter_house_height-catch_rail_len+pile_holder_height])
@@ -309,7 +353,7 @@ module sorter_house(isMotor = false) {
     translate([0,catch_rail_len,0])
     CenterCube([card_width+card_gap+0.02, 2*catch_rail_cut, catch_rail_len+0.02]);  
   }
-  
+  */
 
   if ( isMotor )
   {
@@ -518,5 +562,5 @@ module funnel() {
     translate([0,wall+0.01,-0.01])
     CenterCube([iw,th,wall+pile_holder_height+0.02]);
   }
-  
 }
+
