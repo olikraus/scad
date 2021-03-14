@@ -235,9 +235,10 @@ polyhedron( p, f );
 /*==============================================*/
 /* card sorter house */
 
+sorter_house_height = motor_mount_height + wheel_diameter/2 + 21 - pile_holder_height - eject_sorter_rail_height;
+
 module sorter_house(isMotor = false) {
 
-  sorter_house_height = motor_mount_height + wheel_diameter/2 + 21 - pile_holder_height - eject_sorter_rail_height;
 
   // height of the motor mount block
   mh = sorter_house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-21;
@@ -403,7 +404,10 @@ module eject_house(isMotor=false) {
 	  
 	  translate([tw/2,-card_height/2,0])
 	  cylinder(d=4,h=house_height);
-	  
+
+	  translate([-tw/2,-card_height/2,0])
+	  cylinder(d=4,h=house_height);
+
 	}
 	// main inner cutout
 	translate([0,0,-0.01])
@@ -514,8 +518,9 @@ module funnel() {
 
   h1 = pile_holder_height;
   h2 = 35;
-  h3 = 35;
-  h4 = 40;
+  h3 = 20;
+  h4 = 35;
+  h5 = 20;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap;
@@ -525,46 +530,102 @@ module funnel() {
   tw = card_width+card_gap+2*wall;
   th = card_height+card_gap+2*wall;
   
-  
   difference() {
-    CenterCube([tw,th,h1], ChamferBody=0);
-    translate([0,0,-0.01])
-    CenterCube([iw,ih,h1+0.02]);
-  }  
-  
-  translate([0,0,h1])
-  difference() {
-    SquareFrustum([tw, th], [tw+funnel_extra_width, th], h=h2);
-    translate([0,wall,-0.01])
-    SquareFrustum([iw, th], [iw+funnel_extra_width, th+0.02], h=h2+0.02);
-  }
-  
-  translate([0,0,h1+h2])
-  difference() {
-    SquareFrustum([tw+funnel_extra_width, th], [tw, th], h=h3);
-    translate([0,wall,-0.01])
-    SquareFrustum([iw+funnel_extra_width, th], [iw, th+0.02], h=h3+0.02);
-  }
+    union() {
+      difference() {
+	CenterCube([tw,th,h1], ChamferBody=0);
+	translate([0,0,-0.01])
+	CenterCube([iw,ih,h1+0.02]);
+      }  
+      
+      translate([0,0,h1])
+      difference() {
+	SquareFrustum([tw, th], [tw+funnel_extra_width, th], h=h2);
+	translate([0,wall,-0.01])
+	SquareFrustum([iw, th], [iw+funnel_extra_width, th+0.02], h=h2+0.02);
+      }
 
-  translate([0,0,h1+h2+h3])
-  difference() {
-    CenterCube([tw,th,h4], ChamferBody=0);
-    translate([0,wall,-0.01])
-    CenterCube([iw,th,h4+0.02]);
-  }  
+      translate([0,0,h1+h2])
+      difference() {
+	CenterCube([tw+funnel_extra_width,th,h3], ChamferBody=0);
+	translate([0,wall,-0.01])
+	CenterCube([iw+funnel_extra_width,th,h3+0.02]);
+      }  
+
+      translate([0,0,h1+h2+h3])
+      difference() {
+	SquareFrustum([tw+funnel_extra_width, th], [tw, th], h=h4);
+	translate([0,wall,-0.01])
+	SquareFrustum([iw+funnel_extra_width, th], [iw, th+0.02], h=h4+0.02);
+      }
+
+      translate([0,0,h1+h2+h3+h4])
+      difference() {
+	CenterCube([tw,th,h5], ChamferBody=0);
+	translate([0,wall,-0.01])
+	CenterCube([iw,th,h5+0.02]);
+      }  
 
 
-  translate([0,0,h1+h2+h3+h4-wall])
-  difference() {
-    // pedestal 
-    CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
+      translate([0,0,h1+h2+h3+h4+h5-wall])
+      difference() {
+	// pedestal 
+	CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
 
-    // cutout for the pedestal
-    translate([0,0,wall-0.01])
-    CenterCube([tw,th,pile_holder_height+0.02]);
+	// cutout for the pedestal
+	translate([0,0,wall-0.01])
+	CenterCube([tw,th,pile_holder_height+0.02]);
+	
+	translate([0,wall+0.01,-0.01])
+	CenterCube([iw,th,wall+pile_holder_height+0.02]);
+      }
+    } // union
+    translate([tw/2,0,h1+h2+h3+h4+h5-2*wall])
+    CenterCube([tw+2*wall, 20, pile_holder_height+2*wall+0.01]);
     
-    translate([0,wall+0.01,-0.01])
-    CenterCube([iw,th,wall+pile_holder_height+0.02]);
+    translate([tw/2,-th/2+wall/2+15,h1+h2+h3+h4+h5+wall])
+    CenterCube([tw+2*wall, 20, pile_holder_height+2*wall+0.01]);
+
+    translate([tw/2-wall/2-16,-th/2,h1+h2+h3+h4+h5+wall])
+    CenterCube([20, th+2*wall, pile_holder_height+2*wall+0.01]);
+
+
+  }  // difference
+}
+
+/*==============================================*/
+/* raspi holder */
+
+module raspi_holder() {
+// inner dimensions of the house. 
+  iw = card_width+card_gap;
+  ih = card_height+card_gap;
+
+  // outer dimensions of the house
+  tw = card_width+card_gap+2*wall;
+  th = card_height+card_gap+2*wall;
+  
+  difference() {
+    union() {
+    
+      CenterCube([tw,th,wall],ChamferBody=wall);
+
+      translate([0,-th/2+wall/2+31,0])
+      CenterCube([tw,wall,pile_holder_height],ChamferBody=0);
+    }
+
+    translate([0,4,0]) 
+    union() {
+      CopyMirror([1,0,0])
+      CopyMirror([0,1,0])
+      translate([14/2,28/2,0])
+      cylinder(d=2.4, h=3*wall, center=true);
+      
+      CopyMirror([0,1,0])
+      translate([0,20/2,0])
+      cylinder(d=6, h=3*wall, center=true);
+    }
+    
   }
 }
 

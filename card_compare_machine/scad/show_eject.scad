@@ -20,7 +20,11 @@ eject_house(true);
 translate([0,-card_height-20,0])
 sorter_house(true);
 
+translate([0,-card_height-20,sorter_house_height])
+funnel();
 
+translate([0,-card_height-20,sorter_house_height+pile_holder_height+110])
+raspi_holder();
 
 /*
 difference() {

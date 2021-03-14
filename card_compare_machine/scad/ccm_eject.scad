@@ -15,7 +15,9 @@
   - motor holder block mount screw diameter too small --> fixed by 0.1mm
   - Reduced height of the motor holder (for faster printing)  --> done
   - Leave gap at the lower end of the rail --> done
-
+  14 Mar 2021
+  - Both arcs are still brocken --> reduced edge corner (because of sorter rail), added outer support
+  
 
 */
 
