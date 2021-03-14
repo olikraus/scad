@@ -62,11 +62,13 @@ sorter_rail_width = 10;
 cast_edge_z = card_rail+sin(card_tray_angle)*(card_height-card_front_gap);
 
 /* This is the overall height of the eject house and the sorter house */
-house_height = 90;
+house_height = 110;
 
 /* motor mount height of the eject house */
-motor_mount_height = 25;
+motor_mount_height = 45;
 
+/* eject_sorter_rail_height */
+eject_sorter_rail_height = 15;
 
 /*==============================================*/
 /* helper function */
@@ -235,7 +237,7 @@ polyhedron( p, f );
 
 module sorter_house(isMotor = false) {
 
-  sorter_house_height = motor_mount_height + wheel_diameter/2 + 21 - pile_holder_height;
+  sorter_house_height = motor_mount_height + wheel_diameter/2 + 21 - pile_holder_height - eject_sorter_rail_height;
 
   // height of the motor mount block
   mh = sorter_house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-21;
@@ -399,6 +401,8 @@ module eject_house(isMotor=false) {
 	  translate([0,0,house_height-wall])
 	  CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
 	  
+	  translate([tw/2,-card_height/2,0])
+	  cylinder(d=4,h=house_height);
 	  
 	}
 	// main inner cutout
@@ -411,7 +415,7 @@ module eject_house(isMotor=false) {
 
 	// open front cutout: full width, height a rail level and above
 	// rail starting point is very low, but has a high slope, so add 10
-	translate([0,-3*wall,rail_lift+15])
+	translate([0,-3*wall,rail_lift-5])	// the lift must not be that high, otherwise the sorter rail will not fit
 	CenterCube([iw,ih,house_height+0.02]);
 
 	// cutout for the tray holder extention (pedestal)

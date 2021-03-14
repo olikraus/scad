@@ -22,19 +22,20 @@ SLIC3R_FLAGS+=--brim-width 3
 # 80%: ca 2mm löcher
 SLIC3R_FLAGS+=--fill-density 30%
 #SLIC3R_FLAGS+=--solid-infill-every-layers 1
-SLIC3R_FLAGS+=--layer-height 0.25 --first-layer-height 0.3 
+#SLIC3R_FLAGS+=--layer-height 0.25 --first-layer-height 0.3 
+SLIC3R_FLAGS+=--layer-height 0.3 --first-layer-height 0.3 --avoid-crossing-perimeters yes --perimeters 2
 SLIC3R_FLAGS+=--duplicate 1
 
 
-stl/%.stl: scad/%.scad
+stl/%.stl: scad/%.scad scad/card_compare_machine.scad
 	openscad $< -o tmp.stl
 	admesh tmp.stl -b $@
 	rm tmp.stl
 
-gcode/%.gcode: stl/%.stl start.gcode
+gcode/%.gcode: stl/%.stl start.gcode scad/card_compare_machine.scad
 	slic3r $(SLIC3R_FLAGS) $< -o $@
 	
-png/%.png: scad/%.scad
+png/%.png: scad/%.scad scad/card_compare_machine.scad
 	openscad $<  --render --autocenter --viewall --imgsize=800,600 -o $@
 
 
