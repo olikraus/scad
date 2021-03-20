@@ -535,7 +535,7 @@ module funnel() {
       difference() {
 	CenterCube([tw,th,h1], ChamferBody=0);
 	translate([0,0,-0.01])
-	CenterCube([iw,ih,h1+0.02]);
+	CenterCube([iw,ih,h1+0.02], ChamferBody=1.5);
       }  
       
       translate([0,0,h1])
@@ -563,7 +563,7 @@ module funnel() {
       difference() {
 	CenterCube([tw,th,h5], ChamferBody=0);
 	translate([0,wall,-0.01])
-	CenterCube([iw,th,h5+0.02]);
+	CenterCube([iw,th,h5+0.02], ChamferBody=1.5);
       }  
 
 
@@ -590,7 +590,16 @@ module funnel() {
     CenterCube([20, th+2*wall, pile_holder_height+2*wall+0.01]);
 
 
+    // Archoid cutout to save some material (it might also look better)
+    translate([0,0,h1+h2/2])
+    rotate([0,0,90])
+    Archoid(r=33/2, b=h2/2+h3+h4/2, l=2*card_width);    
+
   }  // difference
+  
+    
+  
+  
 }
 
 /*==============================================*/

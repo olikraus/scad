@@ -11,8 +11,10 @@
 
 include <card_compare_machine.scad>;
 
+/*
 translate([-80,0,0])
 sorter_house(false);
+*/
 
 funnel();
 
