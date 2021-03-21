@@ -11,7 +11,9 @@
   - Bugfix: Added pile_gap
   - Fixed chamfer 
   - Added support rail
-
+  - Moved funnel max down
+  - added extra y space for the cards 
+  
 
 */
 

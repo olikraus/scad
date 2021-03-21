@@ -18,7 +18,9 @@ card_width = 63;
 card_height = 88;
 
 /* outer gap of the cards */
-card_gap = 2;  // 7 Mar 21: increased 1->2
+//card_gap = 2;  
+card_gap_w = 2; // 7 Mar 21: increased 1->2
+card_gap_h = 3;  // 21 Mar: 2->3
 
 /* inner rail size, must be greater than card_gap */
 card_rail = 10;
@@ -159,10 +161,10 @@ module triangle(h) {
 /* card tray for the eject block */
 
 module tray() {
-  iw = card_width+card_gap;
-  ih = card_height+card_gap;
-  tw = card_width+card_gap+2*wall;
-  th = card_height+card_gap+2*wall-0.01;
+  iw = card_width+card_gap_w;
+  ih = card_height+card_gap_h;
+  tw = card_width+card_gap_w+2*wall;
+  th = card_height+card_gap_h+2*wall-0.01;
   tz = 20;        /* depends on card_tray_angle, just needs to be high enough */
 
   intersection() 
@@ -244,14 +246,14 @@ module sorter_house(isMotor = false) {
   mh = sorter_house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-21;
 
   // inner dimensions of the house. 
-  iw = card_width+card_gap;
-  ih = card_height+card_gap;
+  iw = card_width+card_gap_w;
+  ih = card_height+card_gap_h;
 
   // outer dimensions of the house
-  tw = card_width+card_gap+2*wall;
-  th = card_height+card_gap+2*wall;
+  tw = card_width+card_gap_w+2*wall;
+  th = card_height+card_gap_h+2*wall;
   
-  motor_y_pos = -card_height/2+8;
+  motor_y_pos = -card_height/2+10;
 
   difference() {
     union() {
@@ -261,6 +263,19 @@ module sorter_house(isMotor = false) {
       // the pedestal for the tray
       translate([0,0,sorter_house_height-wall])
       CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height], ChamferBottom=wall+pile_gap/3, ChamferBody=1);
+
+      // rail
+
+      translate([(iw-card_rail)/2,th/2,0])
+      SlopeCube(w = card_rail, l = 35, 
+	zs = sorter_house_height+pile_holder_height,  hs = 40, 
+	ze = motor_mount_height+wheel_diameter/2+21, he = 10);
+
+      translate([-(iw-card_rail)/2,th/2,0])
+      SlopeCube(w = card_rail, l = 35, 
+	zs = sorter_house_height+pile_holder_height,  hs = 40, 
+	ze = motor_mount_height+wheel_diameter/2+21, he = 10);
+
     }
     
     // main inner cutout
@@ -269,7 +284,7 @@ module sorter_house(isMotor = false) {
 
     // cutout for the tray holder extention (pedestal)
     translate([0,0,sorter_house_height])
-    CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+0.01]);
+    CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+3]);
     
     translate([0,0,sorter_house_height-sorter_card_slot_height])
     CenterCube([iw*2, ih,pile_holder_height*2]);
@@ -280,9 +295,9 @@ module sorter_house(isMotor = false) {
     rotate([0,0,90])
     Archoid(r=33/2, b=sorter_house_height-33/2-14-mh, l=2*card_height);
     
-    // do some cutout for the wheels    
-    translate([0,  0,  mh])
-    Archoid(r=20, b=20, l=2*card_width);
+    // do some cutout for the wheels, Archoid is 12mm above ground
+    translate([0,  0,  12])
+    Archoid(r=24, b=18+mh-12, l=2*card_width);
 
     CopyMirror([1,0,0])
     translate([tw/2,0,sorter_house_height-sorter_card_slot_height])
@@ -305,17 +320,17 @@ module sorter_house(isMotor = false) {
 
   // chamfer for the mount block
   
-  translate([33/2,-card_height/2,0])
+  translate([33/2,-ih/2,0])
   ChamferZCube(w=wall,h=mh);
 
-  translate([33/2,-card_height/2-wall,0])
+  translate([33/2,-ih/2-wall,0])
+  ChamferZCube(w=1,h=mh);
+
+  translate([-33/2,-ih/2,0])
   ChamferZCube(w=wall,h=mh);
 
-  translate([-33/2,-card_height/2,0])
-  ChamferZCube(w=wall,h=mh);
-
-  translate([-33/2,-card_height/2-wall,0])
-  ChamferZCube(w=wall,h=mh);
+  translate([-33/2,-ih/2-wall,0])
+  ChamferZCube(w=1,h=mh);
 
   // add extra support for the complete block on the z=0 plane
   
@@ -326,35 +341,24 @@ module sorter_house(isMotor = false) {
   CenterCube([tw, 6, wall], ChamferTop=1);
 
 
-  // cat rail
-
-translate([(iw-card_rail)/2,th/2,0])
-SlopeCube(w = card_rail, l = 35, 
-  zs = sorter_house_height+pile_holder_height,  hs = 40, 
-  ze = motor_mount_height+wheel_diameter/2+21, he = 10);
-
-translate([-(iw-card_rail)/2,th/2,0])
-SlopeCube(w = card_rail, l = 35, 
-  zs = sorter_house_height+pile_holder_height,  hs = 40, 
-  ze = motor_mount_height+wheel_diameter/2+21, he = 10);
 
 
 /*
   catch_rail_cut=5;
   catch_rail_len=40;  // the real length is catch_rail_len-catch_rail_cut
-  translate([0,card_height/2+card_gap/2+wall, sorter_house_height-catch_rail_len+pile_holder_height])
+  translate([0,card_height/2+card_gap_h/2+wall, sorter_house_height-catch_rail_len+pile_holder_height])
   difference() {
     translate([0,catch_rail_len/2,0])
-    CenterCube([card_width+card_gap, catch_rail_len, catch_rail_len]);
+    CenterCube([card_width+card_gap_w, catch_rail_len, catch_rail_len]);
     
     translate([0,catch_rail_len,0])
-    ChamferXCube(w=catch_rail_len,h=card_width+card_gap, d=0.02);
+    ChamferXCube(w=catch_rail_len,h=card_width+card_gap_w, d=0.02);
     
     translate([0,catch_rail_len/2,0])
-    CenterCube([card_width+card_gap-2*card_rail, catch_rail_len+0.02, catch_rail_len+0.02]);
+    CenterCube([card_width+card_gap_w-2*card_rail, catch_rail_len+0.02, catch_rail_len+0.02]);
 
     translate([0,catch_rail_len,0])
-    CenterCube([card_width+card_gap+0.02, 2*catch_rail_cut, catch_rail_len+0.02]);  
+    CenterCube([card_width+card_gap_w+0.02, 2*catch_rail_cut, catch_rail_len+0.02]);  
   }
   */
 
@@ -376,12 +380,12 @@ module eject_house(isMotor=false) {
   mh = motor_mount_height;
 
   // inner dimensions of the house. 
-  iw = card_width+card_gap;
-  ih = card_height+card_gap;
+  iw = card_width+card_gap_w;
+  ih = card_height+card_gap_h;
 
   // outer dimensions of the house
-  tw = card_width+card_gap+2*wall;
-  th = card_height+card_gap+2*wall;
+  tw = card_width+card_gap_w+2*wall;
+  th = card_height+card_gap_h+2*wall;
   
   // center position of the motor mount block 
   mmx = card_width/2+7;
@@ -439,19 +443,19 @@ module eject_house(isMotor=false) {
 	  translate([0,0,-card_height*2/2])
 	  cube([card_height*4, card_height*4, card_height*2], center = true);
 	  translate([0,card_front_gap/2,0])
-	  CenterCube([card_width+card_gap, card_height-card_front_gap+card_gap, house_height]);
+	  CenterCube([card_width+card_gap_w, card_height-card_front_gap+card_gap_h, house_height]);
 	  
 	  // leave a fixed gap at the lower end of the rail
 	  translate([0,-4,0])
-	  CenterCube([card_width+card_gap, card_height+card_gap, house_height]);
+	  CenterCube([card_width+card_gap_w, card_height+card_gap_h, house_height]);
 	}
 	translate([0,0,-0.01])
-	CenterCube([card_width+card_gap-card_rail*2, card_height+card_gap+0.02, house_height]);
+	CenterCube([card_width+card_gap_w-card_rail*2, card_height+card_gap_h+0.02, house_height]);
 	translate([0,0,-1])
-	CenterCube([card_width+card_gap, card_height*2,card_rail+1], ChamferTop=card_rail);      
+	CenterCube([card_width+card_gap_w, card_height*2,card_rail+1], ChamferTop=card_rail);      
 	rotate([-card_tray_angle,0,0])
 	translate([0,0,card_rail*0.8-100])
-	CenterCube([card_width+card_gap+0.02, card_height*2,card_rail+100], ChamferTop=card_rail);    
+	CenterCube([card_width+card_gap_w+0.02, card_height*2,card_rail+100], ChamferTop=card_rail);    
       }
     }
 
@@ -521,19 +525,20 @@ module funnel() {
   osw = 5*cbo;	// width of the outer support rail
   osx = 3*cbo;		// outer support extend on both sides, so the per side extend is osx/2
 
+  /* card arrival is around pile_holder_height+35 */
   h1 = pile_holder_height;
-  h2 = 35;
-  h3 = 20;
-  h4 = 35;
-  h5 = 20;
+  h2 = 25;
+  h3 = 15;
+  h4 = 25;
+  h5 = 45;
 
   // inner dimensions of the house. 
-  iw = card_width+card_gap;
-  ih = card_height+card_gap;
+  iw = card_width+card_gap_w;
+  ih = card_height+card_gap_h;
 
   // outer dimensions of the house
-  tw = card_width+card_gap+2*wall;
-  th = card_height+card_gap+2*wall;
+  tw = card_width+card_gap_w+2*wall;
+  th = card_height+card_gap_h+2*wall;
   
   difference() {
     union() {
@@ -622,12 +627,19 @@ module funnel() {
     // Archoid cutout to save some material (it might also look better)
     translate([0,0,h1+h2/2])
     rotate([0,0,90])
-    Archoid(r=33/2, b=h2/2+h3+h4/2, l=2*card_width);    
+    Archoid(r=33/2, b=h2/2+h3+h4+h5/3, l=2*card_width);    
+    
+
+    // left / right cutouts
+    CopyMirror([0,1,0])
+    translate([0,card_height/4-3,h1+h2+h3+h4+3])
+    Archoid(r=11, b=h5*0.4, l=2*card_width);    
+
 
   }  // difference
   
     
-  
+    
   
 }
 
@@ -636,12 +648,12 @@ module funnel() {
 
 module raspi_holder() {
 // inner dimensions of the house. 
-  iw = card_width+card_gap;
-  ih = card_height+card_gap;
+  iw = card_width+card_gap_w;
+  ih = card_height+card_gap_h;
 
   // outer dimensions of the house
-  tw = card_width+card_gap+2*wall;
-  th = card_height+card_gap+2*wall;
+  tw = card_width+card_gap_w+2*wall;
+  th = card_height+card_gap_h+2*wall;
   
   difference() {
     union() {
