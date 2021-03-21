@@ -22,6 +22,7 @@
     buttom: Bottom square (width, height)
     top: Top square (width, height)
     h: Distance of the top square to z=0 plane
+    ChamferBody: The amount to chamfer for edges parallel to z axis
   Notes:
     The bottom square is placed in the z=0 plane.
     The squares are centered around z axis.
@@ -51,7 +52,7 @@
     }
     
 */
-module SquareFrustum(bottom=[10,10], top=[0,0], h=10) {
+module SquareFrustum_old(bottom=[10,10], top=[0,0], h=10) {
   lx = bottom[0];
   ly = bottom[1];
   ux = top[0];
@@ -75,6 +76,52 @@ module SquareFrustum(bottom=[10,10], top=[0,0], h=10) {
     [7,4,0,3]]; // left
   polyhedron( p, f );
 }
+
+module SquareFrustum(bottom=[10,10], top=[0,0], h=10, ChamferBody=0) {
+  c = ChamferBody/2;
+  lx = bottom[0]-2*c;
+  ly = bottom[1]-2*c;
+  ux = top[0]-2*c;
+  uy = top[1]-2*c;
+  p = [
+    [ -lx/2-c, -ly/2+c,  0 ],  //0 / 0, 0
+    [ -lx/2+c, -ly/2-c,  0 ],  //0 / 1, 1
+  
+    [ lx/2-c,  -ly/2-c,  0 ],  //1 / 0, 2
+    [ lx/2+c,  -ly/2+c,  0 ],  //1 / 1, 3
+  
+    [ lx/2+c,  ly/2-c,  0 ],  //2 / 0, 4
+    [ lx/2-c,  ly/2+c,  0 ],  //2 / 1, 5
+  
+    [ -lx/2+c,  ly/2+c,  0 ],  //3 / 0, 6
+    [ -lx/2-c,  ly/2-c,  0 ],  //3 / 1, 7
+  
+    [ -ux/2-c, -uy/2+c,  h ],  //4 / 0, 8
+    [ -ux/2+c, -uy/2-c,  h ],  //4 / 1, 9
+  
+    [ ux/2-c,  -uy/2-c,  h ],  //5 / 0, 10
+    [ ux/2+c,  -uy/2+c,  h ],  //5 / 1, 11
+ 
+    [ ux/2+c,  uy/2-c,  h ],  //6 / 0, 12
+    [ ux/2-c,  uy/2+c,  h ],  //6 / 1, 13
+    
+    [ -ux/2+c,  uy/2+c,  h ], //7 / 0, 14
+    [ -ux/2-c,  uy/2-c,  h ]]; //7 / 1, 15
+    
+  f = [
+    [0,1,2,3,4,5,6,7],  // bottom
+    [8,9,1,0], // front left
+    [9,10,2,1],  // front 
+    [10,11,3,2], // front right
+    [15,14,13,12,11,10,9,8],  // top
+    [11,12,4,3],  // right
+    [12,13,5,4],  // back right
+    [13,14,6,5],  // back
+    [14,15,7,6], // back left
+    [15,8,0,7]]; // left
+  polyhedron( p, f );
+}
+
 
 /*
   ChamferZCube(w=1,h=10)

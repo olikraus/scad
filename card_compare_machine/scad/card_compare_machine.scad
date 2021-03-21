@@ -514,6 +514,7 @@ module eject_house(isMotor=false) {
 
 module funnel() {
 
+  cb = wall * 2/3;
   funnel_extra_width = 20;
 
   h1 = pile_holder_height;
@@ -533,51 +534,51 @@ module funnel() {
   difference() {
     union() {
       difference() {
-	CenterCube([tw,th,h1], ChamferBody=0);
+	CenterCube([tw,th,h1], ChamferBody=cb);
 	translate([0,0,-0.01])
-	CenterCube([iw,ih,h1+0.02], ChamferBody=1.5);
+	CenterCube([iw,ih,h1+0.02], ChamferBody=cb);
       }  
       
       translate([0,0,h1])
       difference() {
-	SquareFrustum([tw, th], [tw+funnel_extra_width, th], h=h2);
-	translate([0,wall,-0.01])
-	SquareFrustum([iw, th], [iw+funnel_extra_width, th+0.02], h=h2+0.02);
+	SquareFrustum([tw, th], [tw+funnel_extra_width, th], h=h2,ChamferBody=cb);
+	translate([0,2*wall,-0.01])
+	SquareFrustum([iw, th+2*wall], [iw+funnel_extra_width, th+2*wall+0.02], h=h2+0.02,ChamferBody=cb);
       }
 
       translate([0,0,h1+h2])
       difference() {
-	CenterCube([tw+funnel_extra_width,th,h3], ChamferBody=0);
-	translate([0,wall,-0.01])
-	CenterCube([iw+funnel_extra_width,th,h3+0.02]);
+	CenterCube([tw+funnel_extra_width,th,h3], ChamferBody=cb);
+	translate([0,2*wall,-0.01])
+	CenterCube([iw+funnel_extra_width,th+2*wall,h3+0.02], ChamferBody=cb);
       }  
 
       translate([0,0,h1+h2+h3])
       difference() {
-	SquareFrustum([tw+funnel_extra_width, th], [tw, th], h=h4);
-	translate([0,wall,-0.01])
-	SquareFrustum([iw+funnel_extra_width, th], [iw, th+0.02], h=h4+0.02);
+	SquareFrustum([tw+funnel_extra_width, th], [tw, th], h=h4, ChamferBody=cb);
+	translate([0,2*wall,-0.01])
+	SquareFrustum([iw+funnel_extra_width, th+2*wall], [iw, th+2*wall+0.02], h=h4+0.02, ChamferBody=cb);
       }
 
       translate([0,0,h1+h2+h3+h4])
       difference() {
-	CenterCube([tw,th,h5], ChamferBody=0);
-	translate([0,wall,-0.01])
-	CenterCube([iw,th,h5+0.02], ChamferBody=1.5);
+	CenterCube([tw,th,h5], ChamferBody=cb);
+	translate([0,2*wall,-0.01])
+	CenterCube([iw,th+2*wall,h5+0.02], ChamferBody=cb);
       }  
 
 
       translate([0,0,h1+h2+h3+h4+h5-wall])
       difference() {
 	// pedestal 
-	CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
-
+	CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=cb);
+  
 	// cutout for the pedestal
 	translate([0,0,wall-0.01])
-	CenterCube([tw,th,pile_holder_height+0.02]);
+	CenterCube([tw,th,pile_holder_height+0.02], ChamferBody=0);
 	
 	translate([0,wall+0.01,-0.01])
-	CenterCube([iw,th,wall+pile_holder_height+0.02]);
+	CenterCube([iw,th,wall+pile_holder_height+0.02], ChamferBody=0);
       }
     } // union
     translate([tw/2,0,h1+h2+h3+h4+h5-2*wall])
