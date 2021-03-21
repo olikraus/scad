@@ -43,7 +43,7 @@ wheel_card_lift = 1;
 wall=2;
 
 /* Extra gap so that the tray can be stacked on the motor house */
-pile_gap = 0.2;
+pile_gap = 0.8;
 
 /* The extended wall to hold the tray */
 pile_holder_height = 8;
@@ -260,7 +260,7 @@ module sorter_house(isMotor = false) {
       
       // the pedestal for the tray
       translate([0,0,sorter_house_height-wall])
-      CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
+      CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height], ChamferBottom=wall+pile_gap/3, ChamferBody=1);
     }
     
     // main inner cutout
@@ -269,7 +269,7 @@ module sorter_house(isMotor = false) {
 
     // cutout for the tray holder extention (pedestal)
     translate([0,0,sorter_house_height])
-    CenterCube([tw,th,pile_holder_height+0.01]);
+    CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+0.01]);
     
     translate([0,0,sorter_house_height-sorter_card_slot_height])
     CenterCube([iw*2, ih,pile_holder_height*2]);
@@ -400,7 +400,7 @@ module eject_house(isMotor=false) {
 	  
 	  // the pedestal for the tray
 	  translate([0,0,house_height-wall])
-	  CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=1);
+	  CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height], ChamferBottom=wall+pile_gap/3, ChamferBody=1);
 	  
 	  translate([tw/2,-card_height/2,0])
 	  cylinder(d=4,h=house_height);
@@ -424,7 +424,7 @@ module eject_house(isMotor=false) {
 
 	// cutout for the tray holder extention (pedestal)
 	translate([0,0,house_height])
-	CenterCube([tw,th,pile_holder_height+0.01]);
+	CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+0.01]);
 
       }
 
@@ -514,8 +514,12 @@ module eject_house(isMotor=false) {
 
 module funnel() {
 
-  cb = wall * 2/3;
+  cbo = 1;	// ChamferBody is 1 for all outer edges and 
+  cbi = wall/2;  // Inner chamfer is wall for other parts, but might deviate here 
   funnel_extra_width = 20;
+  osd = 8*cbo;		// distance of the outer support rail to front and back
+  osw = 5*cbo;	// width of the outer support rail
+  osx = 3*cbo;		// outer support extend on both sides, so the per side extend is osx/2
 
   h1 = pile_holder_height;
   h2 = 35;
@@ -534,51 +538,75 @@ module funnel() {
   difference() {
     union() {
       difference() {
-	CenterCube([tw,th,h1], ChamferBody=cb);
+	union() {
+	  CenterCube([tw,th,h1], ChamferBody=cbo);
+	  //translate([0,th/2-osd,0])
+	  //CenterCube([tw+osx,osw,h1], ChamferBody=cbo);
+	}
 	translate([0,0,-0.01])
-	CenterCube([iw,ih,h1+0.02], ChamferBody=cb);
+	CenterCube([iw,ih,h1+0.02], ChamferBody=cbi);
       }  
       
       translate([0,0,h1])
       difference() {
-	SquareFrustum([tw, th], [tw+funnel_extra_width, th], h=h2,ChamferBody=cb);
+	union() {
+	  SquareFrustum([tw, th], [tw+funnel_extra_width, th], h=h2,ChamferBody=cbo);
+	  CopyMirror([0,1,0])
+	  translate([0,th/2-osd,0])
+	  SquareFrustum([tw, osw], [tw+funnel_extra_width+osx, osw], h=h2,ChamferBody=cbo);
+	}
 	translate([0,2*wall,-0.01])
-	SquareFrustum([iw, th+2*wall], [iw+funnel_extra_width, th+2*wall+0.02], h=h2+0.02,ChamferBody=cb);
+	SquareFrustum([iw, th+2*wall], [iw+funnel_extra_width, th+2*wall+0.02], h=h2+0.02,ChamferBody=cbi);
       }
 
       translate([0,0,h1+h2])
       difference() {
-	CenterCube([tw+funnel_extra_width,th,h3], ChamferBody=cb);
+	union() {
+	  CenterCube([tw+funnel_extra_width,th,h3], ChamferBody=cbo);
+	  CopyMirror([0,1,0])
+	  translate([0,th/2-osd,0])
+	  CenterCube([tw+funnel_extra_width+osx,osw,h3], ChamferBody=cbo);
+	}
 	translate([0,2*wall,-0.01])
-	CenterCube([iw+funnel_extra_width,th+2*wall,h3+0.02], ChamferBody=cb);
+	CenterCube([iw+funnel_extra_width,th+2*wall,h3+0.02], ChamferBody=cbi);
       }  
 
       translate([0,0,h1+h2+h3])
       difference() {
-	SquareFrustum([tw+funnel_extra_width, th], [tw, th], h=h4, ChamferBody=cb);
+	union() {
+	  SquareFrustum([tw+funnel_extra_width, th], [tw, th], h=h4, ChamferBody=cbo);
+	  CopyMirror([0,1,0])
+	  translate([0,th/2-osd,0])
+	  SquareFrustum([tw+funnel_extra_width+osx, osw], [tw+osx, osw], h=h4,ChamferBody=cbo);	  
+	}
 	translate([0,2*wall,-0.01])
-	SquareFrustum([iw+funnel_extra_width, th+2*wall], [iw, th+2*wall+0.02], h=h4+0.02, ChamferBody=cb);
+	SquareFrustum([iw+funnel_extra_width, th+2*wall], [iw, th+2*wall+0.02], h=h4+0.02, ChamferBody=cbi);
       }
 
       translate([0,0,h1+h2+h3+h4])
       difference() {
-	CenterCube([tw,th,h5], ChamferBody=cb);
+	union() {
+	  CenterCube([tw,th,h5], ChamferBody=cbo);
+	  CopyMirror([0,1,0])
+	  translate([0,th/2-osd,0])
+	  CenterCube([tw+osx,osw,h5], ChamferBody=cbo);
+	}
 	translate([0,2*wall,-0.01])
-	CenterCube([iw,th+2*wall,h5+0.02], ChamferBody=cb);
+	CenterCube([iw,th+2*wall,h5+0.02], ChamferBody=cbi);
       }  
 
 
       translate([0,0,h1+h2+h3+h4+h5-wall])
       difference() {
 	// pedestal 
-	CenterCube([tw+2*wall,th+2*wall,wall+pile_holder_height], ChamferBottom=wall, ChamferBody=cb);
+	CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height+0], ChamferBottom=wall+pile_gap/3, ChamferBody=cbo);
   
 	// cutout for the pedestal
 	translate([0,0,wall-0.01])
-	CenterCube([tw,th,pile_holder_height+0.02], ChamferBody=0);
+	CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+0.02], ChamferBody=0);
 	
 	translate([0,wall+0.01,-0.01])
-	CenterCube([iw,th,wall+pile_holder_height+0.02], ChamferBody=0);
+	CenterCube([iw,th+pile_gap,wall+pile_holder_height+0.02], ChamferBody=0);
       }
     } // union
     translate([tw/2,0,h1+h2+h3+h4+h5-2*wall])
