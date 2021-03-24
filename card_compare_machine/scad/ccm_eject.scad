@@ -19,8 +19,15 @@
   - Both arcs are still brocken --> reduced edge corner (because of sorter rail), added outer support
   
   21 Mar 2021
-  - Bugfix: Added pile_gap
+  - Bugfix: Added pile_gap --> done
+  - Added slope to motor mount block --> done
   
+   22 Mar 2021
+  - Motor must be higher --> 10m --> done
+  - lower the support towards sorter house --> done
+
+   24 Mar 2021
+   - Increased eject house height to 125 (130 with pile holder)
 
 */
 

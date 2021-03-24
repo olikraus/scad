@@ -12,8 +12,12 @@
   - Fixed chamfer 
   - Added support rail
   - Moved funnel max down
-  - added extra y space for the cards 
+  - added extra y space for the cards
   
+  24 Mar 2021
+  - added slope to the base towards eject house
+  - Roof archoid towards eject house for more stability
+  - increased funnel height
 
 */
 

@@ -63,14 +63,14 @@ sorter_rail_width = 10;
 /* derived: the height of the card cast edge above reference level 0 */
 cast_edge_z = card_rail+sin(card_tray_angle)*(card_height-card_front_gap);
 
-/* This is the overall height of the eject house and the sorter house */
-house_height = 110;
+/* This is the overall height of the eject house */
+house_height = 125;
 
 /* motor mount height of the eject house */
-motor_mount_height = 45;
+motor_mount_height = 55;
 
 /* eject_sorter_rail_height */
-eject_sorter_rail_height = 15;
+eject_sorter_rail_height = 25;
 
 /*==============================================*/
 /* helper function */
@@ -241,6 +241,11 @@ sorter_house_height = motor_mount_height + wheel_diameter/2 + 21 - pile_holder_h
 
 module sorter_house(isMotor = false) {
 
+  cbo = 1;	// ChamferBody is 1 for all outer edges and 
+  osd = 8*cbo;		// distance of the outer support rail to front and back
+  osw = 5*cbo;	// width of the outer support rail
+  osx = 3*cbo;		// outer support extend on both sides, so the per side extend is osx/2
+
 
   // height of the motor mount block
   mh = sorter_house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-21;
@@ -259,20 +264,26 @@ module sorter_house(isMotor = false) {
     union() {
       // the main volume of the house
       CenterCube([tw,th,sorter_house_height], ChamferBody=1);
-      
+
+      // same outer stripes like for the funnel (just decoration)
+      CopyMirror([0,1,0])
+      translate([0,th/2-osd,0])
+      CenterCube([tw+osx,osw,sorter_house_height], ChamferBody=1);
+
+
       // the pedestal for the tray
       translate([0,0,sorter_house_height-wall])
       CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height], ChamferBottom=wall+pile_gap/3, ChamferBody=1);
 
-      // rail
-
+      // rail from eject to sorter
+      
       translate([(iw-card_rail)/2,th/2,0])
-      SlopeCube(w = card_rail, l = 35, 
+      SlopeCube(w = card_rail, l = 37, 
 	zs = sorter_house_height+pile_holder_height,  hs = 40, 
 	ze = motor_mount_height+wheel_diameter/2+21, he = 10);
 
       translate([-(iw-card_rail)/2,th/2,0])
-      SlopeCube(w = card_rail, l = 35, 
+      SlopeCube(w = card_rail, l = 37, 
 	zs = sorter_house_height+pile_holder_height,  hs = 40, 
 	ze = motor_mount_height+wheel_diameter/2+21, he = 10);
 
@@ -299,9 +310,10 @@ module sorter_house(isMotor = false) {
     translate([0,  0,  12])
     Archoid(r=24, b=18+mh-12, l=2*card_width);
 
+    // cutout so that the cards can fall better on left and right side
     CopyMirror([1,0,0])
-    translate([tw/2,0,sorter_house_height-sorter_card_slot_height])
-    ChamferYCube(w=6, h=ih);    
+    translate([tw/2+osx,0,sorter_house_height-sorter_card_slot_height])
+    ChamferYCube(w=6+osx, h=ih);    
   }
   
 
@@ -419,16 +431,25 @@ module eject_house(isMotor=false) {
 	
 	// translated cutout to open the front
 	translate([0,-3*wall,mh-10])
-	CenterCube([iw-2*wall,ih,house_height+0.02]);
+	CenterCube([iw,ih,house_height+0.02]);
 
 	// open front cutout: full width, height a rail level and above
 	// rail starting point is very low, but has a high slope, so add 10
-	translate([0,-3*wall,rail_lift-5])	// the lift must not be that high, otherwise the sorter rail will not fit
-	CenterCube([iw,ih,house_height+0.02]);
+	//translate([0,-3*wall,rail_lift-5])	// the lift must not be that high, otherwise the sorter rail will not fit
+	//CenterCube([iw,ih,house_height+0.02]);
 
 	// cutout for the tray holder extention (pedestal)
 	translate([0,0,house_height])
 	CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+0.01]);
+
+	// cut out at the rear front to save some material
+	translate([0,  card_height/2,  15])
+	rotate([0,0,90])
+	Archoid(r=33/2, b=house_height-33/2-30, l=card_height);
+
+	// another window to save some material
+	translate([0,  card_height/4,  15])
+	Archoid(r=33/2, b=mh-18, l=2*card_width);
 
       }
 
@@ -446,7 +467,7 @@ module eject_house(isMotor=false) {
 	  CenterCube([card_width+card_gap_w, card_height-card_front_gap+card_gap_h, house_height]);
 	  
 	  // leave a fixed gap at the lower end of the rail
-	  translate([0,-4,0])
+	  translate([0,-2.5,0])
 	  CenterCube([card_width+card_gap_w, card_height+card_gap_h, house_height]);
 	}
 	translate([0,0,-0.01])
@@ -476,6 +497,10 @@ module eject_house(isMotor=false) {
     translate([7,8,mh-16])
     cylinder(h=20,d=mhd, center=false, $fn=16);
     
+    /* Add a slope to the motor block for better adjustment */
+    translate([0,0,mh])
+    rotate([0,4,0])
+    CenterCube([33*2,33*2,mh]);
   }
   
   // add some inner chamfer to add more stability to the motor mount block
@@ -521,16 +546,17 @@ module funnel() {
   cbo = 1;	// ChamferBody is 1 for all outer edges and 
   cbi = wall/2;  // Inner chamfer is wall for other parts, but might deviate here 
   funnel_extra_width = 20;
+
   osd = 8*cbo;		// distance of the outer support rail to front and back
   osw = 5*cbo;	// width of the outer support rail
   osx = 3*cbo;		// outer support extend on both sides, so the per side extend is osx/2
 
   /* card arrival is around pile_holder_height+35 */
   h1 = pile_holder_height;
-  h2 = 25;
+  h2 = 27;
   h3 = 15;
-  h4 = 25;
-  h5 = 45;
+  h4 = 27;
+  h5 = 41;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap_w;
@@ -545,11 +571,16 @@ module funnel() {
       difference() {
 	union() {
 	  CenterCube([tw,th,h1], ChamferBody=cbo);
-	  //translate([0,th/2-osd,0])
-	  //CenterCube([tw+osx,osw,h1], ChamferBody=cbo);
+	  CopyMirror([0,1,0])
+	  translate([0,th/2-osd,0])
+	  CenterCube([tw+osx,osw,h1], ChamferBody=cbo);
+	  
 	}
 	translate([0,0,-0.01])
 	CenterCube([iw,ih,h1+0.02], ChamferBody=cbi);
+	
+	  translate([0,ih/2,h1])
+	  ChamferXCube(w=wall,h=iw, d=0);
       }  
       
       translate([0,0,h1])
@@ -558,7 +589,7 @@ module funnel() {
 	  SquareFrustum([tw, th], [tw+funnel_extra_width, th], h=h2,ChamferBody=cbo);
 	  CopyMirror([0,1,0])
 	  translate([0,th/2-osd,0])
-	  SquareFrustum([tw, osw], [tw+funnel_extra_width+osx, osw], h=h2,ChamferBody=cbo);
+	  SquareFrustum([tw+osx, osw], [tw+funnel_extra_width+osx, osw], h=h2,ChamferBody=cbo);
 	}
 	translate([0,2*wall,-0.01])
 	SquareFrustum([iw, th+2*wall], [iw+funnel_extra_width, th+2*wall+0.02], h=h2+0.02,ChamferBody=cbi);
@@ -596,8 +627,10 @@ module funnel() {
 	  translate([0,th/2-osd,0])
 	  CenterCube([tw+osx,osw,h5], ChamferBody=cbo);
 	}
-	translate([0,2*wall,-0.01])
-	CenterCube([iw,th+2*wall,h5+0.02], ChamferBody=cbi);
+	translate([0,0,-0.01])
+	CenterCube([iw,ih,h5+0.02], ChamferBody=cbi);
+	//translate([0,2*wall,-0.01])
+	//CenterCube([iw,th+2*wall,h5+0.02], ChamferBody=cbi);
       }  
 
 
@@ -610,8 +643,10 @@ module funnel() {
 	translate([0,0,wall-0.01])
 	CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+0.02], ChamferBody=0);
 	
-	translate([0,wall+0.01,-0.01])
-	CenterCube([iw,th+pile_gap,wall+pile_holder_height+0.02], ChamferBody=0);
+	translate([0,+0.01,-0.01])
+	CenterCube([iw,ih+pile_gap,wall+pile_holder_height+0.02], ChamferBody=0);
+	//translate([0,wall+0.01,-0.01])
+	//CenterCube([iw,th+pile_gap,wall+pile_holder_height+0.02], ChamferBody=0);
       }
     } // union
     translate([tw/2,0,h1+h2+h3+h4+h5-2*wall])
@@ -625,10 +660,15 @@ module funnel() {
 
 
     // Archoid cutout to save some material (it might also look better)
-    translate([0,0,h1+h2/2])
+    translate([0,-card_height/2,h1+h2/2])
     rotate([0,0,90])
-    Archoid(r=33/2, b=h2/2+h3+h4+h5/3, l=2*card_width);    
+    Archoid(r=33/2, b=h2/2+h3+h4+h5/3, l=card_height);    
     
+    // archoid for the eject house, actually belongs to the structure above
+    translate([0,card_height/2,h1+h2/2])
+    rotate([0,0,90])
+    Archoid(r=iw/2, b=h2/2+h3+h4, l=card_height);    
+
 
     // left / right cutouts
     CopyMirror([0,1,0])

@@ -11,6 +11,11 @@
     - Bugfix: Added pile gap, updated rail
     - Moved wheel towards eject house (2mm), bigger Archoid
   
+ 22 Mar 2021
+  - sorter rail must be higher --> done
+  - sorter rail must be longer --> done
+  - add side stripes, similar to funnel --> done
+  
 
 */
 
