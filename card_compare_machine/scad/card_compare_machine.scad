@@ -72,6 +72,10 @@ motor_mount_height = 55;
 /* eject_sorter_rail_height */
 eject_sorter_rail_height = 25;
 
+
+/* led_diffuser_cone_diameter */
+led_diffuser_cone_diameter = 18;
+
 /*==============================================*/
 /* helper function */
 
@@ -158,7 +162,7 @@ module triangle(h) {
 }
 
 /*==============================================*/
-/* card tray for the eject block */
+/* card tray for the eject block (obsolete at the moment) */
 
 module tray() {
   iw = card_width+card_gap_w;
@@ -388,7 +392,7 @@ module sorter_house(isMotor = false) {
 
 module eject_house(isMotor=false) {
 
-  
+  phh = pile_holder_height;
   mh = motor_mount_height;
 
   // inner dimensions of the house. 
@@ -416,7 +420,8 @@ module eject_house(isMotor=false) {
 	  
 	  // the pedestal for the tray
 	  translate([0,0,house_height-wall])
-	  CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height], ChamferBottom=wall+pile_gap/3, ChamferBody=1);
+	  CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+phh], 
+	    ChamferBottom=wall+pile_gap/3, ChamferBody=1);
 	  
 	  translate([tw/2,-card_height/2,0])
 	  cylinder(d=4,h=house_height);
@@ -440,7 +445,7 @@ module eject_house(isMotor=false) {
 
 	// cutout for the tray holder extention (pedestal)
 	translate([0,0,house_height])
-	CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+0.01]);
+	CenterCube([tw+pile_gap,th+pile_gap,phh+0.01]);
 
 	// cut out at the rear front to save some material
 	translate([0,  card_height/2,  15])
@@ -543,6 +548,8 @@ module eject_house(isMotor=false) {
 
 module funnel() {
 
+  phh = pile_holder_height+4;
+
   cbo = 1;	// ChamferBody is 1 for all outer edges and 
   cbi = wall/2;  // Inner chamfer is wall for other parts, but might deviate here 
   funnel_extra_width = 20;
@@ -553,10 +560,10 @@ module funnel() {
 
   /* card arrival is around pile_holder_height+35 */
   h1 = pile_holder_height;
-  h2 = 27;
-  h3 = 15;
-  h4 = 27;
-  h5 = 41;
+  h2 = 30;
+  h3 = 16;
+  h4 = 30;
+  h5 = 42;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap_w;
@@ -637,26 +644,27 @@ module funnel() {
       translate([0,0,h1+h2+h3+h4+h5-wall])
       difference() {
 	// pedestal 
-	CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height+0], ChamferBottom=wall+pile_gap/3, ChamferBody=cbo);
+	CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+phh+0], 
+	  ChamferBottom=wall+pile_gap/3, ChamferBody=cbo);
   
 	// cutout for the pedestal
 	translate([0,0,wall-0.01])
-	CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+0.02], ChamferBody=0);
+	CenterCube([tw+pile_gap,th+pile_gap,phh+0.02], ChamferBody=0);
 	
 	translate([0,+0.01,-0.01])
-	CenterCube([iw,ih+pile_gap,wall+pile_holder_height+0.02], ChamferBody=0);
+	CenterCube([iw,ih+pile_gap,wall+phh+0.02], ChamferBody=0);
 	//translate([0,wall+0.01,-0.01])
-	//CenterCube([iw,th+pile_gap,wall+pile_holder_height+0.02], ChamferBody=0);
+	//CenterCube([iw,th+pile_gap,wall+phh+0.02], ChamferBody=0);
       }
     } // union
     translate([tw/2,0,h1+h2+h3+h4+h5-2*wall])
-    CenterCube([tw+2*wall, 20, pile_holder_height+2*wall+0.01]);
+    CenterCube([tw+2*wall, 20, phh+2*wall+0.01]);
     
     translate([tw/2,-th/2+wall/2+15,h1+h2+h3+h4+h5+wall])
-    CenterCube([tw+2*wall, 20, pile_holder_height+2*wall+0.01]);
+    CenterCube([tw+2*wall, 20, phh+2*wall+0.01]);
 
     translate([tw/2-wall/2-16,-th/2,h1+h2+h3+h4+h5+wall])
-    CenterCube([20, th+2*wall, pile_holder_height+2*wall+0.01]);
+    CenterCube([20, th+2*wall, phh+2*wall+0.01]);
 
 
     // Archoid cutout to save some material (it might also look better)
@@ -686,6 +694,26 @@ module funnel() {
 /*==============================================*/
 /* raspi holder */
 
+module diffuser_cone(d, is_solid=false) {
+  led_diameter=3+0.4;
+  diffuser_cone_diameter=d;
+  diffuser_wall=1;
+  diffuser_height=12;
+  difference() {
+    cylinder(d1=diffuser_cone_diameter, 
+      d2=led_diameter+2*diffuser_wall, h=diffuser_height, $fn=48);
+    if ( is_solid == false ) {
+      translate([0,0,-0.01])
+      cylinder(d1=diffuser_cone_diameter-diffuser_wall*2, 
+        d2=led_diameter, h=diffuser_height+0.02-3);
+      cylinder(d=led_diameter,h=diffuser_height+0.01, $fn=16);
+      translate([0,0,diffuser_height-1])
+      cylinder(d=led_diameter+1,h=diffuser_height, $fn=16);
+    }
+  }
+}
+
+
 module raspi_holder() {
 // inner dimensions of the house. 
   iw = card_width+card_gap_w;
@@ -701,8 +729,10 @@ module raspi_holder() {
       CenterCube([tw,th,wall],ChamferBody=wall);
 
       translate([0,-th/2+wall/2+31,0])
-      CenterCube([tw,wall,pile_holder_height],ChamferBody=0);
+      CenterCube([tw,wall,pile_holder_height+2],ChamferBody=0);
+      
     }
+  
 
     translate([0,4,0]) 
     union() {
@@ -715,7 +745,26 @@ module raspi_holder() {
       translate([0,20/2,0])
       cylinder(d=6, h=3*wall, center=true);
     }
-    
+  
+    // led cone cutout
+    CopyMirror([1,0,0])
+    translate([-tw/3,-th/2+wall/2+31+18/2,-0.01])
+    diffuser_cone(led_diffuser_cone_diameter-0.2, true);
+
+    CopyMirror([1,0,0])
+    translate([-tw/3,th/3,-0.01])
+    diffuser_cone(led_diffuser_cone_diameter-0.2, true);
+
   }
+  
+  // led cone 
+  CopyMirror([1,0,0])
+  translate([-tw/3,-th/2+wall/2+31+18/2,-0.01])
+  diffuser_cone(led_diffuser_cone_diameter, false);
+
+  CopyMirror([1,0,0])
+  translate([-tw/3,th/3,-0.01])
+  diffuser_cone(led_diffuser_cone_diameter, false);
+
 }
 

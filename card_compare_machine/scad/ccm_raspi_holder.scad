@@ -14,4 +14,6 @@
 
 include <card_compare_machine.scad>;
 
+translate([-50,0,0])
 raspi_holder();
+

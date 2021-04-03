@@ -15,9 +15,13 @@
   - added extra y space for the cards
   
   24 Mar 2021
-  - added slope to the base towards eject house
-  - Roof archoid towards eject house for more stability
-  - increased funnel height
+  - added slope to the base towards eject house --> DONE
+  - Roof archoid towards eject house for more stability --> DONE
+  - increased funnel height --> DONE
+  
+  25 Mar 2021
+  - funnel should be higher --> 8mm Done
+  - higher roof pile holder --> 4mm Done
 
 */
 
