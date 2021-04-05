@@ -714,7 +714,7 @@ module diffuser_cone(d, is_solid=false) {
 }
 
 
-module raspi_holder() {
+module raspi_holder_with_led() {
 // inner dimensions of the house. 
   iw = card_width+card_gap_w;
   ih = card_height+card_gap_h;
@@ -765,6 +765,53 @@ module raspi_holder() {
   CopyMirror([1,0,0])
   translate([-tw/3,th/3,-0.01])
   diffuser_cone(led_diffuser_cone_diameter, false);
+
+}
+
+module raspi_holder() {
+// inner dimensions of the house. 
+  iw = card_width+card_gap_w;
+  ih = card_height+card_gap_h;
+
+  // outer dimensions of the house
+  tw = card_width+card_gap_w+2*wall;
+  th = card_height+card_gap_h+2*wall;
+  
+  difference() {
+    union() {
+    
+      CenterCube([tw,th,wall],ChamferBody=wall);
+
+      translate([0,-th/2+wall/2+31,0])
+      CenterCube([tw,wall,pile_holder_height+2],ChamferBody=0);
+      
+    }
+  
+
+    translate([0,4,0]) 
+    union() {
+      CopyMirror([1,0,0])
+      CopyMirror([0,1,0])
+      translate([14/2,28/2,0])
+      cylinder(d=2.4, h=3*wall, center=true);
+      
+      CopyMirror([0,1,0])
+      translate([0,20/2,0])
+      cylinder(d=6, h=3*wall, center=true);
+    }
+    
+    CopyMirror([1,0,0])
+    translate([iw/3,ih/6,-0.01])
+    CenterCube([iw/3,ih*0.6,wall*2]);
+
+    translate([0,ih/2-12,-0.01])
+    CenterCube([18,20,wall*2]);
+
+    translate([0,-ih/3,-0.01])
+    CenterCube([iw*0.7,20,wall*2]);
+
+  }
+  
 
 }
 
