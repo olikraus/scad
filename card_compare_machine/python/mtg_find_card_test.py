@@ -13,7 +13,11 @@ def read_json(filename):
 carddic = read_json('mtg_card_dic.json')
 
 while True:
-  s = "diabolic tutor"
+  s = """
+emnnamnnminnaneeneineeeeanee ee ee
+
+& Tendrils of Corruption Se  
+"""
   d = 999
   dmin = 999
   smin = ""

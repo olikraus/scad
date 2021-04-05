@@ -28,6 +28,11 @@
 
    24 Mar 2021
    - Increased eject house height to 125 (130 with pile holder)
+   
+   5 Apr 2021
+   - The eject house should be longer, so that the
+     wheel is more at the upper end of the cards
+     --> Done
 
 */
 

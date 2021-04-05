@@ -161,6 +161,69 @@ module triangle(h) {
   polygon([[0,0],[wall,0],[0,wall]]);
 }
 
+
+/*=====================================================*/
+/* grove 2x1 */
+
+module grove_2x1_cutout(lh, uh, grove_pcb_height = 2) {
+    translate([-20, -10, 0])
+    union() {
+      difference() {
+          grove_screw_d = 5;		// used as cutout, so 5 instead of 4
+          grove_hole_d = 4;		// used as cutout, so make it 4 instead of 5
+
+          union() {
+              translate([10,20,lh])
+                  cylinder(h=uh+grove_pcb_height,d=grove_screw_d);
+              translate([10,0,lh])
+                  cylinder(h=uh+grove_pcb_height,d=grove_screw_d);
+              translate([40,10,lh])
+                  cylinder(h=uh+grove_pcb_height,d=grove_screw_d);
+                  
+              cube([40, 20, uh+grove_pcb_height+lh]);
+          }
+          
+          translate([40,10,-0.001])
+              cylinder(h=lh,d=grove_screw_d);
+          translate([10,0,-0.001])
+              cylinder(h=lh,d=grove_screw_d);
+          translate([10,20,-0.001])
+              cylinder(h=lh,d=grove_screw_d);
+
+          translate([30,0,-0.001])
+              cylinder(
+                  h=grove_pcb_height+lh+0.002,
+                  d=grove_hole_d);
+          translate([30,20,-0.001])
+              cylinder(
+                  h=grove_pcb_height+lh+0.002,
+                  d=grove_hole_d);
+          translate([0,10,-0.001])
+              cylinder(
+                  h=grove_pcb_height+lh+0.002,
+                  d=grove_hole_d);
+      }
+      translate([10,0,lh-10])
+          cylinder(h=uh+grove_pcb_height+20,d=2.2, $fn=8);
+      translate([10,20,lh-10])
+          cylinder(h=uh+grove_pcb_height+20,d=2.2, $fn=8);
+      translate([40,10,lh-10])
+          cylinder(h=uh+grove_pcb_height+20,d=2.2, $fn=8);
+    }
+}
+
+module grove_2x1() {
+  difference() {
+    translate([0,0,-30+5])
+    //cube([40+4,20+4,30], center=true);
+    CenterCube([40+4,20+4,30], ChamferBody=0.8, ChamferTop=0.8);
+    
+    
+    grove_2x1_cutout(3,12);
+  }
+}
+
+
 /*==============================================*/
 /* card tray for the eject block (obsolete at the moment) */
 
@@ -394,18 +457,21 @@ module eject_house(isMotor=false) {
 
   phh = pile_holder_height;
   mh = motor_mount_height;
+  
+  // extention of the eject house so that the wheel is placed more to the end of the cards
+  ext = 14;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap_w;
-  ih = card_height+card_gap_h;
+  ih = card_height+card_gap_h+ext;
 
   // outer dimensions of the house
   tw = card_width+card_gap_w+2*wall;
-  th = card_height+card_gap_h+2*wall;
+  th = card_height+card_gap_h+2*wall+ext;
   
   // center position of the motor mount block 
   mmx = card_width/2+7;
-  mmy = -(card_height/2-card_front_gap);
+  mmy = -(card_height/2-card_front_gap)-ext/2;
 
    // lift is upper edge of the wheel minus cast_edge_z
   rail_lift = mh+wheel_diameter/2+21-cast_edge_z-wheel_card_lift; 
@@ -423,10 +489,10 @@ module eject_house(isMotor=false) {
 	  CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+phh], 
 	    ChamferBottom=wall+pile_gap/3, ChamferBody=1);
 	  
-	  translate([tw/2,-card_height/2,0])
-	  cylinder(d=4,h=house_height);
-
-	  translate([-tw/2,-card_height/2,0])
+          // add extra half-pillar for stability
+          CopyMirror([0,1,0])
+          CopyMirror([1,0,0])
+	  translate([tw/2,-card_height/2-ext/2,0])
 	  cylinder(d=4,h=house_height);
 
 	}
@@ -450,35 +516,47 @@ module eject_house(isMotor=false) {
 	// cut out at the rear front to save some material
 	translate([0,  card_height/2,  15])
 	rotate([0,0,90])
-	Archoid(r=33/2, b=house_height-33/2-30, l=card_height);
+	Archoid(r=(card_width-16)/2, b=house_height-33/2-30, l=card_height);
 
 	// another window to save some material
 	translate([0,  card_height/4,  15])
-	Archoid(r=33/2, b=mh-18, l=2*card_width);
+	Archoid(r=33/2+ext/4, b=mh-18, l=2*card_width);
+
+
+	// one more window above the rail to save some material
+	//translate([0,  card_height/2-16,  rail_lift+24])
+	//Archoid(r=14, b=10, l=2*card_width);
 
       }
 
 
        // add the card rail at the top
       
-      translate([0,0,rail_lift])
+      translate([0,-ext/2,rail_lift])
       difference() {
 	intersection() {
+        
 	  translate([0,card_height/2,card_rail])
 	  rotate([-card_tray_angle,0,0])
 	  translate([0,0,-card_height*2/2])
 	  cube([card_height*4, card_height*4, card_height*2], center = true);
-	  translate([0,card_front_gap/2,0])
-	  CenterCube([card_width+card_gap_w, card_height-card_front_gap+card_gap_h, house_height]);
+          
+	  translate([0,card_front_gap/2+ext/2,0])
+	  CenterCube([card_width+card_gap_w, card_height-card_front_gap+card_gap_h+ext, 
+            house_height]);
 	  
 	  // leave a fixed gap at the lower end of the rail
 	  translate([0,-2.5,0])
-	  CenterCube([card_width+card_gap_w, card_height+card_gap_h, house_height]);
+	  CenterCube([card_width+card_gap_w, card_height+card_gap_h+2*ext, house_height]);
 	}
+        
+        // inner complete cutout
 	translate([0,0,-0.01])
 	CenterCube([card_width+card_gap_w-card_rail*2, card_height+card_gap_h+0.02, house_height]);
+        
 	translate([0,0,-1])
 	CenterCube([card_width+card_gap_w, card_height*2,card_rail+1], ChamferTop=card_rail);      
+        
 	rotate([-card_tray_angle,0,0])
 	translate([0,0,card_rail*0.8-100])
 	CenterCube([card_width+card_gap_w+0.02, card_height*2,card_rail+100], ChamferTop=card_rail);    
@@ -486,7 +564,7 @@ module eject_house(isMotor=false) {
     }
 
     // cutout portal on both walls for the dc motor and usage of screw drivers
-    translate([0,  -(card_height/2-card_front_gap),  mh])
+    translate([0,  mmy,  mh])
     Archoid(r=33/2, b=33/2+2, l=2*card_width);    
   }
   
@@ -552,7 +630,7 @@ module funnel() {
 
   cbo = 1;	// ChamferBody is 1 for all outer edges and 
   cbi = wall/2;  // Inner chamfer is wall for other parts, but might deviate here 
-  funnel_extra_width = 20;
+  funnel_extra_width = 14;
 
   osd = 8*cbo;		// distance of the outer support rail to front and back
   osw = 5*cbo;	// width of the outer support rail
@@ -582,12 +660,14 @@ module funnel() {
 	  translate([0,th/2-osd,0])
 	  CenterCube([tw+osx,osw,h1], ChamferBody=cbo);
 	  
+          
 	}
 	translate([0,0,-0.01])
 	CenterCube([iw,ih,h1+0.02], ChamferBody=cbi);
 	
-	  translate([0,ih/2,h1])
-	  ChamferXCube(w=wall,h=iw, d=0);
+	  translate([0,ih/2-wall+0.4,h1])
+          rotate([8,0,0])               // increase the slope even more
+	  ChamferXCube(w=wall+wall,h=iw, d=0);
       }  
       
       translate([0,0,h1])
@@ -625,6 +705,27 @@ module funnel() {
 	translate([0,2*wall,-0.01])
 	SquareFrustum([iw+funnel_extra_width, th+2*wall], [iw, th+2*wall+0.02], h=h4+0.02, ChamferBody=cbi);
       }
+
+      // add a holder for the grove motor driver
+      difference() {
+        translate([iw/2+12,0,h1+h2+h3+h4-20])
+        rotate([0,60,0])
+        grove_2x1();
+
+        translate([0,0,h1])
+	translate([0,2*wall,-0.01])
+	SquareFrustum([iw, th+2*wall], [iw+funnel_extra_width, th+2*wall+0.02], h=h2+0.02,ChamferBody=cbi);
+
+        translate([0,0,h1+h2])
+	translate([0,2*wall,-0.01])
+	CenterCube([iw+funnel_extra_width,th+2*wall,h3+0.02], ChamferBody=cbi);
+
+        translate([0,0,h1+h2+h3])
+	translate([0,2*wall,-0.01])
+	SquareFrustum([iw+funnel_extra_width, th+2*wall], [iw, th+2*wall+0.02], h=h4+0.02, ChamferBody=cbi);
+
+      }
+
 
       translate([0,0,h1+h2+h3+h4])
       difference() {
@@ -668,9 +769,10 @@ module funnel() {
 
 
     // Archoid cutout to save some material (it might also look better)
-    translate([0,-card_height/2,h1+h2/2])
+    translate([0,-card_height/2,h1])
     rotate([0,0,90])
-    Archoid(r=33/2, b=h2/2+h3+h4+h5/3, l=card_height);    
+    Archoid(r=(iw-18)/2, b=h2+h3+h4+h5/3, l=card_height);    
+    
     
     // archoid for the eject house, actually belongs to the structure above
     translate([0,card_height/2,h1+h2/2])

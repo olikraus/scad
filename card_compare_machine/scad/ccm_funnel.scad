@@ -22,15 +22,19 @@
   25 Mar 2021
   - funnel should be higher --> 8mm Done
   - higher roof pile holder --> 4mm Done
-
+  
+  5 Apr 2021
+  - towards the eject house, the added slope is not long enough
+    It interferes with the inner chamfer --> DONE (also increased the slope by 8 Degree)
+  - On the other side, the window could be taller and wider
+    so that we could light also from the other side --> DONE
+  - Add grove 2x1 motor driver holder --> DONE
+    
 */
 
 include <card_compare_machine.scad>;
 
-/*
-translate([-80,0,0])
-sorter_house(false);
-*/
+
 
 funnel();
 
