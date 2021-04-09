@@ -166,6 +166,7 @@ module triangle(h) {
 /* grove 2x1 */
 
 module grove_2x1_cutout(lh, uh, grove_pcb_height = 2) {
+    d = 0.6;
     translate([-20, -10, 0])
     union() {
       difference() {
@@ -179,8 +180,9 @@ module grove_2x1_cutout(lh, uh, grove_pcb_height = 2) {
                   cylinder(h=uh+grove_pcb_height,d=grove_screw_d);
               translate([40,10,lh])
                   cylinder(h=uh+grove_pcb_height,d=grove_screw_d);
-                  
-              cube([40, 20, uh+grove_pcb_height+lh]);
+              
+              translate([-d/2, -d/2, 0])
+              cube([40+d, 20+d, uh+grove_pcb_height+lh]);
           }
           
           translate([40,10,-0.001])
@@ -769,22 +771,44 @@ module funnel() {
 
 
     // Archoid cutout to save some material (it might also look better)
-    translate([0,-card_height/2,h1])
+    
+    translate([0,-card_height/2,h1-1])
     rotate([0,0,90])
-    Archoid(r=(iw-18)/2, b=h2+h3+h4+h5/3, l=card_height);    
+    Archoid(r=(iw-16)/2, b=h2+h3+h4+h5/3, l=card_height);     
+    
+    // add a chamfer to the bottom of the above achoid to let more light on the upper side
+    translate([0,-ih/2,h1-1])
+    ChamferXCube(w=2,h=iw-16, d=0);
     
     
-    // archoid for the eject house, actually belongs to the structure above
+    // archoid towards the eject house, actually belongs to the structure above
     translate([0,card_height/2,h1+h2/2])
     rotate([0,0,90])
     Archoid(r=iw/2, b=h2/2+h3+h4, l=card_height);    
-
-
-    // left / right cutouts
+    
+    // left / right upper cutouts
     CopyMirror([0,1,0])
     translate([0,card_height/4-3,h1+h2+h3+h4+3])
     Archoid(r=11, b=h5*0.4, l=2*card_width);    
 
+    // left / right upper middle cutouts
+    CopyMirror([0,1,0])
+    translate([0,card_height/4+0.5, h1+h2+h3+3])
+    Archoid(r=7, b=h4*0.5, l=2*card_width);    
+
+    translate([-card_width/2,0, h1+h2+h3+3])
+    Archoid(r=7, b=h4*0.5, l=card_width);    
+    
+    // left / right middle cutouts
+    
+    CopyMirror([0,1,0])
+    translate([0,-ih/4, h1+h2+h3/2])
+    rotate([0,90,0])
+    cylinder(d=h3-4, h=2*card_width, center=true);
+
+    translate([-iw/2, 0, h1+h2+h3/2])
+    rotate([0,90,0])
+    cylinder(d=h3-4, h=card_width, center=true);
 
   }  // difference
   

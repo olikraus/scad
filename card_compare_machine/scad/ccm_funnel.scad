@@ -29,7 +29,16 @@
   - On the other side, the window could be taller and wider
     so that we could light also from the other side --> DONE
   - Add grove 2x1 motor driver holder --> DONE
-    
+  
+  9 Apr 2021
+  - grove 2x1 holder must be wider for the PCB --> Done
+  - The other side window can be even wider, maybe 2mm in total --> Done
+  - there should be a slope also to let more light into the funnel --> Done
+  - Add more windows (archoids, bulleyes) to the funnel walls --> Done
+ 
+  9 Apr 2021 (2)
+  - The large Archoid towards eject house was corrupted
+    due to a comma proglem --> Fixed
 */
 
 include <card_compare_machine.scad>;

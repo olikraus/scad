@@ -209,12 +209,18 @@ def update_card_dic_json():
   print("update foreign (and english) name card dictionary")
   for card in cardldic:
     cardldic[card] = cardndic[cardldic[card]['n']]         # replace the value with the reference to the list
-    # add the cross reference to 'cardnlist'
-    #cardldic[card]['x'] = cardndic[cardldic[card]['n']]  # add the index of the english card to the foreign card name dictionary
-    #cardldic[card].pop('n', None)             # the index was added, so we can delete the english card name 
-    #cardldic[card].pop('s', None)              # also delete the card set code here (it is not required for the card sorting machine)
 
-
+  # generate a map which lists all chars, which appear in the card names
+  # ignore chars above 0x2b00
+  # this is just used, to derive a similarity table, which in turn was manually created
+  # chardic = {}
+  # for card in cardldic:
+  #   for c in card:
+  #     if ord(c) < 0x2b00:
+  #       chardic[ord(c)] = c
+  # write_json(dict(sorted(chardic.items())), 'mtg_char_usage_in_names.json')
+  #print(dict(sorted(chardic.items())))
+  
   print("writing 'mtg_card_dic.json'")
   write_json(cardldic, 'mtg_card_dic.json')
   del cardldic
