@@ -1135,21 +1135,25 @@ module ccm_double_basket() {
       // card drop ramp for the second basket
       translate([tw/2+wall,0,sorter_house_height-22])
       SquareFrustum(bottom=[wall,th], top=[tw+2,th+12], h=10, ChamferBody=1);
+      
     }
-    
-    //CenterCube([200,30, 200]);
-    
-    // card drop ramp cut out to create walls with slope
-    translate([tw/2+wall+wall,0,sorter_house_height-22])
-    SquareFrustum(bottom=[0,ih], top=[iw+2,ih+12], h=10+0.01, ChamferBody=wall);  
 
-    // again: funnel cut out to create walls with slope
-    translate([card_width+card_gap_w+wall,0,sorter_house_height-funnel_start_below_sorter_house_height-0.01])
-    SquareFrustum(bottom=[iw,ih], top=[iw+2,ih+12], h=10+0.01, ChamferBody=wall);
-    
     // open the walls on the small side again
     translate([card_width+card_gap_w+wall,0,sorter_house_height/2])
     CenterCube([iw/2,2*ih,sorter_house_height+0.02], 
       ChamferBody=wall, ChamferTop=0);
+
+    //CenterCube([200,30, 200]);
+
+    // card drop ramp cut out to create walls with slope
+    translate([tw/2+wall+wall,0,sorter_house_height-22])
+    SquareFrustum(bottom=[wall*2,ih], top=[iw+2,ih+12], h=10+0.02, ChamferBody=wall);
+
+
+    // again: funnel cut out to create walls with slope
+    translate([card_width+card_gap_w+wall,0,sorter_house_height-funnel_start_below_sorter_house_height-0.01])
+    SquareFrustum(bottom=[iw,ih], top=[iw+2,ih+12], h=10+0.02, ChamferBody=wall);
+
+
   }
 }
