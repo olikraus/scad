@@ -1,6 +1,6 @@
 /*
 
-  ccm_sorter.scad
+  ccm_double_basket.scad
   
   (c) olikraus@gmail.com
 
@@ -11,8 +11,10 @@
 
 include <card_compare_machine.scad>;
 
-//translate([-2*card_width, 0,0])
-sorter_house(false);
 
-translate([1.2*card_width, 0,0])
-eject_house(false);
+
+
+//translate([-card_width*1.15,0,0])
+//sorter_house();
+ccm_double_basket();
+

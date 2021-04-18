@@ -72,6 +72,8 @@ motor_mount_height = 55;
 /* eject_sorter_rail_height */
 eject_sorter_rail_height = 25;
 
+/* height of the funnel on top of the card basket */
+funnel_start_below_sorter_house_height = 22;
 
 /* led_diffuser_cone_diameter */
 led_diffuser_cone_diameter = 18;
@@ -144,9 +146,9 @@ module motor() {
     motor_mount_bracket();
 
     color("Silver",0.3)
-    translate([0,15-0.1,33-26.5/2])
+    translate([0, 15-0.1+10, 33-26.5/2])
     rotate([90,0,0])
-    cylinder(h=70,d=25, $fn=16);
+    cylinder(h=50,d=25, $fn=16);
 
     color("Silver",0.3)
     translate([0,36+4,33-26.5/2])
@@ -942,10 +944,9 @@ module raspi_holder() {
 
 
 /*==============================================*/
-/* raspi holder */
+/* basket for the cards */
 
-
-module ccm_basket() {
+module ccm_raw_basket() {
   // inner dimensions of the house. 
   iw = card_width+card_gap_w;
   ih = card_height+card_gap_h;
@@ -953,30 +954,33 @@ module ccm_basket() {
   // outer dimensions of the house
   tw = card_width+card_gap_w+2*wall;
   th = card_height+card_gap_h+2*wall;
+  
+  // funnel_start_below_sorter_house_height
+  funnel_start_below_sorter_house_height = 22;
 
   difference() {  
     union() {
 
       // the main volume of the house
-      // the slope is -6+x, so use 12
-      CenterCube([tw,th,sorter_house_height-14], ChamferBody=1);
+      // the slope is -6+x, so use 18
+      CenterCube([tw,th,sorter_house_height-funnel_start_below_sorter_house_height], ChamferBody=1);
 
-      // hook for the sorter
-      translate([-tw/2-wall-1.5,0,0])
-      CenterCube([wall*2+5,20*2,15], ChamferBody=1, ChamferTop=1);
-      
-      translate([-tw/2,0,15])
-      ChamferYCube(w=1, h=20*2-2);
+      // Funnel for the basket
+      translate([0,0,sorter_house_height-funnel_start_below_sorter_house_height])
+      SquareFrustum(bottom=[tw,th], top=[tw+2,th+12], h=10, ChamferBody=1);
+
     }
   
-    // hook cutout
-    translate([-tw/2-wall-1,0,-0.01])
-    CenterCube([wall+4,23*2,13], ChamferTop=1);
   
     // main inner cutout
     translate([0,0,-0.01])
     CenterCube([iw,ih,sorter_house_height+0.02], 
       ChamferBody=wall, ChamferTop=0);
+
+    // funnel cut out to create walls with slope
+    translate([0,0,sorter_house_height-funnel_start_below_sorter_house_height])
+    SquareFrustum(bottom=[iw,ih], top=[iw+2,ih+12], h=10+0.01, ChamferBody=wall);
+
 
     // open small sides of the basket
     translate([0,0,-0.01])
@@ -1006,4 +1010,146 @@ module ccm_basket() {
 
   CenterCube([tw, 6, wall], ChamferTop=1);
 
+}
+
+
+module ccm_basket_old() {
+  // inner dimensions of the house. 
+  iw = card_width+card_gap_w;
+  ih = card_height+card_gap_h;
+
+  // outer dimensions of the house
+  tw = card_width+card_gap_w+2*wall;
+  th = card_height+card_gap_h+2*wall;
+  
+  // funnel_start_below_sorter_house_height
+  funnel_start_below_sorter_house_height = 22;
+
+  difference() {  
+    union() {
+
+      // the main volume of the house
+      // the slope is -6+x, so use 18
+      CenterCube([tw,th,sorter_house_height-funnel_start_below_sorter_house_height], ChamferBody=1);
+
+      // Funnel for the basket
+      translate([0,0,sorter_house_height-funnel_start_below_sorter_house_height])
+      SquareFrustum(bottom=[tw,th], top=[tw+2,th+12], h=10, ChamferBody=1);
+
+      // hook for the sorter
+      translate([-tw/2-wall-1.5,0,0])
+      CenterCube([wall*2+5,20*2,15], ChamferBody=1, ChamferTop=1);
+      
+      translate([-tw/2,0,15])
+      ChamferYCube(w=1, h=20*2-2);
+    }
+  
+    // hook cutout
+    translate([-tw/2-wall-1,0,-0.01])
+    CenterCube([wall+4,23*2,13], ChamferTop=1);
+  
+    // main inner cutout
+    translate([0,0,-0.01])
+    CenterCube([iw,ih,sorter_house_height+0.02], 
+      ChamferBody=wall, ChamferTop=0);
+
+    // funnel cut out to create walls with slope
+    translate([0,0,sorter_house_height-funnel_start_below_sorter_house_height])
+    SquareFrustum(bottom=[iw,ih], top=[iw+2,ih+12], h=10+0.01, ChamferBody=wall);
+
+
+    // open small sides of the basket
+    translate([0,0,-0.01])
+    CenterCube([iw/2,2*ih,sorter_house_height+0.02], 
+      ChamferBody=wall, ChamferTop=0);
+
+    //translate([0,  0,  12])
+
+    CopyMirror([0,1,0])
+    translate([0,ih/4,18])
+    Archoid(r=12, b=sorter_house_height-14-12-15-12, l=2*card_width);
+
+  }
+
+  // add extra support for the complete block on the z=0 plane
+  CopyMirror([0,1,0])
+  translate([0,ih/3,0])
+  CenterCube([tw, 6, wall], ChamferTop=1);
+
+  CopyMirror([0,1,0])
+  translate([0,ih/6,0])
+  CenterCube([tw, 6, wall], ChamferTop=1);
+
+  CopyMirror([0,1,0])
+  translate([0,ih/2,0])
+  CenterCube([tw, 6, wall], ChamferTop=1);
+
+  CenterCube([tw, 6, wall], ChamferTop=1);
+
+}
+
+module ccm_basket() {
+  // inner dimensions of the house. 
+  iw = card_width+card_gap_w;
+  ih = card_height+card_gap_h;
+
+  // outer dimensions of the house
+  tw = card_width+card_gap_w+2*wall;
+  th = card_height+card_gap_h+2*wall;
+  
+  ccm_raw_basket();
+
+  difference() {  
+    union() {
+
+      // hook for the sorter
+      translate([-tw/2-wall-1.5,0,0])
+      CenterCube([wall*2+5,20*2,15], ChamferBody=1, ChamferTop=1);
+      
+      translate([-tw/2,0,15])
+      ChamferYCube(w=1, h=20*2-2);
+    }
+  
+    // hook cutout
+    translate([-tw/2-wall-1,0,-0.01])
+    CenterCube([wall+4,23*2,13], ChamferTop=1);
+  }
+}
+
+module ccm_double_basket() {
+    // inner dimensions of the house. 
+    iw = card_width+card_gap_w;
+    ih = card_height+card_gap_h;
+
+    // outer dimensions of the house
+    tw = card_width+card_gap_w+2*wall;
+    th = card_height+card_gap_h+2*wall;
+
+  difference() {
+    union() {
+      ccm_basket();
+
+      translate([card_width+card_gap_w+wall,0,0])
+      ccm_raw_basket();
+        
+      // card drop ramp for the second basket
+      translate([tw/2+wall,0,sorter_house_height-22])
+      SquareFrustum(bottom=[wall,th], top=[tw+2,th+12], h=10, ChamferBody=1);
+    }
+    
+    //CenterCube([200,30, 200]);
+    
+    // card drop ramp cut out to create walls with slope
+    translate([tw/2+wall+wall,0,sorter_house_height-22])
+    SquareFrustum(bottom=[0,ih], top=[iw+2,ih+12], h=10+0.01, ChamferBody=wall);  
+
+    // again: funnel cut out to create walls with slope
+    translate([card_width+card_gap_w+wall,0,sorter_house_height-funnel_start_below_sorter_house_height-0.01])
+    SquareFrustum(bottom=[iw,ih], top=[iw+2,ih+12], h=10+0.01, ChamferBody=wall);
+    
+    // open the walls on the small side again
+    translate([card_width+card_gap_w+wall,0,sorter_house_height/2])
+    CenterCube([iw/2,2*ih,sorter_house_height+0.02], 
+      ChamferBody=wall, ChamferTop=0);
+  }
 }

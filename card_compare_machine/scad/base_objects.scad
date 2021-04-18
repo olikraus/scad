@@ -7,7 +7,7 @@
   This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
   To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-  SquareFrustum(bottom=[10,10], top=[0,0], h=10)
+  SquareFrustum(bottom=[10,10], top=[0,0], h=10, ChamferBody=1)
   CenterCube(dim, ChamferBody = 0, ChamferBottom=0, ChamferTop=0)
   Archoid(r=10, b=20, l=30)
 

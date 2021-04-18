@@ -18,7 +18,7 @@ GCODE=$(addprefix gcode/, $(notdir $(SCAD:.scad=.gcode)))
 
 SLIC3R_FLAGS=--gcode-flavor reprap --nozzle-diameter 0.4 --filament-diameter 1.75
 SLIC3R_FLAGS+=--print-center 75,75 --start-gcode start.gcode
-SLIC3R_FLAGS+=--brim-width 3
+SLIC3R_FLAGS+=--brim-width 2
 # 80%: ca 2mm löcher
 SLIC3R_FLAGS+=--fill-density 30%
 #SLIC3R_FLAGS+=--solid-infill-every-layers 1
@@ -36,12 +36,21 @@ gcode/%.gcode: stl/%.stl start.gcode scad/card_compare_machine.scad
 	slic3r $(SLIC3R_FLAGS) $< -o $@
 	
 png/%.png: scad/%.scad scad/card_compare_machine.scad
-	openscad $<  --render --autocenter --viewall --imgsize=800,600 -o $@
+	# openscad $<  --camera=0,-60,0,0,0,0,800  --imgsize=800,600 -o $@
+	openscad $<  --autocenter --viewall --imgsize=800,600 -o $@
+	#openscad $<  --render --autocenter --viewall --imgsize=800,600 -o $@
 
 
 
 .PHONY: all
-all: $(STL) $(GCODE) $(PNG)
+all: $(STL) $(GCODE) $(PNG) png/show_all_top.png png/show_all_front_right.png
+
+png/show_all_top.png: scad/show_all.scad
+	openscad $<  --camera=0,-60,0,0,0,0,800  --imgsize=800,600 -o $@
+        
+png/show_all_front_right.png: scad/show_all.scad
+	openscad $<  --camera=-20,-30,0,50,0,20,920  --imgsize=800,600 -o $@
+        
 
 start.gcode:
 	echo "G28 ; Home all axes" >$@
