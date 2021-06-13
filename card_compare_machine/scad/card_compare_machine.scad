@@ -999,17 +999,28 @@ module ccm_raw_basket() {
   // add extra support for the complete block on the z=0 plane
   CopyMirror([0,1,0])
   translate([0,ih/3,0])
-  CenterCube([tw, 6, wall], ChamferTop=1);
+  CenterCube([tw, 6, wall], ChamferTop=0);  
+  
+  CopyMirror([0,1,0])
+  translate([0,ih/3,wall])
+  TriangularPrism(bottom = [tw,6], h=18-2*wall, fh=0, fd=0);
+
 
   CopyMirror([0,1,0])
   translate([0,ih/6,0])
-  CenterCube([tw, 6, wall], ChamferTop=1);
+  CenterCube([tw, 6, wall], ChamferTop=0);
+
+  CopyMirror([0,1,0])
+  translate([0,ih/6,wall])
+  TriangularPrism(bottom = [tw,6], h=18-2*wall, fh=0, fd=0);
 
   CopyMirror([0,1,0])
   translate([0,ih/2,0])
   CenterCube([tw, 6, wall], ChamferTop=1);
 
-  CenterCube([tw, 6, wall], ChamferTop=1);
+  CenterCube([tw, 6, wall], ChamferTop=0);
+  translate([0,0,wall])
+  TriangularPrism(bottom = [tw,6], h=18-2*wall, fh=0, fd=0);
 
 }
 

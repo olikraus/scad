@@ -14,6 +14,7 @@
  12 Jun 2021
   - Close smaller openings --> DONE
   - Make a ramp with the bottom lines (raw_baskeet)
+      --> DNE
 
 */
 
@@ -26,4 +27,6 @@ include <card_compare_machine.scad>;
 //sorter_house();
 ccm_double_basket();
 //ccm_basket();
+
+
 

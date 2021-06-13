@@ -18,6 +18,10 @@
   
  6 Jun 2021
   - Reduce ChamferYCube width in line 387
+  
+  13 Jun 2021
+  - Idea: Create a notch at the top end for the card, so that it can slide 
+    better into the target position
 
 */
 

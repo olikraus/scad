@@ -10,6 +10,7 @@
   SquareFrustum(bottom=[10,10], top=[0,0], h=10, ChamferBody=1)
   CenterCube(dim, ChamferBody = 0, ChamferBottom=0, ChamferTop=0)
   Archoid(r=10, b=20, l=30)
+  TriangularPrism(bottom = [10,10], h=7, fh=0, fd=0)
 
 */
 
@@ -265,3 +266,49 @@ module Archoid(r=10, b=20, l=30) {
   }
 }
 
+
+/*
+  TriangularPrism(bottom = [10,10], h=7, fh=0, fd=0)
+
+  Args:
+    buttom: Bottom square (width, height)
+    h: Distance of the top square/peak to z=0 plane
+    fh: front height (lowest x)
+    fd: triangle peak as offset from the lowers x position
+  Notes:
+    The bottom square is placed in the z=0 plane.
+    The square is centered around z axis.
+  Example:
+    TriangularPrism(bottom = [10,10], fh=0, h=7, fd=0);
+      This is a ramp with, the triangle peak is at -5
+    TriangularPrism(bottom = [10,10], fh=0, h=7, fd=5);
+      A real triangular prism, the peak is at x=0
+    TriangularPrism(bottom = [10,10], fh=7, h=7, fd=5);
+      The ramp goes from x=5 to x=0.
+      There is another top square from x=0 to x=-5
+*/
+
+
+module TriangularPrism(bottom = [10,10], h=7, fh=0, fd=0)
+{
+  lx = bottom[0];
+  ly = bottom[1];
+  p = [
+    [ -lx/2, -ly/2,  0 ],  //0
+    [ lx/2,  -ly/2,  0 ],  //1
+    [ lx/2,  ly/2,  0 ],  //2
+    [ -lx/2,  ly/2,  0 ],  //3
+    [ -lx/2, -ly/2,  fh ],  //4
+    [ -lx/2+fd,  -ly/2,  h ],  //5
+    [ -lx/2+fd,  ly/2,  h ],  //6
+    [ -lx/2,  ly/2,  fh ]]; //7
+    
+  f = [
+    [0,1,2,3],  // bottom
+    [4,5,1,0],  // front
+    [7,6,5,4],  // top
+    [5,6,2,1],  // right
+    [6,7,3,2],  // back
+    [7,4,0,3]]; // left
+  polyhedron( p, f );
+}
