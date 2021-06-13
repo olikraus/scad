@@ -16,6 +16,8 @@
   - sorter rail must be longer --> done
   - add side stripes, similar to funnel --> done
   
+ 6 Jun 2021
+  - Reduce ChamferYCube width in line 387
 
 */
 
