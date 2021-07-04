@@ -14,7 +14,7 @@
  12 Jun 2021
   - Close smaller openings --> DONE
   - Make a ramp with the bottom lines (raw_baskeet)
-      --> DNE
+      --> DONE
 
 */
 

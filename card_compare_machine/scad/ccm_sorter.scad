@@ -19,9 +19,27 @@
  6 Jun 2021
   - Reduce ChamferYCube width in line 387
   
-  13 Jun 2021
+ 13 Jun 2021
   - Idea: Create a notch at the top end for the card, so that it can slide 
     better into the target position
+  - Increase of the eject gap (sorter_card_slot_height) to 4
+
+ 3 Jul 2021
+  - Increase of the eject gap (sorter_card_slot_height) to 5 --> DONE
+  - Again increase ChamferYCube width in line 387 --> DONE
+  - Increase pedestal so that we can add somescrews --> DONE, increased by 1mm
+  - Increase the ramp total, maybe add some overlap --> DONE
+  - Increase height of the motor (maybe 0.5mm) --> DONE
+  - Add ramp to the motor like for the eject house --> DONE
+  - Increase side archoid cutout radius 24->26 --> DONE 
+  - Add two M3 screw holes for later mounting of the funnel --> DONE
+
+ 4 Jul 2021
+  - Upper right end of the ramp could still be higher by 2 mm
+
+ Instructions:
+  Ramp and top area must be very clean and smooth
+  
 
 */
 

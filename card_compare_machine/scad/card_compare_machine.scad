@@ -32,8 +32,8 @@ card_front_gap = card_height/4;
 /* the height of the tray */
 tray_height = 30;
 
-/* card tray angle: Must be < 11 Degree */
-card_tray_angle = 22;
+/* card tray angle */
+card_tray_angle = 23;
 
 /* diameter of the drive wheel */
 wheel_diameter = 65;
@@ -47,14 +47,14 @@ wall=2;
 /* Extra gap so that the tray can be stacked on the motor house */
 pile_gap = 0.8;
 
-/* The extended wall to hold the tray */
+/* The extended wall to hold the tray (pedestal height) */
 pile_holder_height = 8;
 
 /* mount hole diameter */
 mhd = 2.9;	// 7 Mar 2020 increased from 2.8 to 2.9
 
 /* The height of the left and right eject slot for the sorter */
-sorter_card_slot_height = 3;
+sorter_card_slot_height = 5;
 
 /* The width of the outside rails in the sorter */
 sorter_rail_width = 10;
@@ -74,6 +74,9 @@ eject_sorter_rail_height = 25;
 
 /* height of the funnel on top of the card basket, >= 22 */
 funnel_start_below_sorter_house_height = 25;
+
+/* cutout diameter for a M3 screw so that it fits by itself */
+m3_screw_hole_d = 2.2;
 
 /* led_diffuser_cone_diameter */
 led_diffuser_cone_diameter = 18;
@@ -208,11 +211,11 @@ module grove_2x1_cutout(lh, uh, grove_pcb_height = 2) {
                   d=grove_hole_d);
       }
       translate([10,0,lh-10])
-          cylinder(h=uh+grove_pcb_height+20,d=2.2, $fn=8);
+          cylinder(h=uh+grove_pcb_height+20,d=m3_screw_hole_d, $fn=8);
       translate([10,20,lh-10])
-          cylinder(h=uh+grove_pcb_height+20,d=2.2, $fn=8);
+          cylinder(h=uh+grove_pcb_height+20,d=m3_screw_hole_d, $fn=8);
       translate([40,10,lh-10])
-          cylinder(h=uh+grove_pcb_height+20,d=2.2, $fn=8);
+          cylinder(h=uh+grove_pcb_height+20,d=m3_screw_hole_d, $fn=8);
     }
 }
 
@@ -308,7 +311,9 @@ polyhedron( p, f );
 /*==============================================*/
 /* card sorter house */
 
-sorter_house_height = motor_mount_height + wheel_diameter/2 + 21 - pile_holder_height - eject_sorter_rail_height;
+pile_holder_height_sorter = pile_holder_height+1;
+
+sorter_house_height = motor_mount_height + wheel_diameter/2 + 22 - pile_holder_height_sorter - eject_sorter_rail_height;
 
 module sorter_house(isMotor = false) {
 
@@ -319,7 +324,7 @@ module sorter_house(isMotor = false) {
 
 
   // height of the motor mount block
-  mh = sorter_house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-21;
+  mh = sorter_house_height+wheel_card_lift-sorter_card_slot_height-wheel_diameter/2-20.5;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap_w;
@@ -330,6 +335,12 @@ module sorter_house(isMotor = false) {
   th = card_height+card_gap_h+2*wall;
   
   motor_y_pos = -card_height/2+10;
+  
+  notch_width = 10;  // wide enough to create an u shape area for the card
+  notch_depth = 2;
+
+  ramp_overlap=0.7;
+
 
   difference() {
       union() {
@@ -344,20 +355,22 @@ module sorter_house(isMotor = false) {
 
       // the pedestal for the tray
       translate([0,0,sorter_house_height-wall])
-      CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height], ChamferBottom=wall+pile_gap/3, ChamferBody=1);
+      CenterCube([tw+2*wall+pile_gap,th+2*wall+pile_gap,wall+pile_holder_height_sorter], ChamferBottom=wall+pile_gap/3, ChamferBody=1);
 
       // rail from eject to sorter
       
+      /*
       translate([(iw-card_rail)/2,th/2,0])
       SlopeCube(w = card_rail, l = 37, 
-	zs = sorter_house_height+pile_holder_height,  hs = 40, 
+	zs = sorter_house_height+pile_holder_height_sorter,  hs = 40, 
 	ze = motor_mount_height+wheel_diameter/2+21, he = 10);
-
-      translate([-(iw-card_rail)/2,th/2,0])
-      SlopeCube(w = card_rail, l = 37, 
-	zs = sorter_house_height+pile_holder_height,  hs = 40, 
+      */
+      
+      CopyMirror([1,0,0])
+      translate([-(iw-card_rail)/2,th/2-ramp_overlap,0])
+      SlopeCube(w = card_rail, l = 37+ramp_overlap, 
+	zs = sorter_house_height+pile_holder_height_sorter+1,  hs = 40, 
 	ze = motor_mount_height+wheel_diameter/2+21, he = 10);
-
     }
     
     // main inner cutout
@@ -366,28 +379,45 @@ module sorter_house(isMotor = false) {
 
     // cutout for the tray holder extention (pedestal)
     translate([0,0,sorter_house_height])
-    CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height+3]);
+    CenterCube([tw+pile_gap,th+pile_gap,pile_holder_height_sorter+0.01]);
     
     translate([0,0,sorter_house_height-sorter_card_slot_height])
-    CenterCube([iw*2, ih,pile_holder_height*2]);
+    CenterCube([iw*2, ih,pile_holder_height_sorter*2]);
 
     // cutout portal on both walls for the dc motor and usage of screw drivers
     //translate([0,  -(card_height/2-card_front_gap),  mh])
-    translate([0,  0,  mh])
+    translate([0,  0,  mh-2])
     rotate([0,0,90])
-    Archoid(r=33/2, b=sorter_house_height-33/2-14-mh, l=2*card_height);
+    Archoid(r=33/2, b=sorter_house_height-33/2-14-mh+2, l=2*card_height);
     
     // do some cutout for the wheels, Archoid is 12mm above ground
     translate([0,  0,  12])
-    Archoid(r=24, b=18+mh-12, l=2*card_width);
+    Archoid(r=26, b=18+mh-13, l=2*card_width);
 
     // cutout so that the cards can fall better on left and right side
     CopyMirror([1,0,0])
     translate([tw/2+osx,0,sorter_house_height-sorter_card_slot_height])
-    ChamferYCube(w=1+osx, h=ih);    
+    ChamferYCube(w=2+osx, h=ih);    
+    
+    // notch cutout
+    translate([0,-ih/2+notch_width/2,sorter_house_height-sorter_card_slot_height-notch_depth+0.01])
+    CenterCube([tw+2*osx, notch_width,  notch_depth]);
+    
+    // cutout some screws
+    
+    CopyMirror([1,0,0])
+    translate([iw/3,-ih/2,sorter_house_height+pile_holder_height_sorter/2])
+    rotate([90,0,0])
+    cylinder(h=20,d=m3_screw_hole_d, $fn=8, center=true);
+
+    // add a end of card pile text for the OCR tool
+    translate([0,-ih/2+6,sorter_house_height-sorter_card_slot_height-notch_depth-0.6])
+    rotate([0,0,180])
+    linear_extrude(3)
+    text("tcsm", halign="center", size=6, spacing=1.2);
+
   }
   
-
   
   // mount block for the motor
   translate([0,motor_y_pos,0])
@@ -399,21 +429,27 @@ module sorter_house(isMotor = false) {
     CopyMirror([0,1,0])
     translate([7,8,mh-16])
     cylinder(h=20,d=mhd, center=false, $fn=16);
+    
+    /* Add a slope to the motor block for better adjustment */
+    translate([0,0,mh])
+    rotate([4,0,0])
+    CenterCube([33*2,33*2,mh]);
+    
   }
 
   // chamfer for the mount block
   
   translate([33/2,-ih/2,0])
-  ChamferZCube(w=wall,h=mh);
+  ChamferZCube(w=wall,h=mh-1);
 
   translate([33/2,-ih/2-wall,0])
-  ChamferZCube(w=1,h=mh);
+  ChamferZCube(w=1,h=mh-1);
 
   translate([-33/2,-ih/2,0])
-  ChamferZCube(w=wall,h=mh);
+  ChamferZCube(w=wall,h=mh-1);
 
   translate([-33/2,-ih/2-wall,0])
-  ChamferZCube(w=1,h=mh);
+  ChamferZCube(w=1,h=mh-1);
 
   // add extra support for the complete block on the z=0 plane
   
@@ -429,7 +465,7 @@ module sorter_house(isMotor = false) {
 /*
   catch_rail_cut=5;
   catch_rail_len=40;  // the real length is catch_rail_len-catch_rail_cut
-  translate([0,card_height/2+card_gap_h/2+wall, sorter_house_height-catch_rail_len+pile_holder_height])
+  translate([0,card_height/2+card_gap_h/2+wall, sorter_house_height-catch_rail_len+pile_holder_height_sorter])
   difference() {
     translate([0,catch_rail_len/2,0])
     CenterCube([card_width+card_gap_w, catch_rail_len, catch_rail_len]);
@@ -463,7 +499,7 @@ module eject_house(isMotor=false) {
   mh = motor_mount_height;
   
   // extention of the eject house so that the wheel is placed more to the end of the cards
-  ext = 14;
+  ext = 19;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap_w;
@@ -524,7 +560,7 @@ module eject_house(isMotor=false) {
 
 	// another window to save some material
 	translate([0,  card_height/4,  15])
-	Archoid(r=33/2+ext/4, b=mh-18, l=2*card_width);
+	Archoid(r=33/2+ext/4, b=mh-20, l=2*card_width);
 
 
 	// one more window above the rail to save some material
@@ -642,10 +678,10 @@ module funnel() {
 
   /* card arrival is around pile_holder_height+35 */
   h1 = pile_holder_height;
-  h2 = 30;
-  h3 = 16;
-  h4 = 30;
-  h5 = 42;
+  h2 = 34;
+  h3 = 18;
+  h4 = 36;
+  h5 = 30;
 
   // inner dimensions of the house. 
   iw = card_width+card_gap_w;
@@ -768,15 +804,16 @@ module funnel() {
     translate([tw/2,-th/2+wall/2+15,h1+h2+h3+h4+h5+wall])
     CenterCube([tw+2*wall, 20, phh+2*wall+0.01]);
 
-    translate([tw/2-wall/2-16,-th/2,h1+h2+h3+h4+h5+wall])
-    CenterCube([20, th+2*wall, phh+2*wall+0.01]);
+    // USB Power supply cutout
+    translate([tw/2-wall/2-18,-th/2,h1+h2+h3+h4+h5+wall])
+    CenterCube([24, th+2*wall, phh+2*wall+0.01]);
 
 
     // Archoid cutout to save some material (it might also look better)
-    
+    // This is the big cutout at the opposite open side
     translate([0,-card_height/2,h1-1])
     rotate([0,0,90])
-    Archoid(r=(iw-16)/2, b=h2+h3+h4+h5/3, l=card_height);     
+    Archoid(r=(iw-16)/2, b=h2+h3+h4+h5-iw/2+4, l=card_height);     
     
     // add a chamfer to the bottom of the above achoid to let more light on the upper side
     translate([0,-ih/2,h1-1])
@@ -786,20 +823,20 @@ module funnel() {
     // archoid towards the eject house, actually belongs to the structure above
     translate([0,card_height/2,h1+h2/2])
     rotate([0,0,90])
-    Archoid(r=iw/2, b=h2/2+h3+h4, l=card_height);    
+    Archoid(r=iw/2, b=h2/2+h3+h4+h5-iw/2-9, l=card_height);    
     
     // left / right upper cutouts
     CopyMirror([0,1,0])
     translate([0,card_height/4-3,h1+h2+h3+h4+3])
-    Archoid(r=11, b=h5*0.4, l=2*card_width);    
+    Archoid(r=11, b=h5*0.33, l=2*card_width);    
 
     // left / right upper middle cutouts
     CopyMirror([0,1,0])
     translate([0,card_height/4+0.5, h1+h2+h3+3])
-    Archoid(r=7, b=h4*0.5, l=2*card_width);    
+    Archoid(r=7, b=h4*0.6, l=2*card_width);    
 
     translate([-card_width/2,0, h1+h2+h3+3])
-    Archoid(r=7, b=h4*0.5, l=card_width);    
+    Archoid(r=7, b=h4*0.6, l=card_width);    
     
     // left / right middle cutouts
     
@@ -813,10 +850,6 @@ module funnel() {
     cylinder(d=h3-4, h=card_width, center=true);
 
   }  // difference
-  
-    
-    
-  
 }
 
 /*==============================================*/

@@ -25,7 +25,7 @@
 # 'n'         english name    (was called 'name' above) [only in 'mtg_card_prop_full.json']
 # 's'         mtg set code    (was called 'code' above) [only in 'mtg_card_prop_full.json']
 # 'r'         rarity, 0="Common", 1="Uncommon", 2="Rare", 3="Mythic",
-# 'i'         color identity
+# 'i'         color identity, vector with WBUGR
 # 't'         types         [only in 'mtg_card_prop_full.json']
 # 'tc'        True: Creature, False: otherwise
 # 'ts'        True: Sorcery, False: otherwise
@@ -34,7 +34,7 @@
 # 'tl'        True: Land, False: otherwise
 # 'te'        True: Enchantment, False: otherwise
 # 'tp'        True: Planeswalker, False: otherwise
-# 'm'         converted mana cost (cmc)
+# 'c'         converted mana cost (cmc)
 #
 # Whenever this script is called:
 #       1. data for 'mtg_sets.json' is downloaded and file 'mtg_sets.json' newly created

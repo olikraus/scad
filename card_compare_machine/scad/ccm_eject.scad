@@ -34,10 +34,16 @@
      wheel is more at the upper end of the cards
      --> Done
 
+   4 Jul 2021
+   - Increase slope from 22 to 23 --> Done
+   - Extend the eject hourse from 14 to 19, so that
+     the wheel is even more at the end of the cards --> DONE
+
+
 */
 
 
 include <card_compare_machine.scad>;
 
-eject_house(false);
+eject_house(true);
 

@@ -38,7 +38,11 @@
  
   9 Apr 2021 (2)
   - The large Archoid towards eject house was corrupted
-    due to a comma proglem --> Fixed
+    due to a comma problem --> Fixed
+    
+  4 Jul 2021
+  - funnel wide body must be higher --> DONE
+  - USB Gap must be more wider  --> DONE
 */
 
 include <card_compare_machine.scad>;
