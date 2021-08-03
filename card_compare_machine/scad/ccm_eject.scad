@@ -45,5 +45,5 @@
 
 include <card_compare_machine.scad>;
 
-eject_house(true);
+eject_house(false);
 

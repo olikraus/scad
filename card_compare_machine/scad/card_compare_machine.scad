@@ -336,7 +336,7 @@ module sorter_house(isMotor = false) {
   
   motor_y_pos = -card_height/2+10;
   
-  notch_width = 10;  // wide enough to create an u shape area for the card
+  notch_width = 14;  // wide enough to create an u shape area for the card
   notch_depth = 2;
 
   ramp_overlap=0.7;
@@ -370,7 +370,7 @@ module sorter_house(isMotor = false) {
       translate([-(iw-card_rail)/2,th/2-ramp_overlap,0])
       SlopeCube(w = card_rail, l = 37+ramp_overlap, 
 	zs = sorter_house_height+pile_holder_height_sorter+1,  hs = 40, 
-	ze = motor_mount_height+wheel_diameter/2+21, he = 10);
+	ze = motor_mount_height+wheel_diameter/2+21+3, he = 10); // 4 Jul 2021: +2
     }
     
     // main inner cutout
@@ -414,7 +414,7 @@ module sorter_house(isMotor = false) {
     translate([0,-ih/2+6,sorter_house_height-sorter_card_slot_height-notch_depth-0.6])
     rotate([0,0,180])
     linear_extrude(3)
-    text("tcsm", halign="center", size=6, spacing=1.2);
+    text("tcsm", font="Helvetica:style=Bold", halign="center", size=6, spacing=1.2);
 
   }
   

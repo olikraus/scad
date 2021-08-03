@@ -17,13 +17,14 @@ GCODE=$(addprefix gcode/, $(notdir $(SCAD:.scad=.gcode)))
 # GCODE=$(SCAD:.scad=.gcode)
 
 SLIC3R_FLAGS=--gcode-flavor reprap --nozzle-diameter 0.4 --filament-diameter 1.75
-SLIC3R_FLAGS+=--print-center 75,75 --start-gcode start.gcode
+SLIC3R_FLAGS+=--print-center 76,76 --start-gcode start.gcode
 SLIC3R_FLAGS+=--brim-width 2 --skirt-distance 5
 # 80%: ca 2mm löcher
 SLIC3R_FLAGS+=--fill-density 30%
 #SLIC3R_FLAGS+=--solid-infill-every-layers 1
 #SLIC3R_FLAGS+=--layer-height 0.25 --first-layer-height 0.3 
 SLIC3R_FLAGS+=--layer-height 0.3 --first-layer-height 0.3 --avoid-crossing-perimeters --perimeters 2
+#SLIC3R_FLAGS+=--layer-height 0.2 --first-layer-height 0.3
 SLIC3R_FLAGS+=--duplicate 1
 
 

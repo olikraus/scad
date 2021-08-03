@@ -35,11 +35,16 @@
   - Add two M3 screw holes for later mounting of the funnel --> DONE
 
  4 Jul 2021
-  - Upper right end of the ramp could still be higher by 2 mm
+  - Upper right end of the ramp could still be higher by 3 mm --> DONE
+  - Increase notch width to 14 --> DONE
+  - Bold text "tcsm" --> DONE
 
  Instructions:
-  Ramp and top area must be very clean and smooth
-  
+  1) Ramp and top area must be very clean and smooth
+  2) The wheel of the DC motor must be aligned
+    horizontally to the top border of the sorter
+  3) Check the funnel for any obstacles (for example small
+    filament threads)
 
 */
 
