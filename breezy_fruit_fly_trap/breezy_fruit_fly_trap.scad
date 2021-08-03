@@ -10,36 +10,39 @@
 */
 
 /* [basic] */
-/* The outside diameter of the bowl on which the trap is placed */
+
+// The outside diameter of the bowl on which the trap is placed 
 bowl_diameter = 88;
 
 /* [advanced] */
-/* input diameter for the trap, 40mm is fine, could be smaller also */
+
+// input diameter for the trap, 40mm is fine, could be smaller also
 cone_enter_diameter = 40;
-/* at least half the cone enter diameter but smaller than the bowl height */
+// at least half the cone enter diameter but smaller than the bowl height
 cone_height = 30;
-/* should be big enough for the fly to go through */
+// should be big enough for the fly to go through
 cone_exit_diameter = 2.8;
 
 /* [expert] */
-/* height of the outside lid wall */
+
+// height of the outside lid wall
 lid_protect_height = 4;
-/* thickness of the cone wall */
+// thickness of the cone wall
 cone_wall_thickness = 1;
-/* thickness of the lid, should be multiple of the layer height */
+// thickness of the lid, should be multiple of the layer height
 lid_thickness = 1.4;
-/* height of air window, should be multiple of the layer height */
-air_window_height = 0.4; /* should be multiple of layer height */
-/* suggested width of air window (actual width might be different) */
+// height of air window, should be multiple of the layer height
+air_window_height = 0.4;
+// suggested width of air window (actual width might be different)
 air_window_width = 3;
-/* gap between the air windows on the same level */
+// gap between the air windows on the same level
 air_window_pillar_width = 1.5;
-/* chamfer for the lid */
+// chamfer for the lid
 chamfer = 0.4;
 
 /* [hidden] */
 lid_diameter = bowl_diameter+cone_wall_thickness+chamfer;
-
+$fn=64;
 
 
 points = [
@@ -60,7 +63,7 @@ points = [
 ];
 
 difference() {
-  rotate_extrude($fn=128)
+  rotate_extrude()
   polygon(points);
   for(h = [lid_thickness*2:air_window_height*2:cone_height-lid_thickness*2]) { 
     /* calculate the diameter d at the specific height */
