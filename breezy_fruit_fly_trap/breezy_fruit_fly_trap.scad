@@ -21,7 +21,7 @@ cone_enter_diameter = 50;
 // at least half the cone enter diameter but smaller than the bowl height
 cone_height = 40;
 // should be big enough for the fly to go through
-cone_exit_diameter = 2.7;
+cone_exit_diameter = 2.8;
 
 /* [expert] */
 
