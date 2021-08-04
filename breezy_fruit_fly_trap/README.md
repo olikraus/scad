@@ -12,5 +12,5 @@ A reliable trap for fruit flies:
 
 ![img/fruit_fly_trap.jpg](img/fruit_fly_trap.jpg)
 
-![img/breezy_fruit_fly_trap.png](img/breezy_fruit_fly_trap.png)
+![breezy_fruit_fly_trap.png](breezy_fruit_fly_trap.png)
 
