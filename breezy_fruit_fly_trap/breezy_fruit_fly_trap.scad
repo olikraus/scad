@@ -12,41 +12,46 @@
 /* [basic] */
 
 // The outside diameter of the bowl on which the trap is placed 
-bowl_diameter = 88;
+bowl_diameter = 80;
 
 /* [advanced] */
 
 // input diameter for the trap, 40mm is fine, could be smaller also
-cone_enter_diameter = 40;
+cone_enter_diameter = 50;
 // at least half the cone enter diameter but smaller than the bowl height
-cone_height = 30;
+cone_height = 40;
 // should be big enough for the fly to go through
-cone_exit_diameter = 2.8;
+cone_exit_diameter = 2.7;
 
 /* [expert] */
 
 // height of the outside lid wall
-lid_protect_height = 4;
+lid_protect_height = 5;
 // thickness of the cone wall
 cone_wall_thickness = 1;
 // thickness of the lid, should be multiple of the layer height
-lid_thickness = 1.4;
+lid_thickness = 2;
 // height of air window, should be multiple of the layer height
-air_window_height = 0.4;
+air_window_height = 0.8;
 // suggested width of air window (actual width might be different)
-air_window_width = 3;
+air_window_width = 4;
 // gap between the air windows on the same level
-air_window_pillar_width = 1.5;
+air_window_pillar_width = 3;
+// vertical gap between air windows, should be multiple of the layer height
+air_window_vertical_gap = 0.6;
 // chamfer for the lid
-chamfer = 0.4;
+chamfer = 0.6;
 
 /* [hidden] */
-lid_diameter = bowl_diameter+cone_wall_thickness+chamfer;
 $fn=64;
 
+lid_diameter = bowl_diameter+cone_wall_thickness+chamfer;
+cone_real_enter_diameter = cone_enter_diameter > bowl_diameter-lid_thickness-5 ? bowl_diameter-lid_thickness-5 : cone_enter_diameter;
+rndrot = rands(0,40,100,123);
 
+/* prepare the 2D polygon for the rotate extrude */
 points = [
-  [cone_enter_diameter/2+chamfer, 0],
+  [cone_real_enter_diameter/2+chamfer, 0],
   [lid_diameter/2-chamfer, 0],
   [lid_diameter/2, chamfer],
   [lid_diameter/2, lid_protect_height-chamfer],
@@ -55,19 +60,22 @@ points = [
   [lid_diameter/2-lid_thickness, lid_protect_height-chamfer],
   [lid_diameter/2-lid_thickness, lid_thickness+chamfer],
   [lid_diameter/2-lid_thickness-chamfer, lid_thickness],
-  [cone_enter_diameter/2+cone_wall_thickness, lid_thickness],
+  [cone_real_enter_diameter/2+cone_wall_thickness, lid_thickness],
   [cone_exit_diameter/2+cone_wall_thickness, cone_height],
   [cone_exit_diameter/2, cone_height],
-  [cone_enter_diameter/2, lid_thickness],
-  [cone_enter_diameter/2, chamfer]
+  [cone_real_enter_diameter/2, lid_thickness],
+  [cone_real_enter_diameter/2, chamfer]
 ];
 
 difference() {
-  rotate_extrude()
+  /* create the trap */
+  rotate_extrude()  
   polygon(points);
-  for(h = [lid_thickness*2:air_window_height*2:cone_height-lid_thickness*2]) { 
+  
+  /* cut out the air windows */
+  for(h = [lid_thickness*2:air_window_height+air_window_vertical_gap:cone_height-lid_thickness*2]) { 
     /* calculate the diameter d at the specific height */
-    d = ((cone_height-h)*cone_enter_diameter+h*cone_exit_diameter)/cone_height;
+    d = ((cone_height-h)*cone_real_enter_diameter+h*cone_exit_diameter)/cone_height;
     /* 
       there should be so many number of windows, so that
       the window size is larger than air_window_width:
@@ -83,9 +91,10 @@ difference() {
       /* but do the cutout only if the ww is really big enough */
       if ( ww >= air_window_width ) {
         for(i=[0:360/n:360]) {
-          rotate([0,0,i])
+          /* rndrot will apply some random rotation, which I think looks better */
+          rotate([0,0,i+rndrot[floor(h*3) % 100]])
           translate([-ww/2,0,h])
-          cube([ww, cone_enter_diameter,air_window_height]);
+          cube([ww, cone_real_enter_diameter/2+1,air_window_height]);
         }
       }
     }
