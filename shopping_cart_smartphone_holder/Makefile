@@ -3,7 +3,7 @@
 
 
 # SCAD=ttt_straight_1.scad
-SCAD=$(wildcard *.scad)
+SCAD=$(wildcard sh*.scad)
 STL=$(SCAD:.scad=.stl)
 PNG=$(SCAD:.scad=.png)
 GCODE=$(SCAD:.scad=.gcode)
@@ -11,10 +11,10 @@ GCODE=$(SCAD:.scad=.gcode)
 SLIC3R_FLAGS=--gcode-flavor reprap --nozzle-diameter 0.4 --filament-diameter 1.75
 SLIC3R_FLAGS+=--print-center 75,75 --start-gcode start.gcode
 SLIC3R_FLAGS+=--brim-width 4
-SLIC3R_FLAGS+=--fill-density 50% 
+SLIC3R_FLAGS+=--fill-density 30% 
 #SLIC3R_FLAGS+=--solid-infill-every-layers 1
 SLIC3R_FLAGS+=--layer-height 0.2 --first-layer-height 0.3 
-SLIC3R_FLAGS+=--duplicate 1
+#SLIC3R_FLAGS+=--duplicate 1
 
 
 %.stl: %.scad

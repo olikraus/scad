@@ -11,8 +11,8 @@
 
 /* [basic] */
 
-// The outside diameter of the bowl on which the trap is placed 
-bowl_diameter = 80;
+// The outside diameter of the bowl on which the trap is placed (80)
+bowl_diameter = 95;
 
 /* [advanced] */
 
