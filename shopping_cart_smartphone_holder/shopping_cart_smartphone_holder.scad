@@ -151,12 +151,21 @@ module cart_clip() {
       CenterCube([stop_chamfer, smartphone_thickness+2*wall, height+0.02], ChamferBody=generic_chamfer);
 
       /* shopping cart connection */ 
+      /*
       translate([0,-1,height-cart_grid_dia+1])
       rotate([0,90,0])
       cylinder(d=cart_grid_dia, h=smartphone_width+4*wall+phone_clip_gap+0.01, center=true);
+      */
       
-      translate([0,-smartphone_thickness/2,height-cart_grid_dia-4])
-      CenterCube([smartphone_width+4*wall+phone_clip_gap+0.01, smartphone_thickness+0*wall, 7]);      
+      translate([0,-1,height-cart_grid_dia-cart_grid_dia+1])
+      Archoid(r=cart_grid_dia/2, b=cart_grid_dia,l=smartphone_width+4*wall+phone_clip_gap+0.01);
+
+      //translate([0,-1,height-cart_grid_dia])
+      //rotate([180,0,0])
+      //Archoid(r=cart_grid_dia/2, b=cart_grid_dia,l=smartphone_width+4*wall+phone_clip_gap+0.01);
+      
+      translate([0,-smartphone_thickness/2,height-cart_grid_dia-cart_grid_dia+1])
+      CenterCube([smartphone_width+4*wall+phone_clip_gap+0.01, smartphone_thickness+0*wall, 9]);
     }
     /* lower axis */
     difference() {
