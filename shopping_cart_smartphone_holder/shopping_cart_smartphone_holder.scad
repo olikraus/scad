@@ -15,7 +15,7 @@ $fn=32;
 /* [basic] */
 
 // Width of the smartphone. Add 2 or more millimeters here.
-smartphone_width = 85;
+smartphone_width = 84;
 
 // Thickness of the smartphone. Add 1 to 3 millimeters.
 smartphone_thickness = 14;
@@ -23,23 +23,26 @@ smartphone_thickness = 14;
 /* [advanced] */
 
 // Height of the shopping cart holder
-height = 50;
+height = 63;
+
+// Diameter of the metal bar of the shopping cart
+cart_grid_dia = 11;
 
 // Wall width, should be thin enough to bend the material and thick enough to be stable
-wall = 1.9;
+wall = 2;
+
+/* [expert] */
 
 // Gap between the phone box and the cart clip. Half this value for each side. Also used for the joint axis.
-phone_clip_gap = 0.8;
+phone_clip_gap = 1;
 
 // generic_chamfer
 generic_chamfer = 1;
 
-// stop_chamfer
-stop_chamfer = 4;
+// stop_chamfer / triangle which fixes the smartphone holder at a specific angle
+stop_chamfer = 4.6;
 
-// cart_grid_dia
-cart_grid_dia = 11;
-
+/* more or less derived values */
 axis_dia = smartphone_thickness-5;  // diameter for the joint axis
 axis_z = axis_dia/2+wall*2;  // position of the joint axis
 lhcc = 20;    // lower height cart clip
@@ -82,14 +85,14 @@ module phone_box() {
     rotate([0,90,0])
     cylinder(d=axis_dia, h=smartphone_width+2*wall+0.01, center=true);
     
-    for( z=[5:(height-10)/6:(height-5)] ) {
+    for( z=[5:6.5:(height-5)] ) {
       for( x=[-(smartphone_width-10)/2:(smartphone_width-10)/10:(smartphone_width-10)/2] ) {
         translate([x,smartphone_thickness/2,z])
         rotate([90,0,0])
         cylinder(d=5, h=wall*3, center=true, $fn=16);
       }
     }
-    for( z=[5:(height-10)/6:(lhpb-5)] ) {
+    for( z=[5:6.5:(lhpb-5)] ) {
       for( x=[-(smartphone_width-10)/2:(smartphone_width-10)/10:(smartphone_width-10)/2] ) {
         translate([x,-smartphone_thickness/2,z])
         rotate([90,0,0])
@@ -106,7 +109,8 @@ module cart_clip() {
     difference() {
       union() {
         difference() {
-          CenterCube([smartphone_width+4*wall+phone_clip_gap, smartphone_thickness+2*wall, height]);
+          /* not sure why, but the clip is a little bit to high, so remove 1 mm from height */
+          CenterCube([smartphone_width+4*wall+phone_clip_gap, smartphone_thickness+2*wall, height-1]);
           
           /* remove inner lower block */
           translate([0,0,-0.01])
@@ -128,7 +132,7 @@ module cart_clip() {
           CenterCube([smartphone_width+2*wall+phone_clip_gap, smartphone_thickness+0*wall, height+0.02]);
 
           translate([0,generic_chamfer-smartphone_thickness,lhcc+wall])
-          CenterCube([smartphone_width-20,smartphone_thickness, height-lhcc-cart_grid_dia ]);
+          CenterCube([smartphone_width-16,smartphone_thickness, height-lhcc-cart_grid_dia ]);
           /*
           for( x=[nfirst:nstep:smartphone_width] ) {
             translate([x-smartphone_width/2,-smartphone_thickness/2-wall,0])
@@ -142,7 +146,6 @@ module cart_clip() {
         rotate([180,0,0])
         rotate([0,0,90])
         TriangularPrism(bottom = [stop_chamfer,smartphone_width], h=stop_chamfer, fh=0, fd=stop_chamfer/2);
-
         
       }
       /* Create slide in gap for phone_box */
@@ -151,23 +154,15 @@ module cart_clip() {
       CenterCube([stop_chamfer, smartphone_thickness+2*wall, height+0.02], ChamferBody=generic_chamfer);
 
       /* shopping cart connection */ 
-      /*
-      translate([0,-1,height-cart_grid_dia+1])
-      rotate([0,90,0])
-      cylinder(d=cart_grid_dia, h=smartphone_width+4*wall+phone_clip_gap+0.01, center=true);
-      */
       
-      translate([0,-1,height-cart_grid_dia-cart_grid_dia+1])
-      Archoid(r=cart_grid_dia/2, b=cart_grid_dia,l=smartphone_width+4*wall+phone_clip_gap+0.01);
-
-      //translate([0,-1,height-cart_grid_dia])
-      //rotate([180,0,0])
-      //Archoid(r=cart_grid_dia/2, b=cart_grid_dia,l=smartphone_width+4*wall+phone_clip_gap+0.01);
+      translate([0,-1,height-height*0.3-cart_grid_dia])
+      Archoid(r=cart_grid_dia/2, b=height*0.3,l=smartphone_width+4*wall+phone_clip_gap+0.01);
       
-      translate([0,-smartphone_thickness/2,height-cart_grid_dia-cart_grid_dia+1])
+      translate([0,-smartphone_thickness/2,height-height*0.3-cart_grid_dia])
       CenterCube([smartphone_width+4*wall+phone_clip_gap+0.01, smartphone_thickness+0*wall, 9]);
     }
     /* lower axis */
+    
     difference() {
       translate([0,0,axis_z])
       rotate([0,90,0])
