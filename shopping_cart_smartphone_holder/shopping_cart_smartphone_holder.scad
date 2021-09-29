@@ -14,10 +14,11 @@ $fn=32;
 
 /* [basic] */
 
-// Width of the smartphone. Add 2 or more millimeters here.
-smartphone_width = 84;
+// Width of the smartphone. Add 1 or more millimeters here.
+smartphone_width = 83;
 
 // Thickness of the smartphone. Add 1 to 3 millimeters.
+// value must be between 13 and 20
 smartphone_thickness = 14;
 
 /* [advanced] */
@@ -161,10 +162,12 @@ module cart_clip() {
       translate([0,-smartphone_thickness/2,height-height*0.3-cart_grid_dia])
       CenterCube([smartphone_width+4*wall+phone_clip_gap+0.01, smartphone_thickness+0*wall, 9]);
     }
+    
     /* lower axis */
     
     difference() {
-      translate([0,0,axis_z])
+      /* phone_clip_gap/2 shift is an experimental value */
+      translate([0,phone_clip_gap/2,axis_z+phone_clip_gap/2])
       rotate([0,90,0])
       cylinder(d=axis_dia-phone_clip_gap, h=smartphone_width+4*wall+phone_clip_gap+0.01, center=true);
       
@@ -177,6 +180,11 @@ module cart_clip() {
       translate([smartphone_width/2-0.5,0,0])
       TriangularPrism(bottom = [4,smartphone_thickness+2*wall], h=smartphone_thickness+2*wall, fh=0, fd=0);
     }
+    
+    /* upper enforcement */
+    translate([0,-smartphone_thickness/2,height-2*wall-1])
+    rotate([0,90,0])
+    cylinder(r=wall, h=smartphone_width-4*wall, center=true);
   }
 }
 
