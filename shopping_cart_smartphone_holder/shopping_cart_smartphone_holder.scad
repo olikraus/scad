@@ -9,8 +9,6 @@
 
 */
 
-$fn=32;
-
 /* [basic] */
 
 // Width of the smartphone. Add 1 or more millimeters here.
@@ -48,6 +46,8 @@ axis_dia = smartphone_thickness-5;  // diameter for the joint axis
 axis_z = axis_dia/2+wall*2;  // position of the joint axis
 lhcc = 20;    // lower height cart clip
 lhpb = lhcc-wall*1.5;    // lower height phone box
+$fn=32;
+
 
 /*
 n = 3;
