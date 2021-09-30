@@ -9,7 +9,6 @@
 
 */
 
-$fn=32;
 
 /* [basic] */
 
@@ -42,6 +41,11 @@ generic_chamfer = 1;
 
 // stop_chamfer / triangle which fixes the smartphone holder at a specific angle
 stop_chamfer = 4.6;
+
+/* [hidden] */
+
+$fn=32;
+
 
 /* more or less derived values */
 axis_dia = smartphone_thickness-5;  // diameter for the joint axis
