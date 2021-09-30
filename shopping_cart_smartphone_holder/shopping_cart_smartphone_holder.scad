@@ -18,7 +18,7 @@ $fn=32;
 smartphone_width = 83;
 
 // Thickness of the smartphone. Add 1 to 3 millimeters.
-// value must be between 13 and 20
+// This value must be between 13 and 20
 smartphone_thickness = 14;
 
 /* [advanced] */
@@ -27,6 +27,7 @@ smartphone_thickness = 14;
 height = 63;
 
 // Diameter of the metal bar of the shopping cart
+// Defaults to 11
 cart_grid_dia = 11;
 
 // Wall width, should be thin enough to bend the material and thick enough to be stable
