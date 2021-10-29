@@ -14,9 +14,9 @@ height=30;
 chamfer0=1;
 dia0=10;
 chamfer1=2;
-dia1=20;
+dia1=16;
 chamfer2=3;
-dia2=30;
+dia2=22;
 
 
 module discChamfer(d, chamfer) {
