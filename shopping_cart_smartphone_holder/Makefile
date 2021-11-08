@@ -1,3 +1,16 @@
+#
+#  Makefile for shopping_cart_smartphone_holder.scad
+#
+#  (c) olikraus@gmail.com
+#
+#  This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+#  To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+#  
+#  8 Nov 2021
+#       - Infill increase for better stability (30 --> 60) 
+#
+
+
 
 .suffixes: .scad .stl .png
 
@@ -11,7 +24,7 @@ GCODE=$(SCAD:.scad=.gcode)
 SLIC3R_FLAGS=--gcode-flavor reprap --nozzle-diameter 0.4 --filament-diameter 1.75
 SLIC3R_FLAGS+=--print-center 75,75 --start-gcode start.gcode
 SLIC3R_FLAGS+=--brim-width 4
-SLIC3R_FLAGS+=--fill-density 30% 
+SLIC3R_FLAGS+=--fill-density 60% 
 #SLIC3R_FLAGS+=--solid-infill-every-layers 1
 SLIC3R_FLAGS+=--layer-height 0.2 --first-layer-height 0.3 
 #SLIC3R_FLAGS+=--duplicate 1
