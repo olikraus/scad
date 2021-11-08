@@ -25,7 +25,7 @@ smartphone_thickness = 14;
 
 /* [advanced] */
 
-// Height of the shopping cart holder
+// Height (in mm) of the shopping cart holder
 height = 65;
 
 // Diameter of the metal bar of the shopping cart
@@ -45,17 +45,22 @@ extra_wall_width = 1;
 // Gap between the phone box and the cart clip. Half this value for each side. Also used for the joint axis.
 phone_clip_gap = 1;
 
-// generic_chamfer
+// Generic_chamfer (in mm), used for inner cut outs 
 generic_chamfer = 1;
 
-// stop_chamfer / triangle which fixes the smartphone holder at a specific angle
+// Stop_chamfer / triangle which fixes the smartphone holder at a specific angle
 stop_chamfer = 4.6;
+
+// Small chamfer (in mm), which is used for some outside walls
+mini_chamfer = 0.5;
+
 
 /* [hidden] */
 
 $fn=32;
 
 extra_wall_radius = 4;
+
 
 /* more or less derived values */
 axis_dia = smartphone_thickness-5;  // diameter for the joint axis
@@ -129,6 +134,7 @@ module ChamferYCube(w=1,h=10, d=0) {
     }
 
 */
+
 
 module CenterCube(dim, ChamferBody = 0, ChamferBottom=0, ChamferTop=0) {
   difference() {
@@ -269,7 +275,8 @@ module copy_mirror(vec=[0,1,0]) {
 module phone_box() {
   translate([0,0,-axis_z])
   difference() {
-    CenterCube([smartphone_width+2*wall, smartphone_thickness+2*wall, height]);
+    CenterCube([smartphone_width+2*wall, smartphone_thickness+2*wall, height],
+      ChamferBody=mini_chamfer,ChamferTop=mini_chamfer);
     translate([0,0,wall])
     
     CenterCube([smartphone_width, smartphone_thickness, height],
@@ -309,13 +316,14 @@ module phone_box() {
 
 
 module cart_clip() {
+  height_correction = 1;
   translate([0,0,-axis_z])
   union() {
     difference() {
       union() {
         difference() {
           /* not sure why, but the clip is a little bit to high, so remove 1 mm from height */
-          CenterCube([smartphone_width+4*wall+2*extra_wall_width+phone_clip_gap, smartphone_thickness+2*wall, height-1]);
+          CenterCube([smartphone_width+4*wall+2*extra_wall_width+phone_clip_gap, smartphone_thickness+2*wall, height-height_correction], ChamferTop=mini_chamfer);
           
           /* remove inner lower block */
           translate([0,0,-0.01])
@@ -398,7 +406,6 @@ module cart_clip() {
     translate([0,-smartphone_thickness/2,height-2*wall-1])
     rotate([0,90,0])
     cylinder(r=wall, h=smartphone_width-4*wall, center=true);
-    
 
   }
   
