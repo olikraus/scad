@@ -89,12 +89,13 @@ module tube0() {
 }
 
 
-
+/*
 tube2();
 translate([0,0,dia2-dia1])
 tube1();
 translate([0,0,dia2-dia0])
 tube0();
+*/
 
 /*
 difference() {
