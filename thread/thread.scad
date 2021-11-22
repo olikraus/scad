@@ -182,11 +182,32 @@ function get_thread_profile(height, width, delta=0) =
 ];
     
 
-//RotateTwistExtrude(profile, 360*16,8*16,8*16+1);
+/*
+  OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2)
+  
+  Create a tube and place a thread on the outside surface of 
+  the tube.
+  The height of the generated object is "pitch*revolutions"
+  
+  Args
+    radius: OuterThread and InnerThread must have the same
+      "radius" value in order to fit together.
+      The "radius" is the radius of the cylinder on which
+      the thread is placed: This means radius of the 
+      generated object is "radius" + width of the thread.
+    pitch: The distance between two threads
+    revolutions: The number of revolutions of the thread
+    inner_wall: The width of the inner wall. The tube
+      has a inner radius of "radius"-"inner_wall".
+      This value can be 0
+    $fn: Number of sections per revolution. Defaults to 16
+      if not provided.
+*/
 
-
-module OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2, sections_per_revolution=32) {  
-  thread_width = pitch/2-0.8;
+module OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2) {  
+  //thread_width = pitch/2-0.8;
+  thread_width = pitch*0.3;
+  sections_per_revolution = $fn==0?16:$fn;
   union() {
     if ( pitch > 0 )
     {
@@ -219,9 +240,11 @@ module OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2, sections
   }
 }
 
-module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 2, sections_per_revolution=32) {
-  thread_width = pitch/2-0.8;
+module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 3) {
+  //thread_width = pitch/2-0.8;
+  thread_width = pitch*0.3;
   gap = 0.4;
+  sections_per_revolution = $fn==0?16:$fn;
   assert(thread_width < outer_wall, 
     str("The wall must be think enough for the thread width. thread_width=", thread_width, ", outer_wall=", outer_wall ))
   difference() {
@@ -253,6 +276,6 @@ difference() {
 }
 */
 
-InnerThread(radius = 20, pitch=4, revolutions=2);
+InnerThread(radius = 20, pitch=4, revolutions=2, $fn=64);
 translate([52,0,0])
-OuterThread(radius = 20, pitch=4, revolutions=2);
+OuterThread(radius = 20, pitch=4, revolutions=2, $fn=64);
