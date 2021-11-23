@@ -188,18 +188,20 @@ function get_thread_profile(height, width, delta=0) =
   Create a tube and place a thread on the outside surface of 
   the tube.
   The height of the generated object is "pitch*revolutions"
+  OuterThread and InnerThread must have the same
+  "radius" and "pitch" value in order to fit together.
   
   Args
-    radius: OuterThread and InnerThread must have the same
-      "radius" value in order to fit together.
-      The "radius" is the radius of the cylinder on which
+    radius: The "radius" is the radius of the cylinder on which
       the thread is placed: This means radius of the 
       generated object is "radius" + width of the thread.
     pitch: The distance between two threads
     revolutions: The number of revolutions of the thread
     inner_wall: The width of the inner wall. The tube
       has a inner radius of "radius"-"inner_wall".
-      This value can be 0
+      There will be no inner tybe if "inner_wall" is zero.
+      A solid inner cylinder will be created if "inner_wall" is
+     greater or equal to "radius" 
     $fn: Number of sections per revolution. Defaults to 16
       if not provided.
 */
@@ -233,20 +235,49 @@ module OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2) {
     {
       difference() {
         cylinder(r=radius+0.01, h=pitch*revolutions, $fn=sections_per_revolution);
-        translate([0,0,-0.1])
-        cylinder(r=radius-inner_wall, h=pitch*revolutions+0.2, $fn=sections_per_revolution);
+        
+        if ( inner_wall < radius )
+        {
+          translate([0,0,-0.1])
+          cylinder(r=radius-inner_wall, h=pitch*revolutions+0.2, $fn=sections_per_revolution);
+        }
       }
     }
   }
 }
 
-module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 3) {
+/*
+  InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 2)
+  
+  Create a tube and cut out a thread from inside the tube.
+  The height of the generated object is "pitch*revolutions"
+  OuterThread and InnerThread must have the same
+  "radius" and "pitch" value in order to fit together.
+  
+  Args
+    radius: The inner radius of the thread. The outer
+      radius of the generated object is "radius"+"outer_wall"
+    pitch: The distance between two threads
+    revolutions: The number of revolutions of the thread
+    outer_wall: The thread is cut out of this wall.
+      The thread width (pitch*0.3) must be smaller 
+      than "outer_wall". An assert will be generated if 
+      this is not the case. For 3D prints, 
+        "outer_wall"-"pitch"*0.3 
+      should be at least nozzle diameter size.
+    gap: Additional gap so that inner thread and outer thread
+      fit for 3d printed parts. Defaults to 0.4.
+    $fn: Number of sections per revolution. Defaults to 16
+      if not provided.
+
+*/  
+
+module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 3, gap=0.4) {
   //thread_width = pitch/2-0.8;
   thread_width = pitch*0.3;
-  gap = 0.4;
   sections_per_revolution = $fn==0?16:$fn;
   assert(thread_width < outer_wall, 
-    str("The wall must be think enough for the thread width. thread_width=", thread_width, ", outer_wall=", outer_wall ))
+    str("The wall must be thick enough for the thread width. thread_width=", thread_width, ", outer_wall=", outer_wall ))
   difference() {
     /* create cylinder */
     cylinder(r=radius+outer_wall, h=pitch*revolutions, $fn=sections_per_revolution);
@@ -265,17 +296,27 @@ module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 3) {
   }
 }
 
-/*
-difference() {
-  union() {
-    inner_thread();
-    outer_thread();
-  }
-  translate([0,-40,0])
-  cube([100, 100, 100], center=true);
-}
-*/
+radius = 20;
+pitch = 3;
+revolutions=2;
+wall = 2;
+bowl_height = 5;
+bowl_bottom_thickness = 1;
+lid_thickness = 1;
 
-InnerThread(radius = 20, pitch=4, revolutions=2, $fn=64);
+//rotate([0,0,180])
+translate([0,0,lid_thickness])
+InnerThread(radius, pitch, revolutions, wall, $fn=64);
+cylinder(r=radius+lid_thickness, h=wall, $fn=64);
+
 translate([52,0,0])
-OuterThread(radius = 20, pitch=4, revolutions=2, $fn=64);
+union() {
+  translate([0,0,bowl_height])
+  OuterThread(radius, pitch, revolutions, wall/2, $fn=64);
+  difference() {
+    cylinder(r=radius+wall, h=bowl_height, $fn=64);
+  translate([0,0,bowl_bottom_thickness])
+    cylinder(r=radius-wall/2, h=bowl_height-bowl_bottom_thickness+0.01, $fn=64);
+  }
+}
+
