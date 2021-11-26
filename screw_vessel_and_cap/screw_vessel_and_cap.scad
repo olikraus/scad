@@ -41,7 +41,8 @@ gap=0.4;
 
 /* [hidden] */
 
-wall = pitch*0.3+gap+1;
+//wall = pitch*0.3+gap+1;
+wall = 2;
 
 /* from openSCAD user manual */
 function flatten(l) = [ for (a = l) for (b = a) b ] ;
@@ -266,7 +267,7 @@ module OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2) {
         /* generate the thread */
         rotate([90,0,0])
         RotateTwistExtrude(
-          get_thread_profile(pitch*0.8, thread_width, 0), 
+          get_thread_profile(pitch*0.7, thread_width, 0), 
           radius, 
           360*revolutions, 
           pitch*revolutions, 
@@ -334,7 +335,7 @@ module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 3, gap=0.4)
     translate([0,0,-pitch/2])
     rotate([90,0,0])
     RotateTwistExtrude(
-      get_thread_profile(pitch*0.8, thread_width, gap), 
+      get_thread_profile(pitch*0.7, thread_width, gap), 
       radius, 
       360*(revolutions+1), 
       pitch*(revolutions+1), 
