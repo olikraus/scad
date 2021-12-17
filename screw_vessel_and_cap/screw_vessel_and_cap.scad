@@ -39,10 +39,13 @@ revolutions=2;
 // Gap between the thread of the vessel and the thread of the cap in mm.
 gap=0.4;
 
+// segments per revolution
+$fn=64;
+
 /* [hidden] */
 
-//wall = pitch*0.3+gap+1;
-wall = 2;
+wall = pitch*0.3+gap+1;
+//wall = 2;
 
 /* from openSCAD user manual */
 function flatten(l) = [ for (a = l) for (b = a) b ] ;
@@ -356,17 +359,17 @@ module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 3, gap=0.4)
 //wall = pitch*0.3+gap+1;
 
 translate([0,0,cap_thickness])
-InnerThread(radius, pitch, revolutions, wall, $fn=64);
-cylinder(r=radius+wall, h=cap_thickness, $fn=64);
+InnerThread(radius, pitch, revolutions, wall);
+cylinder(r=radius+wall, h=cap_thickness);
 
 translate([(radius+wall)*2+2,0,0])
 union() {
   translate([0,0,vessel_height])
-  OuterThread(radius, pitch, revolutions, wall/2, $fn=64);
+  OuterThread(radius, pitch, revolutions, wall/2);
   difference() {
-    cylinder(r=radius+wall, h=vessel_height, $fn=64);
+    cylinder(r=radius+wall, h=vessel_height);
   translate([0,0,vessel_bottom_thickness])
-    cylinder(r=radius-wall/2, h=vessel_height-vessel_bottom_thickness+0.01, $fn=64);
+    cylinder(r=radius-wall/2, h=vessel_height-vessel_bottom_thickness+0.01);
   }
 }
 
