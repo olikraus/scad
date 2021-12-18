@@ -142,8 +142,8 @@ function generate_faces(pcnt, scnt) = flatten([
       is "cnt=$fn*twist/360"
     start_cnt: Does a linear increasing scale of poly2d for the first 
       "start_cnt" segments.
-    end_cnt: Does a linear decreasing scale of poly2d for the first 
-      "start_cnt" segments.
+    end_cnt: Does a linear decreasing scale of poly2d for the last 
+      "end_cnt" segments.
   
 */
 function rotate_twist_extrude_points(poly2d, radius, twist, ylen, cnt, 

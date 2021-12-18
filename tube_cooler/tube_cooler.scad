@@ -1,21 +1,36 @@
+/*
+
+  tube_cooler.scad
+
+  (c) olikraus@gmail.com
+
+  This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+  To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+  
+
+*/
 
 
 //cylinder(d=40, h=20, $fn=64);
 //cylinder(d1=40, d2=30, h=10);
 
-$fn=32;
+$fn=64;
 
 wall=1;
 // gap between the tube and the tube holder
 tubeGap=0.1;
 height=30;
 chamfer0=2;
-dia0=32;
+dia0=36;
 chamfer1=3;
-dia1=50+wall;
+
+dia1small=46;
+dia1=51;  // outside diameter (must include the wall)
 pitch=3;
 revolutions=2;
 
+lowerThreadHeight = pitch*revolutions; // should be less than lowerCoolorHeight
+coolerBottomHeight=1.4;   // additionall plate below the lower cooler
 lowerCoolorHeight=8;
 peltierHeight=3;
 upperCoolorHeight=20;
@@ -118,8 +133,8 @@ function generate_faces(pcnt, scnt) = flatten([
       is "cnt=$fn*twist/360"
     start_cnt: Does a linear increasing scale of poly2d for the first 
       "start_cnt" segments.
-    end_cnt: Does a linear decreasing scale of poly2d for the first 
-      "start_cnt" segments.
+    end_cnt: Does a linear decreasing scale of poly2d for the last 
+      "end_cnt" segments.
   
 */
 function rotate_twist_extrude_points(poly2d, radius, twist, ylen, cnt, 
@@ -346,6 +361,8 @@ module cylinderChamfer(d, h, chamferTop=0, chamferBottom=0) {
   }
 }
 
+//====================================================
+
 module tubeWall(d, h, chamfer, isSolid=false) {
   difference() {
     cylinderChamfer(d=d, h=h, chamferBottom=chamfer);
@@ -380,13 +397,13 @@ module tube(d, h, chamfer) {
 module tube1() {
   difference() {
     tube(dia1, height, chamfer=chamfer1);
-    translate([0,0,dia1-dia0])
+    translate([0,0,(dia1-dia0)*0.3])
     tubeWall(dia0+tubeGap*2, height, chamfer=chamfer0-tubeGap, isSolid=true);
   }
 }
 
 module tube0() {
-    tubeWall(dia0, height-(dia1-dia0), chamfer=chamfer0);
+    tubeWall(dia0, height-(dia1-dia0)*0.3, chamfer=chamfer0);
 }
 
 
@@ -415,23 +432,69 @@ module upperCooler() {
 //====================================================
 
 //  peltier();
+translate([dia1+5, 0, 0])
 difference() {
-  cylinder(d=dia1, h=lowerCoolorHeight+peltierHeight+upperCoolorHeight);
-  translate([0,0,0])
-  lowerCooler();
-  translate([0,0,lowerCoolorHeight])
-  peltier();
   
-  translate([0,0,lowerCoolorHeight+peltierHeight])
+  union() {
+    cylinder(d=dia1small, h=lowerThreadHeight+0.01);
+    OuterThread(dia1small/2, pitch, revolutions, 0);
+    translate([0,0,lowerThreadHeight])
+    cylinderChamfer(d=dia1, 
+        h=coolerBottomHeight+lowerCoolorHeight-lowerThreadHeight+peltierHeight+upperCoolorHeight, 
+        chamferTop=0, chamferBottom=(dia1-dia1small)/2);
+    //cylinder(d=dia1, h=lowerCoolorHeight-lowerThreadHeight+peltierHeight+upperCoolorHeight);
+  }
+  /* inner parts */
+  translate([0,0,coolerBottomHeight])
+  lowerCooler();
+  translate([0,0,coolerBottomHeight+lowerCoolorHeight])
+  peltier();
+  translate([0,0,coolerBottomHeight+lowerCoolorHeight+peltierHeight])
   upperCooler();
+  
+  /* bottom hole */
+  translate([0,0,-0.01])
+  intersection()
+  {
+    cylinder(d=(dia0-2*wall),h=coolerBottomHeight+0.02);
+    lowerCooler();
+  }
+
+  /* channel for the temperature sensor */
+  let(h=coolerBottomHeight+lowerCoolorHeight+peltierHeight, 
+    channelDepth=3)
+  {
+    // 40: diameter of the upper cooler
+    translate([(40-7)/2+2,0,(upperCoolorHeight)/2+h-channelDepth+0.01])
+    cube([7,3,upperCoolorHeight+2*channelDepth], center=true);
+    
+    // 30: size of the lower coolor
+    translate([(30-7)/2+2,0,(h-channelDepth)/2-0.01])
+    cube([7,3,h-channelDepth+0.02], center=true);
+  }
+
+  /* air holes */
+  for( j=[0:1] ) {
+    for( i=[0:30:270-30] ) {
+      let(dia=7) {
+        rotate([0,0,i+(90+30)/2])
+        translate([0,0,lowerThreadHeight+dia/2+(dia1-dia1small)/2+5+j*(dia+2)])
+        rotate([0,90,0])
+        cylinder(d=dia,h=dia1,center=false);
+      }
+    }
+  }
+
+  
 }
 
-/*
 translate([0,0,dia1-dia1])
 tube1();
-translate([0,0,dia1-dia0])
+//translate([0,0,dia1-dia0])
+//tube0();
+translate([0,0,height])
+InnerThread(dia1small/2, pitch, revolutions, (dia1-dia1small)/2);
+
+translate([dia1*2/3,dia1*5/6,0])
 tube0();
 
-translate([0,0,height])
-OuterThread(dia1/2, pitch, revolutions, wall);
-*/
