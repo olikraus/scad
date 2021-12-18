@@ -33,7 +33,7 @@ lowerThreadHeight = pitch*revolutions; // should be less than lowerCoolorHeight
 coolerBottomHeight=1.4;   // additionall plate below the lower cooler
 lowerCoolorHeight=8;
 peltierHeight=3;
-upperCoolorHeight=20+2;
+upperCoolorHeight=20;
 gap=0.1;
 
 //====================================================
@@ -435,8 +435,8 @@ module coolTube() {
   difference() {
     
     union() {
-      cylinder(d=dia1small, h=lowerThreadHeight+0.01);
-      OuterThread(dia1small/2, pitch, revolutions, 0);
+      //cylinder(d=dia1small, h=lowerThreadHeight+0.01);
+      OuterThread(dia1small/2, pitch, revolutions, dia1small/2);
       translate([0,0,lowerThreadHeight])
       cylinderChamfer(d=dia1, 
           h=coolerBottomHeight+lowerCoolorHeight-lowerThreadHeight+peltierHeight+upperCoolorHeight, 
@@ -481,7 +481,7 @@ module coolTube() {
           rotate([0,0,i+(90+30)/2])
           translate([0,0,lowerThreadHeight+dia/2+(dia1-dia1small)/2+6+j*(dia+2)])
           rotate([0,90,0])
-          cylinder(d=dia,h=dia1,center=false);
+          cylinder(d=dia,h=dia1,center=false, $fn=16);
         }
       }
     }  
@@ -500,6 +500,5 @@ tube1();
 translate([0,0,height])
 InnerThread(dia1small/2, pitch, revolutions, (dia1-dia1small)/2);
 
-translate([dia1*2/3,dia1*5/6,0])
+translate([dia1*0.6,dia1*5/6,0])
 tube0();
-
