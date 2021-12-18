@@ -16,7 +16,7 @@
 
 $fn=64;
 
-wall=1;
+wall=2;
 // gap between the tube and the tube holder
 tubeGap=0.1;
 height=30;
@@ -33,7 +33,7 @@ lowerThreadHeight = pitch*revolutions; // should be less than lowerCoolorHeight
 coolerBottomHeight=1.4;   // additionall plate below the lower cooler
 lowerCoolorHeight=8;
 peltierHeight=3;
-upperCoolorHeight=20;
+upperCoolorHeight=20+2;
 gap=0.1;
 
 //====================================================
@@ -431,62 +431,67 @@ module upperCooler() {
 
 //====================================================
 
-//  peltier();
-translate([dia1+5, 0, 0])
-difference() {
-  
-  union() {
-    cylinder(d=dia1small, h=lowerThreadHeight+0.01);
-    OuterThread(dia1small/2, pitch, revolutions, 0);
-    translate([0,0,lowerThreadHeight])
-    cylinderChamfer(d=dia1, 
-        h=coolerBottomHeight+lowerCoolorHeight-lowerThreadHeight+peltierHeight+upperCoolorHeight, 
-        chamferTop=0, chamferBottom=(dia1-dia1small)/2);
-    //cylinder(d=dia1, h=lowerCoolorHeight-lowerThreadHeight+peltierHeight+upperCoolorHeight);
-  }
-  /* inner parts */
-  translate([0,0,coolerBottomHeight])
-  lowerCooler();
-  translate([0,0,coolerBottomHeight+lowerCoolorHeight])
-  peltier();
-  translate([0,0,coolerBottomHeight+lowerCoolorHeight+peltierHeight])
-  upperCooler();
-  
-  /* bottom hole */
-  translate([0,0,-0.01])
-  intersection()
-  {
-    cylinder(d=(dia0-2*wall),h=coolerBottomHeight+0.02);
-    lowerCooler();
-  }
-
-  /* channel for the temperature sensor */
-  let(h=coolerBottomHeight+lowerCoolorHeight+peltierHeight, 
-    channelDepth=3)
-  {
-    // 40: diameter of the upper cooler
-    translate([(40-7)/2+2,0,(upperCoolorHeight)/2+h-channelDepth+0.01])
-    cube([7,3,upperCoolorHeight+2*channelDepth], center=true);
+module coolTube() {
+  difference() {
     
-    // 30: size of the lower coolor
-    translate([(30-7)/2+2,0,(h-channelDepth)/2-0.01])
-    cube([7,3,h-channelDepth+0.02], center=true);
-  }
-
-  /* air holes */
-  for( j=[0:1] ) {
-    for( i=[0:30:270-30] ) {
-      let(dia=7) {
-        rotate([0,0,i+(90+30)/2])
-        translate([0,0,lowerThreadHeight+dia/2+(dia1-dia1small)/2+5+j*(dia+2)])
-        rotate([0,90,0])
-        cylinder(d=dia,h=dia1,center=false);
-      }
+    union() {
+      cylinder(d=dia1small, h=lowerThreadHeight+0.01);
+      OuterThread(dia1small/2, pitch, revolutions, 0);
+      translate([0,0,lowerThreadHeight])
+      cylinderChamfer(d=dia1, 
+          h=coolerBottomHeight+lowerCoolorHeight-lowerThreadHeight+peltierHeight+upperCoolorHeight, 
+          chamferTop=0, chamferBottom=(dia1-dia1small)/2);
+      //cylinder(d=dia1, h=lowerCoolorHeight-lowerThreadHeight+peltierHeight+upperCoolorHeight);
+      translate([0,0,coolerBottomHeight+lowerCoolorHeight+peltierHeight+upperCoolorHeight])
+      InnerThread(dia1small/2, pitch, revolutions, (dia1-dia1small)/2);
     }
-  }
+    /* inner parts */
+    translate([0,0,coolerBottomHeight])
+    lowerCooler();
+    translate([0,0,coolerBottomHeight+lowerCoolorHeight])
+    peltier();
+    translate([0,0,coolerBottomHeight+lowerCoolorHeight+peltierHeight])
+    upperCooler();
+    
+    /* bottom hole */
+    translate([0,0,-0.01])
+    intersection()
+    {
+      cylinder(d=(dia0-2*wall),h=coolerBottomHeight+0.02);
+      lowerCooler();
+    }
 
-  
+    /* channel for the temperature sensor */
+    let(h=coolerBottomHeight+lowerCoolorHeight+peltierHeight, 
+      channelDepth=3)
+    {
+      // 40: diameter of the upper cooler
+      translate([(40-7)/2+2,0,(upperCoolorHeight)/2+h-channelDepth+0.01])
+      cube([7,3,upperCoolorHeight+2*channelDepth], center=true);
+      
+      // 30: size of the lower coolor
+      translate([(30-7)/2+2,0,(h-channelDepth)/2-0.01])
+      cube([7,3,h-channelDepth+0.02], center=true);
+    }
+
+    /* air holes */
+    for( j=[0:1] ) {
+      for( i=[0:30:270-30] ) {
+        let(dia=7) {
+          rotate([0,0,i+(90+30)/2])
+          translate([0,0,lowerThreadHeight+dia/2+(dia1-dia1small)/2+6+j*(dia+2)])
+          rotate([0,90,0])
+          cylinder(d=dia,h=dia1,center=false);
+        }
+      }
+    }  
+  }
 }
+
+//====================================================
+
+translate([dia1+5, 0, 0])
+coolTube();
 
 translate([0,0,dia1-dia1])
 tube1();
