@@ -34,7 +34,7 @@ coolerBottomHeight=1.4;   // additionall plate below the lower cooler
 lowerCoolorHeight=8;
 peltierHeight=3;
 upperCoolorHeight=20;
-gap=0.1;
+thingGap=0.5; // 19 Dec 2021: increased gap
 
 //====================================================
 
@@ -410,13 +410,13 @@ module tube0() {
 //====================================================
 module lowerCooler() {
   translate([0,0,lowerCoolorHeight/2])
-  cube([29+gap*2,29+gap*2,lowerCoolorHeight+0.02], center=true);
+  cube([29+thingGap*2,29+thingGap*2,lowerCoolorHeight+0.02], center=true);
 }
 
 module peltier() {
   translate([0,0,(peltierHeight+upperCoolorHeight)/2])
   union() {
-    cube([30+gap*2,30+gap*2,peltierHeight+upperCoolorHeight+0.02], center=true);
+    cube([30+thingGap*2,30+thingGap*2,peltierHeight+upperCoolorHeight+0.02], center=true);
     translate([30/2+4/2,30/2-3/2,0])
     cube([4,3,peltierHeight+upperCoolorHeight+0.02], center=true);
     translate([30/2+4/2,-30/2+3/2,0])
@@ -426,7 +426,7 @@ module peltier() {
 
 module upperCooler() {
   translate([0,0,-0.01])
-  cylinder(d=40+gap*2,h=upperCoolorHeight+0.02);
+  cylinder(d=40+thingGap*2,h=upperCoolorHeight+0.02);
 }
 
 //====================================================
