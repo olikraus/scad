@@ -118,10 +118,10 @@ function generate_segment_b(i1, i2, cnt) = [
   "pcnt": Number of points in the polygon
   "scnt": Number of faces sets (segments), this is number of polygons - 1
 */
-function generate_all_segments(pcnt, scnt) = flatten([
-    for(i=[0:scnt-1]) generate_segment_a(i*pcnt, i*pcnt+pcnt, pcnt),
-    for(i=[0:scnt-1]) generate_segment_b(i*pcnt, i*pcnt+pcnt, pcnt)
-]);
+function generate_all_segments(pcnt, scnt) = flatten(flatten([
+    [for(i=[0:scnt-1]) generate_segment_a(i*pcnt, i*pcnt+pcnt, pcnt)],
+    [for(i=[0:scnt-1]) generate_segment_b(i*pcnt, i*pcnt+pcnt, pcnt)]
+]));
     
 /*
   Generate the faces for the polyhedron. Same as "generate_all_segments"
