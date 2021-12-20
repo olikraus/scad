@@ -37,7 +37,6 @@ upperCoolorHeight=20;
 thingGap=0.5; // 19 Dec 2021: increased gap
 
 //====================================================
-
 /* from openSCAD user manual */
 function flatten(l) = [ for (a = l) for (b = a) b ] ;
 
@@ -81,13 +80,22 @@ function rotate_y_pl(pl, a) = [ for(i=pl) [
   The generated segment does not have a start/end lid. 
   Called by generate_all_segments.
 */
-function generate_segment(i1, i2, cnt) = [ 
+function generate_segment_a(i1, i2, cnt) = [ 
+    for(i=[0:cnt-1]) [
+        // correct openSCAD orientation considered
+        i1+1+i >= i1+cnt ? i1 : i1+1+i,
+        /*i2+1+i >= i2+cnt ? i2 : i2+1+i,*/ 
+        i2+i, 
+        i1+i
+    ]
+];
+function generate_segment_b(i1, i2, cnt) = [ 
     for(i=[0:cnt-1]) [
         // correct openSCAD orientation considered
         i1+1+i >= i1+cnt ? i1 : i1+1+i,
         i2+1+i >= i2+cnt ? i2 : i2+1+i, 
-        i2+i, 
-        i1+i
+        i2+i /*, 
+        i1+i*/
     ]
 ];
 
@@ -96,9 +104,10 @@ function generate_segment(i1, i2, cnt) = [
   "pcnt": Number of points in the polygon
   "scnt": Number of faces sets (segments), this is number of polygons - 1
 */
-function generate_all_segments(pcnt, scnt) = flatten([
-    for(i=[0:scnt-1]) generate_segment(i*pcnt, i*pcnt+pcnt, pcnt)
-]);
+function generate_all_segments(pcnt, scnt) = flatten(flatten([
+    [for(i=[0:scnt-1]) generate_segment_a(i*pcnt, i*pcnt+pcnt, pcnt)],
+    [for(i=[0:scnt-1]) generate_segment_b(i*pcnt, i*pcnt+pcnt, pcnt)]
+]));
     
 /*
   Generate the faces for the polyhedron. Same as "generate_all_segments"
@@ -266,6 +275,7 @@ module OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2) {
           360*revolutions, 
           pitch*revolutions, 
           revolutions*sections_per_revolution, 
+//          0,0);
           sections_per_revolution/4, sections_per_revolution/4);
         /* cut off the upper and lower part */
         translate([0,0,-pitch])
@@ -275,11 +285,11 @@ module OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2) {
       }
     }
     /* add inner tube */
+   
     if ( inner_wall > 0 )
     {
       difference() {
         cylinder(r=radius+0.01, h=pitch*revolutions, $fn=sections_per_revolution);
-        
         if ( inner_wall < radius )
         {
           translate([0,0,-0.1])
@@ -287,6 +297,7 @@ module OuterThread(radius = 20, pitch=4, revolutions=2, inner_wall = 2) {
         }
       }
     }
+    
   }
 }
 
