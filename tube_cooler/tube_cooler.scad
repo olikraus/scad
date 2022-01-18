@@ -33,8 +33,13 @@ lowerThreadHeight = pitch*revolutions; // should be less than lowerCoolorHeight
 coolerBottomHeight=1.4;   // additionall plate below the lower cooler
 lowerCoolorHeight=8;
 peltierHeight=3;
-upperCoolorHeight=20;
-thingGap=0.5; // 19 Dec 2021: increased gap
+upperCoolorHeight=22;
+thingGap=0.6; // 19 Dec 2021: increased gap
+
+electronicsHeight = 3;  // 3 or higher because of the chamfer
+electronicsDia0 = 30;
+electronicsDia1 = 40;
+batteryCaseHeight = 50;
 
 //====================================================
 /* from openSCAD user manual */
@@ -488,9 +493,9 @@ module coolTube() {
     /* air holes */
     for( j=[0:1] ) {
       for( i=[0:30:270-30] ) {
-        let(dia=7) {
+        let(dia=8) {
           rotate([0,0,i+(90+30)/2])
-          translate([0,0,lowerThreadHeight+dia/2+(dia1-dia1small)/2+6+j*(dia+2)])
+          translate([0,0,lowerThreadHeight+dia/2+(dia1-dia1small)/2+6.4+j*(dia+2)])
           rotate([0,90,0])
           cylinder(d=dia,h=dia1,center=false, $fn=16);
         }
@@ -501,15 +506,96 @@ module coolTube() {
 
 //====================================================
 
-translate([dia1+5, 0, 0])
-coolTube();
+module outerFridgeTube() {
+  union() {
+    tube1();
+    //translate([0,0,dia1-dia0])
+    //tube0();
+    translate([0,0,height])
+    InnerThread(dia1small/2, pitch, revolutions, (dia1-dia1small)/2);
+  }
+}
 
-translate([0,0,dia1-dia1])
-tube1();
-//translate([0,0,dia1-dia0])
-//tube0();
-translate([0,0,height])
-InnerThread(dia1small/2, pitch, revolutions, (dia1-dia1small)/2);
+//====================================================
+module innerFridgeTube() {
+  //translate([dia1*0.6,dia1*5/6,0])
+  tube0();
+}
 
-translate([dia1*0.6,dia1*5/6,0])
-tube0();
+
+//====================================================
+
+//translate([dia1+5, 0, 0])
+//coolTube();
+module electronicsCase() {
+  difference() {
+    union() {
+      //cylinder(d=dia1small, h=lowerThreadHeight+0.01);
+      OuterThread(dia1small/2, pitch, revolutions, dia1small/2);
+      translate([0,0,lowerThreadHeight])
+      cylinderChamfer(d=dia1, 
+          h=electronicsHeight, 
+          chamferTop=0, chamferBottom=(dia1-dia1small)/2);
+      translate([0,0,lowerThreadHeight+electronicsHeight])
+      InnerThread(dia1small/2, pitch, revolutions, (dia1-dia1small)/2);
+    }
+    let(h=electronicsHeight+10) {
+      translate([0,0,2.4])
+      translate([0,0,h/2])
+      cube([18+thingGap,30.5+thingGap,h], center=true);
+    }
+    translate([0,0,-0.01])
+    cylinder(d=electronicsDia0, h=lowerThreadHeight+electronicsHeight+0.02);
+
+    translate([0,0,5.4])
+    cylinder(d=electronicsDia1, h=lowerThreadHeight+electronicsHeight+0.02);
+    
+  }
+}
+
+module batteryCase() {
+  difference() {
+    union() {
+      //cylinder(d=dia1small, h=lowerThreadHeight+0.01);
+      OuterThread(dia1small/2, pitch, revolutions, dia1small/2);
+      translate([0,0,lowerThreadHeight])
+      cylinderChamfer(d=dia1, 
+          h=batteryCaseHeight, 
+          chamferTop=0, chamferBottom=(dia1-dia1small)/2);
+      translate([0,0,lowerThreadHeight+batteryCaseHeight])
+      InnerThread(dia1small/2, pitch, revolutions, (dia1-dia1small)/2);
+    }
+    let(h=lowerThreadHeight+batteryCaseHeight) {
+      translate([0,0,1.4])
+      translate([0,0,h/2])
+      cube([32,32,h], center=true);
+    }
+    translate([0,0,-0.01])
+    cylinder(d=electronicsDia0, h=lowerThreadHeight+electronicsHeight+100.02);
+  }
+}
+
+module batteryCap() {
+  let( uh = 8 ) {
+    translate([0,0,lowerThreadHeight+uh])
+    rotate([0,180,0])
+    difference() {
+      union() {
+        OuterThread(dia1small/2, pitch, revolutions, dia1small/2);
+        translate([0,0,lowerThreadHeight])
+        cylinderChamfer(d=dia1, 
+            h=uh, 
+            chamferTop=(dia1-dia1small)/2, chamferBottom=0);
+      }
+      translate([0,0,-0.01])
+      cylinder(d=31*1.41, h=lowerThreadHeight+2);    
+    }
+  }
+}
+
+electronicsCase();
+
+//batteryCase();
+//translate([0, dia1*1.1, 0]) batteryCap();
+
+translate([0, dia1*1.1, 0]) coolTube();

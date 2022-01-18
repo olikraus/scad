@@ -10,6 +10,10 @@
   8 Nov 2021 (https://github.com/olikraus/scad/issues/1)
     - Make cart clip side walls thicker (add 1 mm on both sides)
     - Increase height as suggested in the thingiverse comments (63-->65)
+    
+  16 Jan 2022
+    - Increased stop champfer (4.6 --> 5.0)
+    - Increased stability of cart holder stopper (extra big champfer)
 
 */
 
@@ -49,7 +53,7 @@ phone_clip_gap = 1;
 generic_chamfer = 1;
 
 // Stop_chamfer / triangle which fixes the smartphone holder at a specific angle
-stop_chamfer = 4.6;
+stop_chamfer = 5.0;
 
 // Small chamfer (in mm), which is used for some outside walls
 mini_chamfer = 0.5;
@@ -334,7 +338,7 @@ module cart_clip() {
           /* generic_chamfer */
           /* generic_chamferBody = 0, generic_chamferBottom=0, generic_chamferTop=0 */
           CenterCube([smartphone_width+2*wall+phone_clip_gap, smartphone_thickness+0*wall+10, height+0.02],
-            ChamferBody = generic_chamfer, ChamferBottom=generic_chamfer, ChamferTop=generic_chamfer);
+            ChamferBody = generic_chamfer, ChamferBottom=generic_chamfer+3, ChamferTop=generic_chamfer);
             
           /* remove full front wall */
           translate([0,smartphone_thickness-0.01,-0.01])
@@ -344,7 +348,7 @@ module cart_clip() {
           translate([0,+wall-smartphone_thickness,-height+lhcc])
           CenterCube([smartphone_width+2*wall+phone_clip_gap, smartphone_thickness+0*wall, height+0.02]);
 
-          translate([0,generic_chamfer-smartphone_thickness,lhcc+wall])
+          translate([0,generic_chamfer-smartphone_thickness+3,lhcc+wall])
           CenterCube([smartphone_width-16,smartphone_thickness, height-lhcc-cart_grid_dia ]);
           /*
           for( x=[nfirst:nstep:smartphone_width] ) {
@@ -425,6 +429,7 @@ difference() {
   cube([50, 100, 100], center=true);
 }
 */
+
 
 translate([0,0,axis_z])
 union() {
