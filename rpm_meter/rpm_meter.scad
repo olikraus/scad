@@ -7,7 +7,7 @@ bottom_thickness = 0.8;
 minkowski_radius = 1.6;
 oled_width = 25.8;
 oled_height = 26.4;
-oled_display_height = 12;
+oled_display_height = 12.4;
 oled_display_width = 23;
 oled_display_hshift = 1.4;
 oled_thickness = 4;
@@ -108,11 +108,11 @@ module rpm_box() {
     rpm_box_lower_cutout();
     rpm_box_upper_cutout();
     
-    translate([rpm_meter_depth,11,rpm_meter_width/2])
+    translate([rpm_meter_depth,12,rpm_meter_width/2])
     rotate([0,90,0])
     cylinder(r=8, h=(minkowski_radius+wall)*2, center=true, $fn=24);
     
-    translate([rpm_meter_depth,rpm_meter_height-11,rpm_meter_width/2])
+    translate([rpm_meter_depth,rpm_meter_height-12,rpm_meter_width/2])
     rotate([0,90,0])
     cylinder(r=8, h=(minkowski_radius+wall)*2, center=true, $fn=24);
     
@@ -166,13 +166,14 @@ module square_frustum(bottom=[10,10], top=[0,0], h=10, ChamferBody=0) {
 
 module oled_bezel() {
   difference() {
-    translate([0,0,minkowski_radius/2])
-    cube([oled_height-0.3, oled_width-0.3, minkowski_radius], center=true); 
+    //translate([0,0,minkowski_radius/2])
+    //cube([oled_height-0.3, oled_width-0.3, minkowski_radius], center=true); 
+    square_frustum([oled_height-0.4, oled_width-0.4], [oled_height-0.4, oled_width-0.4],minkowski_radius, ChamferBody=0.6);
 
     copy_mirror([1,0,0])
     copy_mirror([0,1,0])
     translate([oled_height/2-oled_screw_corner/2, oled_width/2-oled_screw_corner/2, 0])
-    cylinder(d=oled_screw_dia, h=oled_screw_hole_length*2, center=true);
+    cylinder(d=oled_screw_dia*1.06, h=oled_screw_hole_length*2, center=true, $fn=16);
 
     translate([oled_display_hshift,0,-0.01])
     square_frustum([oled_display_height, oled_display_width], [oled_display_height+minkowski_radius, oled_display_width+minkowski_radius],minkowski_radius+0.02, ChamferBody=1);
