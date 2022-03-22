@@ -9,6 +9,7 @@
 
    v1.0 initial version
    v1.1 changed infill from 60% to 40%, increased radius
+      increased channel depth
    
 */  
 
@@ -24,7 +25,7 @@ inner_radius = 60;
 extension_length = 40;
 
 // The width of the stand in mm
-channel_depth = 15;
+channel_depth = 20;
 
 /* [advanced] */
 
