@@ -1,8 +1,11 @@
 length = 26;
-dia = 8;
+dia_start = 8.4;
+dia_end = 8.2;
 wall = 1.8;
 //cylinder(h = length, r1 = length, r2=0, $fn=4);
 
+dia = (dia_start + dia_end)/2;
+echo(dia);
 
 /* https://www.reddit.com/r/openscad/comments/3al0m4/copying_and_rotating/ */
 module copy_rotate(degrees,vec){
@@ -25,7 +28,7 @@ module stick_holder() {
     cube([dia+2*wall, dia+2*wall, length], center=true);  
     
     translate([0,0,dia/2+wall+0.01])
-    cylinder(h=length-dia/2-wall+0.01, d1=dia-0.2, d2=dia+0.2, $fn=32);
+    cylinder(h=length-dia/2-wall+0.01, d1=dia_end, d2=dia_start, $fn=32);
   }
 }
 
