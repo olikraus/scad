@@ -1,6 +1,6 @@
 /*
 
-  kal_toh.scad
+  ikosidodekaeder_connector.scad
   
   
   
