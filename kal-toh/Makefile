@@ -13,7 +13,8 @@ SLIC3R_FLAGS+=--brim-width 4
 SLIC3R_FLAGS+=--fill-density 20% 
 #SLIC3R_FLAGS+=--solid-infill-every-layers 1
 SLIC3R_FLAGS+=--layer-height 0.2 --first-layer-height 0.3 
-SLIC3R_FLAGS+=--print-center 40,40 --duplicate-grid 5,4 --duplicate-distance 25 
+#SLIC3R_FLAGS+=--print-center 40,40 --duplicate-grid 5,4 --duplicate-distance 25 
+SLIC3R_FLAGS+=--print-center 45,75 
 
 
 

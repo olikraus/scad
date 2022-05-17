@@ -10,34 +10,35 @@
 */
 $fn=32;
 
-width=12;
-height=12;
+width=14;
+height=10;
 length=20;
-edgeDia = 3.1;
+boxmove=1.6;
+edgeDia = 3.02;
 outerLWDia = 4.7;
-innerLWDia = 4.4;
-clipWidth = 9;
+innerLWDia = 4.5;
+clipWidth = 10.2;
 clipHeight = height;
-clipThinkness = 0.7;
-clipXWidth = clipWidth*0.6;
+clipThinkness = 1.2;
+clipXWidth = clipWidth*0.8;
 clipXThinkness = width;
 clipXOffset = 1; 
 clipOffset = 1; /* offset of the clip cutout above ground */
 clipDistance = 1.5; /* distance from the edge to the clip=wall between edge and clip */
 
 difference() {
-  translate([-width/2, -width/2])
+  translate([-width/2, -width/2+boxmove,0])
   cube([width, length, height]);
 
-  translate([0,0,width/2])
+  translate([0,0,height/2])
   rotate([-90,0,0])
-  cylinder(d1=innerLWDia, d2=outerLWDia, h=length-width/2+0.01);
+  cylinder(d1=innerLWDia, d2=outerLWDia, h=length-width/2+boxmove+0.01);
 
-  translate([0,-width,width/2])
+  translate([0,-width,height/2])
   rotate([-90,0,0])
   cylinder(d=innerLWDia, h=length);
 
-  translate([0,0,width/2])
+  translate([0,0,height/2])
   rotate([0,90,0])
   cylinder(d=edgeDia, h=width+0.02, center=true);
   
