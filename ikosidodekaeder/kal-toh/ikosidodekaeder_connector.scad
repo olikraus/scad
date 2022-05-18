@@ -1,8 +1,7 @@
 /*
 
   ikosidodekaeder_connector.scad
-  
-  
+   
   
   https://memory-alpha.fandom.com/wiki/Kal-toh
   

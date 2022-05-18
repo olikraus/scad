@@ -16,7 +16,7 @@ SLIC3R_FLAGS+=--fill-density 15%
 SLIC3R_FLAGS+=--layer-height 0.2 --first-layer-height 0.3 
 #SLIC3R_FLAGS+=--print-center 40,40 --duplicate-grid 5,4 --duplicate-distance 25 
 SLIC3R_FLAGS+=--print-center 60,75 
-
+SLIC3R_FLAGS+=--temperature 208
 
 
 %.stl: %.scad
