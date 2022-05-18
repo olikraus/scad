@@ -1,6 +1,6 @@
 /*
 
-  light_connector.scad
+  light_connector_4x5.scad
    
   
   3mm x 120mm
@@ -10,6 +10,11 @@
 
 include <light_connector_lib.scad>
 
-light_connector();
+for( y=[0:3] ) {
+  for( x=[0:4] ) {
+    translate([x*22, y*28, 0])
+    light_connector();
+  }
+}
 
 
