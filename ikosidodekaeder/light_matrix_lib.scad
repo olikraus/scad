@@ -6,8 +6,8 @@
 
 $fn=16;
 
-outerLWDia = 4.7;
-innerLWDia = 4.4;
+outerLWDia = 4.84;
+innerLWDia = 4.54;
 
 xcnt=8;
 ycnt=8;

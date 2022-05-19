@@ -24,12 +24,12 @@ difference() {
     cylinder(d=16, h=height);
   }
   translate([-4,0,0])
-  cylinder(d=3.1, h=height*3, center=true, $fn=32);
+  cylinder(d=3.1, h=height*3, center=true, $fn=16);
   translate([-4,0,height/2])
-  cylinder(d=6, h=height, $fn=32);
+  cylinder(d=6, h=height, $fn=16);
   translate([4,0,0])
-  cylinder(d=3.1, h=height*3, center=true, $fn=32);
+  cylinder(d=3.1, h=height*3, center=true, $fn=16);
   translate([4,0,height/2])
-  cylinder(d=6, h=height, $fn=32);
+  cylinder(d=6, h=height, $fn=16);
   
 }
