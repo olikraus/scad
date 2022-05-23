@@ -10,8 +10,8 @@
 
 include <light_connector_lib.scad>
 
-for( y=[0:3] ) {
-  for( x=[0:4] ) {
+for( y=[0:1] ) {
+  for( x=[0:1] ) {
     translate([x*20, y*26, 0])
     light_connector();
   }

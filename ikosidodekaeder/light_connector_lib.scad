@@ -12,13 +12,13 @@ $fn=32;
 width=14;
 height=10;
 length=20;
-boxmove=1.6;
+boxmove=1.3;
 edgeDia = 3.02;
 outerLWDia = 4.7;
-innerLWDia = 4.5;
-clipWidth = 10.2;
+innerLWDia = 4.6;
+clipWidth = 10.6;
 clipHeight = height;
-clipThinkness = 1.2;
+clipThinkness = 1.5;
 clipXWidth = clipWidth*0.8;
 clipXThinkness = width;
 clipXOffset = 1; 
@@ -64,5 +64,17 @@ module light_connector() {
 
     translate([-clipXWidth/2,-clipXThinkness-clipThinkness-edgeDia/2-clipDistance+0.01,clipXOffset+clipOffset])
     cube([clipXWidth, clipXThinkness, clipHeight]);
+    
+
+    /* battery clip wire connection */
+    translate([0,0,height+0.2])
+    rotate([80,0,0])
+    cylinder(d=2.2, h=length*2, center=true);
+
+    translate([0,0,height])
+    cube([4, length*1.0, 2], center=true);
+    
   }
 }
+
+

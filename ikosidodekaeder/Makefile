@@ -3,13 +3,15 @@
 
 
 #SCAD=$(wildcard *.scad)
-SCAD=ikosidodekaeder_connector.scad light_connector.scad light_connector_4x5.scad
+SCAD=ikosidodekaeder_connector.scad 
+SCAD+=light_connector.scad light_connector_4x5.scad light_connector_2x2.scad
 SCAD+=light_matrix.scad light_frame.scad
 SCAD+=pentagon.scad
 STL=$(SCAD:.scad=.stl)
 PNG=$(SCAD:.scad=.png)
 GCODE=$(SCAD:.scad=.gcode)
 
+SLIC3R_FLAGS+=--temperature 208
 SLIC3R_FLAGS=--gcode-flavor reprap --nozzle-diameter 0.4 --filament-diameter 1.75
 SLIC3R_FLAGS+=--start-gcode start.gcode
 SLIC3R_FLAGS+=--brim-width 4
@@ -18,7 +20,6 @@ SLIC3R_FLAGS+=--fill-density 20%
 SLIC3R_FLAGS+=--layer-height 0.2 --first-layer-height 0.3 
 #SLIC3R_FLAGS+=--print-center 40,40 --duplicate-grid 5,4 --duplicate-distance 25 
 SLIC3R_FLAGS+=--print-center 60,75 
-SLIC3R_FLAGS+=--temperature 208
 
 
 %.stl: %.scad

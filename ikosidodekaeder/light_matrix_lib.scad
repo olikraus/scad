@@ -6,8 +6,8 @@
 
 $fn=16;
 
-outerLWDia = 4.84;
-innerLWDia = 4.54;
+outerLWDia = 5.0;
+innerLWDia = 4.6;
 
 xcnt=8;
 ycnt=8;
@@ -15,10 +15,11 @@ xstep=10;
 ystep=10;
 xwidth=xcnt*xstep;
 ywidth=ycnt*ystep;
-matrixHeight=15;
+matrixHeight=14;
 frameWall=2;
-framePedestalWidth=1;
-framePedestalHeight=3;
+framePedestalOuterWidth=0.4;  // used for frame and matrix (=gap for the LED matrix)
+framePedestalInnerWidth=4;  // used only by frame
+framePedestalHeight=7;
 framePedestalInsertDelta=0.3;
 frameHeight=4;
 
@@ -26,8 +27,8 @@ frameHeight=4;
 
 module lightMatrix() {
   difference() {
-    CenterCube([xwidth+framePedestalWidth*2, 
-      ywidth+framePedestalWidth*2, 
+    CenterCube([xwidth+framePedestalOuterWidth*2, 
+      ywidth+framePedestalOuterWidth*2, 
       matrixHeight], 
       ChamferBody = 1.2, ChamferBottom=0, ChamferTop=1.2);
     for( y=[0:ycnt-1] ) {
@@ -42,15 +43,15 @@ module lightMatrix() {
 module lightFrame() {
   difference() {
     CenterCube([
-      xwidth+frameWall*2+framePedestalWidth*2, 
-      ywidth+frameWall*2+framePedestalWidth*2, 
+      xwidth+frameWall*2+framePedestalOuterWidth*2, 
+      ywidth+frameWall*2+framePedestalOuterWidth*2, 
       frameHeight+framePedestalHeight], ChamferBody = 1, ChamferBottom=0, ChamferTop=1);
     translate([0,0,-0.01])
-    CenterCube([xwidth, ywidth, frameHeight+0.02], ChamferBody = 1, ChamferBottom=0, ChamferTop=0);
+    CenterCube([xwidth-framePedestalInnerWidth*2, ywidth-framePedestalInnerWidth*2, frameHeight+0.02], ChamferBody = 1, ChamferBottom=0, ChamferTop=0);
     translate([0,0,frameHeight])
     CenterCube([
-      xwidth+framePedestalWidth*2+2*framePedestalInsertDelta, 
-      ywidth+framePedestalWidth*2+2*framePedestalInsertDelta, 
+      xwidth+framePedestalOuterWidth*2+2*framePedestalInsertDelta, 
+      ywidth+framePedestalOuterWidth*2+2*framePedestalInsertDelta, 
       framePedestalHeight+0.02], ChamferBody = 0.5, ChamferBottom=0, ChamferTop=0);
 
     for(i=[-3:3] ) {
