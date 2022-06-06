@@ -5,7 +5,7 @@
 #SCAD=$(wildcard *.scad)
 SCAD=ikosidodekaeder_connector.scad 
 SCAD+=light_connector.scad light_connector_4x5.scad light_connector_2x2.scad
-SCAD+=light_matrix.scad light_frame.scad
+SCAD+=light_matrix.scad light_frame.scad stand.scad
 SCAD+=pentagon.scad
 STL=$(SCAD:.scad=.stl)
 PNG=$(SCAD:.scad=.png)

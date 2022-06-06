@@ -2,11 +2,22 @@
 Eigentlich ganz hilfreich:
   https://stm32-base.org/
 
+V = 82 GPIO
 
-STM32F407VET6
+STM32F407VET6 (E=512 KB Flash)
   https://www.amazon.de/DollaTek-STM32F407VET6-Entwicklungsboard-Mindestsystemlernplatine-ARM-Kernplatine/dp/B07PNDWBWM/ref=dp_prsubs_1?pd_rd_i=B07PNDWBWM&psc=1
   https://www.amazon.de/dp/B09FQ647Z3
   
   https://de.aliexpress.com/item/1005001579853052.html
-  
-  
+
+STM32F407VGT6 (G=1204 KB Flash)
+
+Z=114 GPIO
+
+STM32F407ZGT6 G=1204 KB Flash)
+
+
+STM32F407VET6  82 GPIOs, 512KB Flash
+STM32F407VGT6  82 GPIOs, 1024KB Flash
+STM32F407ZET6  114 GPIOs, 512KB Flash
+STM32F407ZGT6  114 GPIOs, 1024KB Flash

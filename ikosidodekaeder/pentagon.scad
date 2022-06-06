@@ -3,6 +3,12 @@
 height=9;
 dia=70;
 
+/*
+  dia / 2 = sec / (2*sin(36))
+  dia = sec / sin(36)
+  dia * sin(36) = sec
+  dia *0.588 = sec
+*/
 module PentagonFrame(dia, height, wall) {
   difference() {
     cylinder(d=dia, h=height, $fn=5);
