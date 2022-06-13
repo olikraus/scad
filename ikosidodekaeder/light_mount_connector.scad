@@ -1,6 +1,6 @@
 /*
 
-  light_connector.scad
+  light_mount_connector.scad
    
   
   3mm x 120mm
@@ -17,6 +17,6 @@
 
 include <light_connector_lib.scad>
 
-light_connector();
+//light_connector();
 
-//light_mount_connector();
+light_mount_connector();

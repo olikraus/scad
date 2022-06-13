@@ -16,6 +16,8 @@ standHeight = 10;
 ikosidodekaederOuterDia = ikosidodekaederDia+6;
 bottomHeight = 2;
 
+echo(ikosidodekaederDia);
+
 difference() {
   cylinder(d1=standLowerDia, d2=standUpperDia,standHeight, $fn=5);
   

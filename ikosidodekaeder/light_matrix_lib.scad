@@ -23,7 +23,27 @@ framePedestalHeight=7;
 framePedestalInsertDelta=0.3;
 frameHeight=4;
 
-
+module mountLug() {
+  let ( w = 8, h = 3 ) {
+    difference() {
+      union() {
+        translate([0,0,h])
+        rotate([45,0,0])
+        cube([w, h, h], center=true);
+        
+      
+        translate([-w/2, 0, 0])
+        cube([w, w-1, h]);
+        translate([0,w-1,0])
+        cylinder(h=h, d=w);
+      }
+      translate([0,w-1,0])
+      cylinder(d=3, h= 3*h, center=true);
+      translate([0,w-1,h*0.6])
+      cylinder(d=6, h= h);
+    }
+  }
+}
 
 module lightMatrix() {
   difference() {
@@ -41,26 +61,37 @@ module lightMatrix() {
 }
 
 module lightFrame() {
-  difference() {
-    CenterCube([
-      xwidth+frameWall*2+framePedestalOuterWidth*2, 
-      ywidth+frameWall*2+framePedestalOuterWidth*2, 
-      frameHeight+framePedestalHeight], ChamferBody = 1, ChamferBottom=0, ChamferTop=1);
-    translate([0,0,-0.01])
-    CenterCube([xwidth-framePedestalInnerWidth*2, ywidth-framePedestalInnerWidth*2, frameHeight+0.02], ChamferBody = 1, ChamferBottom=0, ChamferTop=0);
-    translate([0,0,frameHeight])
-    CenterCube([
-      xwidth+framePedestalOuterWidth*2+2*framePedestalInsertDelta, 
-      ywidth+framePedestalOuterWidth*2+2*framePedestalInsertDelta, 
-      framePedestalHeight+0.02], ChamferBody = 0.5, ChamferBottom=0, ChamferTop=0);
+  union() {
+    difference() {
+      CenterCube([
+        xwidth+frameWall*2+framePedestalOuterWidth*2, 
+        ywidth+frameWall*2+framePedestalOuterWidth*2, 
+        frameHeight+framePedestalHeight], ChamferBody = 1, ChamferBottom=0, ChamferTop=1);
+      translate([0,0,-0.01])
+      CenterCube([xwidth-framePedestalInnerWidth*2, ywidth-framePedestalInnerWidth*2, frameHeight+0.02], ChamferBody = 1, ChamferBottom=0, ChamferTop=0);
+      translate([0,0,frameHeight])
+      CenterCube([
+        xwidth+framePedestalOuterWidth*2+2*framePedestalInsertDelta, 
+        ywidth+framePedestalOuterWidth*2+2*framePedestalInsertDelta, 
+        framePedestalHeight+0.02], ChamferBody = 0.5, ChamferBottom=0, ChamferTop=0);
 
-    for(i=[-3:3] ) {
-      translate([i*8,0,0])
-      rotate([90,0,0])
-      cylinder(d=5, h=xwidth*2, center=true);
+      for(i=[-3:3] ) {
+        translate([i*8,0,0])
+        rotate([90,0,0])
+        cylinder(d=5, h=xwidth*2, center=true);
+      }
+
     }
+    
+    translate([-xwidth/2-frameWall-framePedestalOuterWidth,0,0])
+    rotate([0,0,90])
+    mountLug();
 
+    translate([+xwidth/2+frameWall+framePedestalOuterWidth,0,0])
+    rotate([0,0,-90])
+    mountLug();
   }
+
 }
 
 

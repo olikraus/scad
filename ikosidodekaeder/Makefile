@@ -6,7 +6,8 @@
 SCAD=ikosidodekaeder_connector.scad 
 SCAD+=light_connector.scad light_connector_4x5.scad light_connector_2x2.scad
 SCAD+=light_matrix.scad light_frame.scad stand.scad
-SCAD+=pentagon.scad
+SCAD+=light_mount_connector.scad light_mount_connector_3x2.scad 
+SCAD+=pentagon.scad merge.scad
 STL=$(SCAD:.scad=.stl)
 PNG=$(SCAD:.scad=.png)
 GCODE=$(SCAD:.scad=.gcode)

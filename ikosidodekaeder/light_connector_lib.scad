@@ -25,6 +25,28 @@ clipXOffset = 1;
 clipOffset = 1; /* offset of the clip cutout above ground */
 clipDistance = 1.5; /* distance from the edge to the clip=wall between edge and clip */
 
+module mountLug2() {
+  let ( w = 8, h = clipXOffset+clipOffset ) {
+    difference() {
+      union() {
+        // translate([0,0,h])
+        // rotate([45,0,0])
+        // cube([w, h, h], center=true);
+        
+      
+        translate([-w/2, 0, 0])
+        cube([w, w-1, h]);
+        translate([0,w-1,0])
+        cylinder(h=h, d=w);
+      }
+      translate([0,w-1,0])
+      cylinder(d=3, h= 3*h, center=true);
+      translate([0,w-1,h*0.6])
+      cylinder(d=6, h= h);
+    }
+  }
+}
+
 
 module light_connector() {
   difference() {
@@ -77,4 +99,12 @@ module light_connector() {
   }
 }
 
+module light_mount_connector() {
+  union() {
+    light_connector();
+    translate([0,-width/2+boxmove+1,0])
+    rotate([0,0,180])
+    mountLug2();
+  }
+}
 
