@@ -19,4 +19,4 @@ include <light_connector_lib.scad>
 
 //light_connector();
 
-light_mount_connector();
+light_mount_connector(14);
