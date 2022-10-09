@@ -14,6 +14,10 @@
   16 Jan 2022
     - Increased stop champfer (4.6 --> 5.0)
     - Increased stability of cart holder stopper (extra big champfer)
+    
+  20 Jun 2022
+    - Increased stability of cart holder stopper 
+    - Increased width from 83 to 84
 
 */
 
@@ -21,7 +25,7 @@
 /* [basic] */
 
 // Width (in mm) of the smartphone. Add 1 or more millimeters here.
-smartphone_width = 83;
+smartphone_width = 84;
 
 // Thickness (in mm) of the smartphone. Add 1 to 3 millimeters.
 // This value must be between 13 and 20
@@ -338,7 +342,7 @@ module cart_clip() {
           /* generic_chamfer */
           /* generic_chamferBody = 0, generic_chamferBottom=0, generic_chamferTop=0 */
           CenterCube([smartphone_width+2*wall+phone_clip_gap, smartphone_thickness+0*wall+10, height+0.02],
-            ChamferBody = generic_chamfer, ChamferBottom=generic_chamfer+3, ChamferTop=generic_chamfer);
+            ChamferBody = generic_chamfer, ChamferBottom=generic_chamfer+4.0, ChamferTop=generic_chamfer);
             
           /* remove full front wall */
           translate([0,smartphone_thickness-0.01,-0.01])
@@ -348,8 +352,9 @@ module cart_clip() {
           translate([0,+wall-smartphone_thickness,-height+lhcc])
           CenterCube([smartphone_width+2*wall+phone_clip_gap, smartphone_thickness+0*wall, height+0.02]);
 
+          /* remove back wall */
           translate([0,generic_chamfer-smartphone_thickness+3,lhcc+wall])
-          CenterCube([smartphone_width-16,smartphone_thickness, height-lhcc-cart_grid_dia ]);
+          CenterCube([smartphone_width-16,smartphone_thickness+3, height-lhcc-cart_grid_dia ]);
           /*
           for( x=[nfirst:nstep:smartphone_width] ) {
             translate([x-smartphone_width/2,-smartphone_thickness/2-wall,0])
