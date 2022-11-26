@@ -184,7 +184,7 @@ module part1() {
         translate([4*ts+ts/2, 
             8*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+             
             text("1", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -198,7 +198,7 @@ module part2pre() {
         translate([1*ts+ts/2, 
             6*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+            
             text("2", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -216,7 +216,7 @@ module part2() {
         translate([1*ts+ts/2, 
             6*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+            
             text("2", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -234,7 +234,7 @@ module part3() {
         translate([0*ts+ts/2, 
             1*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+            
             text("3", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -252,7 +252,7 @@ module part4() {
         translate([2*ts+ts/2, 
             2*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+            
             text("4", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -270,7 +270,7 @@ module part5() {
         translate([4*ts+ts/2, 
             2*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+            
             text("5", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -288,7 +288,7 @@ module part6() {
         translate([6*ts+ts/2, 
             3*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+             
             text("6", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -306,7 +306,7 @@ module part7() {
         translate([3*ts+ts/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+             
             text("7", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -324,7 +324,7 @@ module part8() {
         translate([5*ts+ts/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+            
             text("8", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -342,7 +342,7 @@ module part9() {
         translate([6*ts+ts/2, 
             0*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+            
             text("9", halign="center", 
                 valign="center", size=fontsize);
     }
@@ -360,7 +360,7 @@ module part10() {
         translate([6*ts+ts/2-0.5, 
             1*ts+ts/2, 
             height/2+ledge_height-gaph]) 
-            linear_extrude(gaph+0.01) 
+            
             text("10", halign="center", 
                 valign="center", spacing=0.8, size=fontsize);
     }
