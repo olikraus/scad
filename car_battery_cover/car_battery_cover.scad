@@ -1,17 +1,18 @@
 
 
 $fn=64;
-connector_dia = 4;
-connector_height = 7;
+connector_dia = 5.0;
+connector_dia_2 = 4.4;  // smaller than connector_dia
+connector_height = 14;
 mesh_height = 10;
-mesh_cutout_height = 8.4;
+mesh_cutout_height = 8;
 mesh_cutout_dia = 56;
 mesh_cutout_wall = 3;
 mesh_cutout_delta = 6;
 
 module con() {
     translate([0,0, 2])
-    cylinder(h=connector_height-2, d=connector_dia, $fn=32);  
+    cylinder(h=connector_height-2, d1=connector_dia, d2=connector_dia_2, $fn=32);  
     cylinder(h=2, d1=connector_dia+4, d2=connector_dia, $fn=16);
 }
 
