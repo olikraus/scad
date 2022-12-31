@@ -36,20 +36,20 @@ smd_height = 40;
 arm_length = 50;
 
 // screw diameter ring magnet
-magnet_screw_dia = 2;
+magnet_screw_dia = 3;
 
 // screw diameter ring magnet
-magnet_screw_height = 15;
+magnet_screw_height = 18;
 
-// screw diameter for the screw, which will fix the needle
-needle_screw_dia = 4;
+// screw diameter for the screw, which will fix the needle (M3)
+needle_screw_dia = 3.4;
 
-needle_screw_head_dia = 7;
+needle_screw_head_dia = 6.4;
 
-// nut size (diameter) of the screw, which will fix the needle
-needle_nut_dia = 7.2;
+// nut size (diameter) of the screw, which will fix the needle (M3: 6.1)
+needle_nut_dia = 6.6;
 
-needle_nut_height = 3.2;
+needle_nut_height = 2.8;
 
 chamfer = 1;
 
@@ -190,6 +190,12 @@ module pcb_holder() {
     translate([0,-dia*0.52,pcb_height])
     rotate([45,0,0])
     cube([dia, pcb_cutout, pcb_cutout], center=true);
+    
+    /* cutout for PCB */
+    translate([0,+dia*0.55,pcb_height])
+    rotate([45,0,0])
+    cube([dia, pcb_cutout, pcb_cutout], center=true);
+    
   };
 };
 
@@ -230,7 +236,7 @@ module smd_holder() {
       // cutout for the needle
       translate([0,-arm_length/2+dia/2,-dia/4])
       rotate([0,0,45])
-      CenterCube([needle_dia*1.4,needle_dia*1.4,dia]);
+      CenterCube([needle_dia*1.7,needle_dia*1.7,dia]);
 
       translate([dia/2-needle_nut_height/2+0.01, -arm_length/2+dia/4, dia/4])
       rotate([0,90,0])
