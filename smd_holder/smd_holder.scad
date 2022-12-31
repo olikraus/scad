@@ -36,7 +36,7 @@ smd_height = 40;
 arm_length = 50;
 
 // screw diameter ring magnet
-magnet_screw_dia = 3;
+magnet_screw_dia = 3.6;
 
 // screw diameter ring magnet
 magnet_screw_height = 18;
@@ -49,6 +49,7 @@ needle_screw_head_dia = 6.4;
 // nut size (diameter) of the screw, which will fix the needle (M3: 6.1)
 needle_nut_dia = 6.6;
 
+// nut height of the screw, which will fix the needle (M3: 2.4)
 needle_nut_height = 2.8;
 
 chamfer = 1;
@@ -59,6 +60,10 @@ chamfer = 1;
 $fn=64;
 
 /* [hidden] */
+
+
+
+function flatten(l) = [ for (a = l) for (b = a) b ] ;
 
 /*
   ChamferZCube(w=1,h=10)
@@ -199,7 +204,7 @@ module pcb_holder() {
   };
 };
 
-module smd_holder() {
+module diamond_smd_holder() {
   union() {
     /* campfer cylinder plate */
     translate([0,0,smd_height+dia/2-chamfer])
@@ -225,24 +230,27 @@ module smd_holder() {
     difference() {
       CenterCube([dia, arm_length, dia/2], ChamferBody=chamfer, ChamferBottom=chamfer, ChamferTop=chamfer);
 
+      // diamond gap
       translate([-needle_dia/2,-arm_length/2-dia,-1])
       cube([needle_dia, arm_length, dia/2+2]);
       
-      // gap
-      translate([0, -arm_length/2+dia/4, dia/4])
-      rotate([0,90,0])
-      cylinder(d=needle_screw_dia, h=dia+2, center=true);
-
       // cutout for the needle
-      translate([0,-arm_length/2+dia/2,-dia/4])
+      translate([0,-arm_length/2+dia/8,-dia/4])
       rotate([0,0,45])
       CenterCube([needle_dia*1.7,needle_dia*1.7,dia]);
 
-      translate([dia/2-needle_nut_height/2+0.01, -arm_length/2+dia/4, dia/4])
+      // screw rod
+      translate([0, -arm_length/2+dia/4+dia/8, dia/4])
+      rotate([0,90,0])
+      cylinder(d=needle_screw_dia, h=dia+2, center=true);
+
+      // screw nut
+      translate([dia/2-needle_nut_height/2+0.01, -arm_length/2+dia/4+dia/8, dia/4])
       rotate([0,90,0])
       cylinder(d=needle_nut_dia, h=needle_nut_height, center=true, $fn=6); // m=3.2 DIN 934 
 
-      translate([-dia/2+needle_nut_height/2-0.01, -arm_length/2+dia/4, dia/4])
+      // screw head
+      translate([-dia/2+needle_nut_height/2-0.01, -arm_length/2+dia/4+dia/8, dia/4])
       rotate([0,90,0])
       cylinder(d=needle_nut_dia, h=needle_nut_height, center=true); // m=3.2 DIN 934 
       
@@ -250,15 +258,88 @@ module smd_holder() {
   }
 }
 
+module z_smd_holder() {
+  z_gap = [
+    [-dia/8,0],
+    [0, dia/8],
+    [-dia/8, dia/4],
+
+    //[0, dia/4+dia/8],
+
+    [0, arm_length-dia]
+  ];
+
+
+  z_gap_l = [ for( i = [0:1:len(z_gap)-1] ) z_gap[i]-[needle_dia/2,0] ];
+  z_gap_r = [ for( i = [len(z_gap)-1:-1:0] ) z_gap[i]+[needle_dia/2,0] ];
+  p = flatten([z_gap_l, z_gap_r]);
+
+  union() {
+    /* campfer cylinder plate */
+    translate([0,0,smd_height+dia/2-chamfer])
+    intersection() {
+      cylinder(d=dia, h=chamfer);
+      cylinder(d1=dia, d2=0, h=(dia)/2);
+    }
+    
+    translate([0,-dia/3,smd_height])
+    rotate([45,0,0])
+    cube([dia/3, dia*sqrt(2)/2, dia*sqrt(2)/2], center=true);
+
+    difference() {
+      /* body (without campfer plate */
+      cylinder(d=dia, h=smd_height+dia/2-chamfer);
+
+      /* cutout for magnet screw */
+      cylinder(d=magnet_screw_dia, h=magnet_screw_height);
+    }
+
+    /* 0.8: move arm and cylinder a little bit together: this will look better */
+    translate([0, -arm_length/2+0.8, smd_height])
+    difference() {
+      CenterCube([dia, arm_length, dia/2], ChamferBody=chamfer, ChamferBottom=chamfer, ChamferTop=chamfer);
+
+      // z gap
+      translate([0,-arm_length/2,-1])
+      linear_extrude(dia/2+2)
+      polygon(p);
+      
+      // cutout for the needle
+      translate([0,-arm_length/2+dia/8,-dia/4])
+      CenterCube([needle_dia*1.0,needle_dia*1.0,dia]);
+
+      // screw rod
+      translate([0, -arm_length/2+dia/4+dia/8, dia/4])
+      rotate([0,90,0])
+      cylinder(d=needle_screw_dia, h=dia+2, center=true);
+
+      // screw nut
+      translate([dia/2-needle_nut_height/2+0.01, -arm_length/2+dia/4+dia/8, dia/4])
+      rotate([0,90,0])
+      cylinder(d=needle_nut_dia, h=needle_nut_height, center=true, $fn=6); // m=3.2 DIN 934 
+
+      // screw head
+      translate([-dia/2+needle_nut_height/2-0.01, -arm_length/2+dia/4+dia/8, dia/4])
+      rotate([0,90,0])
+      cylinder(d=needle_nut_dia, h=needle_nut_height, center=true); // m=3.2 DIN 934 
+      
+    }
+  }
+}
+
+
 /* print all parts */
 
 translate([0,0,smd_height+dia/2])
 rotate([0,180,0])
-smd_holder();
+//diamond_smd_holder();
+z_smd_holder();
 
 translate([dia*2, 0, 0])
 pcb_holder();
 
 translate([dia*2, -dia*2, 0])
 pcb_holder();
+
+
 
