@@ -9,25 +9,27 @@
 
 */
 
-/* [basic] */
+/* [Basic] */
+// basic diameter of all holders, should be equal to the ring magnet
+dia=20;  // [10:50] 
 
-// basic diameter of all holders
-dia = 20;
+// diameter of the needle (can be larger, 1.0mm should be fine)
+needle_dia = 1.0; 
 
-// diameter of the needle
-needle_dia = 0.8;
+// screw diameter for the ring magnet, experimental value, depends on the screw
+magnet_screw_dia = 4.0;
 
 
 /* [advanced] */
-
 // height of the PCB holder
 height = 30;
 
-// PCB position above ground (must be lower then 'height')
-pcb_height = 25;
+// PCB position above ground (must be lower then 'height', best is height-4)
+pcb_height = 26;
 
-// PCB cutout edge size
-pcb_cutout = 4;
+// screw diameter ring magnet (must be lower than 'height')
+// defaults to 18mm, which should be good enough for most screws
+magnet_screw_height = 18;
 
 // height of the SMD holder without the arm height itself (which is dia/2)
 smd_height = 40;
@@ -35,11 +37,7 @@ smd_height = 40;
 // smd part holder arm length */
 arm_length = 50;
 
-// screw diameter ring magnet
-magnet_screw_dia = 3.6;
 
-// screw diameter ring magnet
-magnet_screw_height = 18;
 
 // screw diameter for the screw, which will fix the needle (M3)
 needle_screw_dia = 3.4;
@@ -52,14 +50,18 @@ needle_nut_dia = 6.6;
 // nut height of the screw, which will fix the needle (M3: 2.4)
 needle_nut_height = 2.8;
 
+/* [expert] */
+// PCB cutout edge size. I don't see a reason to change this (default: 4mm).
+pcb_cutout = 4;
+
+// Chamfer, defaults to 1mm, shouldn't be changed
 chamfer = 1;
 
-/* [expert] */
 
 // segments per revolution
 $fn=64;
 
-/* [hidden] */
+/* [Hidden] */
 
 
 
@@ -192,12 +194,12 @@ module pcb_holder() {
     cylinder(d=magnet_screw_dia, h=magnet_screw_height);
     
     /* cutout for PCB */
-    translate([0,-dia*0.52,pcb_height])
+    translate([0,-dia*0.54,pcb_height])
     rotate([45,0,0])
     cube([dia, pcb_cutout, pcb_cutout], center=true);
     
     /* cutout for PCB */
-    translate([0,+dia*0.55,pcb_height])
+    translate([0,+dia*0.57,pcb_height])
     rotate([45,0,0])
     cube([dia, pcb_cutout, pcb_cutout], center=true);
     
