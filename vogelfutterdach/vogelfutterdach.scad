@@ -1,5 +1,5 @@
 
-$fn=128;
+$fn=16;
 
 height = 20;
 dia = 110;
@@ -21,7 +21,7 @@ difference() {
     }
 
     difference() {
-      cylinder(d1=dia, d2=0, h=height);
+      cylinder(d1=dia, d2=0, h=height, $fn=128);
       translate([0,0,-0.01])
       cylinder(d1=dia-10, d2=0, h=height-2);
     }
