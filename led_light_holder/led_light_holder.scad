@@ -1,12 +1,12 @@
 
 $fn=32;
 
-wall = 2.6;
-inner_width = 35.5;
+wall = 3;
+inner_width = 35;
 outer_width = inner_width + 2*wall;
-total_len = 10;
+total_len = 14;
 base_height = wall;
-inner_height = 15;
+inner_height = 13;
 outer_height = inner_height+1*base_height;
 
 /*
@@ -117,26 +117,25 @@ module CenterCube(dim, ChamferBody = 0, ChamferBottom=0, ChamferTop=0) {
       translate([0,dim[1]/2,dim[2]])
       ChamferXCube(w=ChamferTop,h=dim[0],d=0.01);
     }
-    
   }
 }
 
 
-/*
-translate([0,0, base_height/2])
-cube([iw, len, base_height], center=true);
-*/
+module holder() {
+  difference() {
+    CenterCube([outer_width, total_len, outer_height]);
+    translate([0,0,base_height+0.01])
+    CenterCube([inner_width, 2*total_len, inner_height], ChamferBottom=3.6, ChamferTop=3.6);
+    translate([0,0,base_height+inner_height/2])
+    CenterCube([inner_width-4.6, 2*total_len, inner_height]);
 
-difference()
-{
-  CenterCube([outer_width, total_len, outer_height]);
-  translate([0,0,base_height+0.01])
-  CenterCube([inner_width, 2*total_len, inner_height], ChamferBottom=3.6, ChamferTop=3.6);
-  translate([0,0,base_height+inner_height/2])
-  CenterCube([inner_width-4.6, 2*total_len, inner_height]);
-
-  cylinder(d=4,h=base_height*3, center=true);
-  
-  translate([0,0,-0.5])
-  cylinder(d1=0, d2=12, h=5);
+    cylinder(d=4,h=base_height*3, center=true);
+    
+    translate([0,0,-0.5])
+    cylinder(d1=0, d2=12, h=5);
+  }
 }
+
+holder();
+translate([0, total_len+4, 0])
+holder();
