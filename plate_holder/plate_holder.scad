@@ -1,7 +1,7 @@
 
-width=50;
+width=60;
 length=40;
-height=15;
+height=18;
 wall = 1.4;
 gap=2;
 
