@@ -3,6 +3,7 @@ $fn=16;
 
 height = 20;
 dia = 110;
+inner_mount_hole_dia = 5;
 
 difference() {
   union() {
@@ -15,8 +16,8 @@ difference() {
           cube([dia, 1.4, height], center=true);
         }
 
-        translate([0,-4,0])
-        cube([dia, 8, height]);
+        //translate([0,-4,0])
+        //cube([dia, 8, height]);
       }
     }
 
@@ -26,17 +27,18 @@ difference() {
       cylinder(d1=dia-10, d2=0, h=height-2);
     }
 
-    cylinder(d=10, h=height-2);
+    cylinder(d=inner_mount_hole_dia+4, h=height-2);
   }
 
+  /*
   translate([10,-2.5,-0.01])
   cube([dia, 5, height]);
 
   translate([0,-2.5,-0.01])
   cube([dia, 5, height-5]);
-
+  */
   
   translate([0,0,-0.01])
-  cylinder(d=5, h=height*2);
+  cylinder(d=inner_mount_hole_dia, h=height*2);
 
 }
