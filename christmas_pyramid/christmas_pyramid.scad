@@ -4,19 +4,20 @@ base_r = 70;
 base_h = 8;
 
 /* base rotating disk plate radius */
-base_dpr = 40;
+base_dpr = 35;
 
 /* base fence pillar height */
 base_fph = 70;
 /* base fence pillar radius */
-base_fpr = 5;
+base_fpr = 4;
 /* base fence pillar pos, must be >  base_dpr + base_fpr*/
-base_fpp = base_dpr + base_fpr + 5;
+base_fpp = base_dpr + base_fpr + 15;
 /* base fenze height */
 base_fh = 15;
 
 /* level 1 radius */
-l1_r = base_fpp+base_fpr + 6;
+//l1_r = base_fpp + base_fpr + 6;
+l1_r = base_r;
 /* level thinkness */
 l1_h = 8;
 /* level 1 z position */
@@ -24,12 +25,12 @@ l1_z = base_fph+base_h;
 
 /* level 1 disk plate radius */
 //l1_dpr = 30;
-l1_dpr = 40;
+l1_dpr = 35;
 
 /* level 1 fence pillar height */
 l1_fph = 20;
 /* level 1 fence pillar radius */
-l1_fpr = 5;
+l1_fpr = 4;
 /* level 1 fence pillar pos, must be >  l1_dpr + l1_fpr */
 //  l1_fpp = l1_dpr + l1_fpr + 4;
 l1_fpp = base_fpp;
