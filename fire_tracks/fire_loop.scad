@@ -2,7 +2,7 @@
 /* input parameter */
 inner_dia = 5;
 wall_width = 2;
-loop_dia = 100;
+loop_dia = 120;
 
 /* internal parameter */
 bezier_circle_factor = 0.61;
@@ -55,6 +55,6 @@ curve = [for (p = raw_curve) [p[0] + loop_dia/2, p[1] + inner_dia*bezier_circle_
 /* loop track */    
 //rotate([90,0,0]) linear_extrude(10) polygon(curve);
 
-rotate_extrude(convexity = 10, $fn = 100) polygon(curve);
+rotate_extrude(convexity = 10, $fn = 128) polygon(curve);
 
 
