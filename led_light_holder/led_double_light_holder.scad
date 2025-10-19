@@ -5,7 +5,7 @@ wall = 3;
 inner_width = 35;
 outer_width = inner_width + 2*wall+1;
 total_len = 14;
-base_height = wall;
+base_height = wall+1.2;
 inner_height = 13;
 outer_height = inner_height+1.2*base_height;
 
@@ -146,8 +146,19 @@ module holder(is_screw_hole=true, is_holder=true, ry=0) {
   }
 }
 
-translate([-outer_width, 0, 0])
-holder(false, true, -6);
-translate([outer_width, 0, 0])
-holder(false, true, 6);
-holder(true, false, 0);
+module holder2() {
+    union() {
+        translate([-outer_width, 0, 0])
+        holder(false, true, -6);
+        translate([outer_width, 0, 0])
+        holder(false, true, 6);
+        holder(true, false, 0);
+    }
+}
+
+rotate([0,0,45]) {
+    translate([0, total_len*0.7, 0])
+    holder2();
+    translate([0, -total_len*0.7, 0])
+    holder2();
+}
