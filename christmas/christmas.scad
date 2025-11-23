@@ -9,8 +9,8 @@ for (x = [0 : count - 1])
     for (y = [0 : count - 1])
         translate([x * spacing, y * spacing, 0])
             difference() {
-                cylinder(h=6, d1=8.15, d2=7.9);
+                cylinder(h=6, d1=8.3, d2=7.9);
                 translate([0,0,-0.01])
-                cylinder(h=9, d=3.4);
+                cylinder(h=9, d=3.6);
             }
     
