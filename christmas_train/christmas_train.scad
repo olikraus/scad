@@ -156,9 +156,11 @@ slide_outer_dia = 6;
 slide_dia_gap = 0.8;
 
 shaft_inner_dia = 8;
+shaft_inner_hole=4;
 shaft_outer_dia = 10.8;
 shaft_dia_gap = 0.8;
-shaft_inner_height = track_height*1.5;
+shaft_inner_height = 10;
+
 shaft_outer_height = track_height;
 
 
@@ -217,19 +219,23 @@ module outer_shaft() {
 
     //cylinder(d=shaft_inner_dia, h=shaft_outer_height);
 
-    translate([-(shaft_inner_dia)/2, -(shaft_inner_dia)/2, 0])
-    cube([shaft_inner_dia, shaft_inner_dia, shaft_inner_height]);
+    //translate([-(shaft_inner_dia)/2, -(shaft_inner_dia)/2, 0])
+    //cube([shaft_inner_dia, shaft_inner_dia, shaft_inner_height]);
+
 
 difference() {
     union() {
         cylinder(r=track_radius-track_width/2-2, h=2);
         cylinder(d1=shaft_inner_dia*2.4, d2=0, h=12);
     }
+    translate([0,0,1])
+    cylinder(d=shaft_inner_hole, h=12*2);
     for(i=[0:7])
         rotate([0,0,i*360/8])
         translate([20, 0, -0.01])
         cylinder(d=12,h=2.02);
 }
+
 
 //polygon(track_profile);
 difference() {
@@ -245,11 +251,13 @@ difference() {
 
 /* slide */
 //translate([-track_radius,0,track_height-slide_wall_height+1])
+/*
 translate([-track_radius*0.8,track_radius*1.2,slide_wall_height+slide_plate_height])
 rotate([180,0,0])
 track_slide();
+*/
 
-translate([track_radius*1.2,track_radius*1.4,shaft_outer_dia/2])
-rotate([90,0,0])
-outer_shaft();
+//translate([track_radius*1.2,track_radius*1.4,shaft_outer_dia/2])
+//rotate([90,0,0])
+//outer_shaft();
 
