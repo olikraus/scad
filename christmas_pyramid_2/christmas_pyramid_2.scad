@@ -4,6 +4,8 @@ include <base_objects.scad>
 /*
   ideen: 
   Befestigung mit Rampamuffe / Einschraubmutter
+  
+  8 dec 2026: 25mm -> 30mm
 */
 
 $fn=256;
@@ -11,7 +13,7 @@ $fn=256;
 arc_outer_height = 200;  // height of the arc
 arc_outer_width = 220; // total outer width of the arc
 arc_depth = 10;     // depth of the arc (not used for the tempate)
-arc_thickness = 25;
+arc_thickness = 30;
 
 milling_gap = 4.5;
 milling_extension = 9; // thinkness of the template for the milling copy (Überstand Kopierhülse)
@@ -34,7 +36,7 @@ module ellipsoid(rx=30, ry=20, rz=10, $fn=100) {
 module solid_arc(h=20, w=10, z=1, o=0) {
     difference() {
         scale([w/2+o,h+o, 1])
-        cylinder(r=1,h=z);
+        cylinder(r=1,h=z, $fn=256);
         translate([0,0,-0.02])
         scale([2,2,2])
         translate([-w/2-o,-h-o,0])
@@ -124,6 +126,24 @@ module template_2() {
       translate([-arc_outer_width/2*0.9, arc_outer_height*0.9, 7])
       rotate([180,0,0])
       m3cut();
+
+      translate([arc_outer_width/2*0.98, arc_outer_height*0.4, 7])
+      rotate([180,0,0])
+      m3cut();
+
+      translate([-arc_outer_width/2*0.98, arc_outer_height*0.4, 7])
+      rotate([180,0,0])
+      m3cut();
+
+      translate([-(arc_outer_width-arc_thickness)/2,-arc_outer_height*0.1,milling_extension+template_target_extend])
+      rotate([0,45,0])
+      translate([-3,0,-3])
+      cube([6,arc_outer_height*0.2, 6]);
+
+      translate([+(arc_outer_width-arc_thickness)/2,-arc_outer_height*0.1,milling_extension+template_target_extend])
+      rotate([0,45,0])
+      translate([-3,0,-3])
+      cube([6,arc_outer_height*0.2, 6]);
 
     }
 }
