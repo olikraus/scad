@@ -8,17 +8,18 @@ include <base_objects.scad>
   8 dec 2026: 25mm -> 30mm
 */
 
-$fn=256;
+$fn=64;         // this is overwritten and set to 256 for the solid arc and the base plate
 
 arc_outer_height = 200;  // height of the arc
 arc_outer_width = 220; // total outer width of the arc
 arc_depth = 10;     // depth of the arc (not used for the tempate)
 arc_thickness = 30;
 
+
 milling_gap = 4.5;
 milling_extension = 9; // thinkness of the template for the milling copy (Überstand Kopierhülse)
 template_extra_size= 5;
-template_target_extend = 9;     // height to hold the wood arc, should ca half the wood arc thinkness
+template_target_extend = 11;     // height to hold the wood arc, should ca half the wood arc thinkness
 
 /*
 module ellipsoid(rx=30, ry=20, rz=10, $fn=100) {
@@ -61,7 +62,7 @@ module wood_arc() {
     M4: headdia=8, headheight=5
 */
 module m3cut() {
-    let(d=3, hd=d*2.3) {
+    let(d=3.4, hd=d*2.3) {              // making d=3 a little bit wider
         union() {
             cylinder(d1=d, d2=hd, h=(hd-d)/2);
             
@@ -107,12 +108,12 @@ module template_2() {
       cube([arc_outer_width+template_extra_size*2,arc_outer_height+template_extra_size*2,milling_extension+template_target_extend]);
       
       translate([0,-0.01,-0.01])
-      solid_arc(w=arc_outer_width, h=arc_outer_height, z=milling_extension+0.02, o=-arc_thickness+milling_gap);
+      solid_arc(w=arc_outer_width, h=arc_outer_height, z=milling_extension+0.02+template_target_extend, o=-arc_thickness+milling_gap);
       translate([0,-0.01,milling_extension])
-      solid_arc(w=arc_outer_width, h=arc_outer_height, z=milling_extension+0.02, o=0);
+      solid_arc(w=arc_outer_width, h=arc_outer_height, z=milling_extension+0.02+template_target_extend, o=0);
       //wood_arc();
       translate([-(arc_outer_width-arc_thickness*2+milling_gap*2)/2,-template_extra_size*2-0.01,-0.01])
-      cube([arc_outer_width-arc_thickness*2+milling_gap*2, template_extra_size*2+0.02, 2*milling_extension+0.02]);
+      cube([arc_outer_width-arc_thickness*2+milling_gap*2, template_extra_size*2+0.02, 2*milling_extension+0.02+template_target_extend]);
         
       translate([0,0,milling_extension+template_target_extend])
       rotate([0,45,0])
@@ -154,4 +155,112 @@ wood_arc();
 template_2();
 */
 
+/*===============================================*/
+base_height = 20;
+base_disc = arc_outer_width-2*(arc_thickness+15);
 
+function rot_z(v, a) =
+    [ v[0]*cos(a) - v[1]*sin(a),
+      v[0]*sin(a) + v[1]*cos(a),
+      v[2] ];
+
+function sv(sc, v) =
+    [ sc[0]*v[0], sc[1]*v[1], sc[2]*v[2] ];
+
+
+sc = [1.15,0.92,1];
+
+candle4v = sv(sc,rot_z([0,0.88,0], 47));         // extend, angle´
+//candle4v = sv(rot_z(sc, 20), [1,0.43,1]);       // angle, extend
+candle2v = sv(sc, [0,0.98,0]);
+//candle2v = sv(rot_z(sc, 52.5), [1,0.5,1]);
+
+
+/*
+    teelicht dia = 40
+*/
+module candle(o=0, h=base_height) {
+    cylinder(d=56+o, h=h);
+}
+
+module candle_cut(o=0) {
+        translate([0,0, base_height/2])
+        cylinder(d=42+o, h=base_height);
+}
+
+
+
+
+module base_plate(h=base_height, o=0, is_cutout=false) {
+    /*
+    let(nsc = [sc[0]*arc_outer_width+o, sc[1]*arc_outer_width+o, sc[2]],
+        ncandle4v=[candle4v[0]*arc_outer_width/2, candle4v[1]*arc_outer_width/2], candle4v[2],
+        ncandle2v=[candle2v[0]*arc_outer_width/2, candle2v[1]*arc_outer_width/2], candle2v[2]
+    )
+    */
+    let(
+    nsc = [sc[0]*arc_outer_width+o,
+           sc[1]*arc_outer_width+o,
+           sc[2]],
+
+    ncandle4v = [candle4v[0]*arc_outer_width/2,
+                 candle4v[1]*arc_outer_width/2,
+                 candle4v[2]],
+
+    ncandle2v = [candle2v[0]*arc_outer_width/2,
+                 candle2v[1]*arc_outer_width/2,
+                 candle2v[2]]
+    )
+    difference() {
+        union() {
+            // y = x+o = x*f 
+            // f = (x+o)/x = 1 + o/x
+            scale(nsc)
+            cylinder(d=1, h=h, $fn=256);
+
+            CopyMirror(vec=[1,0,0])
+            CopyMirror(vec=[0,1,0])
+            translate(ncandle4v)
+            candle(o=o, h=h);
+            
+            CopyMirror(vec=[0,1,0])
+            translate(ncandle2v)
+            candle(o=o, h=h);
+        }
+        if ( is_cutout ) {
+            CopyMirror(vec=[1,0,0])
+            CopyMirror(vec=[0,1,0])
+            translate(ncandle4v)
+            candle_cut();
+            CopyMirror(vec=[0,1,0])
+            translate(ncandle2v)
+            candle_cut();
+            
+            translate([0,0,base_height/2])
+            cylinder(d=base_disc, h=base_height);
+        }
+    }
+}
+
+module base_plate_template1() {
+  difference() {
+    base_plate(is_cutout=false, o=milling_gap, h=milling_extension);
+    translate([-(arc_outer_width-arc_thickness)/2,0,-1])
+    cylinder(d=3, h=100);
+
+    /* marker für die schrauben für den bogen */
+    translate([-(arc_outer_width-arc_thickness)/2,0,-1])
+    cylinder(d=4, h=100);
+
+    translate([+(arc_outer_width-arc_thickness)/2,0,-1])
+    cylinder(d=4, h=100);
+
+
+            CopyMirror(vec=[1,0,0])
+            CopyMirror(vec=[0,1,0])
+      translate([(base_disc/2)*0.53,(base_disc/2)*0.53,0])
+      //rotate([180,0,0])
+      m3cut();
+
+  }
+}

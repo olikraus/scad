@@ -35,7 +35,7 @@ SLIC3R_FLAGS+=--duplicate 1
 
 
 .PHONY: all
-all: $(STL) $(TMF) $(GCODE) $(PNG)
+all: $(STL) $(TMF) $(PNG)
 
 start.gcode:
 	echo "G28 ; Home all axes" >$@
