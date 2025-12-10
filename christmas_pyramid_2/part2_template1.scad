@@ -12,5 +12,15 @@ translate([0,0,base_height])
 rotate([90,0,0])
 wood_arc();
 */
-base_plate_template1();
+
+/*
+translate([0,0,-11])
+rotate([0,0,45])
+base_plate(h=base_height, o=0, is_cutout=true);
+*/
+//base_plate_template1();
+translate([0,0,milling_extension+template_target_extend])
+rotate([180,0,0])
+base_plate_template2();
+
 

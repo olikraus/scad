@@ -16,7 +16,8 @@ arc_depth = 10;     // depth of the arc (not used for the tempate)
 arc_thickness = 30;
 
 
-milling_gap = 4.5;
+milling_gap = 4.5;              // (17-8)/2
+milling_gap_small = 2.5;              // (17-12)/2 = 2.5
 milling_extension = 9; // thinkness of the template for the milling copy (Überstand Kopierhülse)
 template_extra_size= 5;
 template_target_extend = 11;     // height to hold the wood arc, should ca half the wood arc thinkness
@@ -70,7 +71,7 @@ module m3cut() {
             cylinder(d=hd, h=milling_extension);
             
             translate([0,0,-milling_extension*2])
-            cylinder(d=3, h=milling_extension*4);
+            cylinder(d=d, h=milling_extension*4);
         }
     }
 }
@@ -168,9 +169,9 @@ function sv(sc, v) =
     [ sc[0]*v[0], sc[1]*v[1], sc[2]*v[2] ];
 
 
-sc = [1.15,0.92,1];
+sc = [1.12,0.86,1];
 
-candle4v = sv(sc,rot_z([0,0.88,0], 47));         // extend, angle´
+candle4v = sv(sc,rot_z([0,0.85,0], 46));         // extend, angle´
 //candle4v = sv(rot_z(sc, 20), [1,0.43,1]);       // angle, extend
 candle2v = sv(sc, [0,0.98,0]);
 //candle2v = sv(rot_z(sc, 52.5), [1,0.5,1]);
@@ -234,8 +235,7 @@ module base_plate(h=base_height, o=0, is_cutout=false) {
             candle_cut();
             CopyMirror(vec=[0,1,0])
             translate(ncandle2v)
-            candle_cut();
-            
+            candle_cut();  
             translate([0,0,base_height/2])
             cylinder(d=base_disc, h=base_height);
         }
@@ -244,7 +244,7 @@ module base_plate(h=base_height, o=0, is_cutout=false) {
 
 module base_plate_template1() {
   difference() {
-    base_plate(is_cutout=false, o=milling_gap, h=milling_extension);
+    base_plate(is_cutout=false, o=-milling_gap*2, h=milling_extension);           // milling_gap had the wrong direction :-(
     translate([-(arc_outer_width-arc_thickness)/2,0,-1])
     cylinder(d=3, h=100);
 
@@ -256,11 +256,63 @@ module base_plate_template1() {
     cylinder(d=4, h=100);
 
 
-            CopyMirror(vec=[1,0,0])
-            CopyMirror(vec=[0,1,0])
-      translate([(base_disc/2)*0.53,(base_disc/2)*0.53,0])
+      CopyMirror(vec=[1,0,0])
+      CopyMirror(vec=[0,1,0])
+      translate([(base_disc/2)*0.53,(base_disc/2)*0.53,milling_gap/2])  // added milling_gap/2 after print
       //rotate([180,0,0])
       m3cut();
 
   }
+}
+
+//milling_extension = 9; // thinkness of the template for the milling copy (Überstand Kopierhülse)
+//template_target_extend = 11;     // height to hold the wood arc, should ca half the wood arc thinkness
+
+
+module base_plate_template2() {
+  let(w=240,h=milling_extension+template_target_extend,
+    nsc = [sc[0]*arc_outer_width,
+           sc[1]*arc_outer_width,
+           sc[2]],
+    ncandle4v = [candle4v[0]*arc_outer_width/2,
+                 candle4v[1]*arc_outer_width/2,
+                 candle4v[2]],
+
+    ncandle2v = [candle2v[0]*arc_outer_width/2,
+                 candle2v[1]*arc_outer_width/2,
+                 candle2v[2]]
+    ) {
+    difference() {
+      translate([-w/2,-w/2,0])
+      cube([w, w, h]);
+
+
+      translate([w/2-75,w/2-40,h-1+0.01])
+      linear_extrude(height=1)
+      text("cutter 12mm", 9);
+
+      translate([w/2-86,w/2-55,h-2+0.01])
+      linear_extrude(height=2)
+      text("template 17mm", 9);
+      
+
+      translate([0,0,-0.01])
+      rotate([0,0,45])
+      base_plate(is_cutout=false, o=0, h=template_target_extend+0.01);
+
+      rotate([0,0,45])
+      union() {
+            CopyMirror(vec=[1,0,0])
+            CopyMirror(vec=[0,1,0])
+            translate(ncandle4v)
+            candle_cut(o=milling_gap_small*2);
+            CopyMirror(vec=[0,1,0])
+            translate(ncandle2v)
+            candle_cut(o=milling_gap_small*2);
+            
+            translate([0,0,base_height/2])
+            cylinder(d=base_disc+milling_gap_small*2, h=base_height, $fn=128);
+      }
+    }
+  }  
 }
