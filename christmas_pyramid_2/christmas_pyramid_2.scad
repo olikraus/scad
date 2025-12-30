@@ -5,7 +5,32 @@ include <base_objects.scad>
   ideen: 
   Befestigung mit Rampamuffe / Einschraubmutter
   
-  8 dec 2026: 25mm -> 30mm
+  8 dec 2025: 25mm -> 30mm
+  30 dec 2025: more wider tempalte 2
+  
+  
+  Scrhitte:
+  1. Part 1, Template 1: 
+    1.1 Mit dem Anschlag an ein Holz anlegen, dann auf das Holz aufschrauben
+    1.2 Mit der Anzeichenhilfe (Ruler) im Abstand der Ruler breite einen Strich einzeichnen und 
+      einmal um das Template fahren
+    1.3 An dem Strich mit der Stichsäge aussägen
+    1.4 Mit 17mm Kopierhülse und 8mm Fräser am Template herumfräsen
+  2. Part 1, Template 2:
+    2.1 Part 1 in das Template 2 einlegen und mit dem Template umdrehen
+    2.2 Innenteil: Wieder mit dem Ruler anzeichnen
+    2.3 Holz herausnehmen und mit der Stichsäge entlang der eingezeichneten Linie aussägen
+    2.4 Holz seinsetzen
+    2.5. Das Template auf einer alten holzplatte befestigen (anschrauben)
+    2.6. Herausnehmen und die kanten rundfräsen 25.4mm Rundfräser fand ich fast zu wenig,
+      mal mit dem 28.6mm Rund-Fräser probieren. Den fuß natürlich  nicht rund fräsen
+    2.7. Template 2 benutzen um die löcher für die Einschraubmutter zu boren
+    2.8. Loch für die Stange bohren (in der Schraubzwinge einklemmen, damit das Holz nicht reisst) 
+      TODO: Mit Kugellager?
+      
+      
+    
+  
 */
 
 $fn=64;         // this is overwritten and set to 256 for the solid arc and the base plate
@@ -63,7 +88,7 @@ module wood_arc() {
     M4: headdia=8, headheight=5
 */
 module m3cut() {
-    let(d=3.4, hd=d*2.3) {              // making d=3 a little bit wider
+    let(d=3.3, hd=d*2.3) {              // making d=3 a little bit wider
         union() {
             cylinder(d1=d, d2=hd, h=(hd-d)/2);
             
@@ -169,13 +194,15 @@ function sv(sc, v) =
     [ sc[0]*v[0], sc[1]*v[1], sc[2]*v[2] ];
 
 
-sc = [1.12,0.86,1];
-
+/*
+sc = [1.12,0.86,1];                     // base plate scale 
 candle4v = sv(sc,rot_z([0,0.85,0], 46));         // extend, angle´
-//candle4v = sv(rot_z(sc, 20), [1,0.43,1]);       // angle, extend
 candle2v = sv(sc, [0,0.98,0]);
-//candle2v = sv(rot_z(sc, 52.5), [1,0.5,1]);
+*/
 
+sc = [1.12,0.92,1];                     // base plate scale 
+candle4v = sv(sc,rot_z([0,0.83,0], 46));         // extend, angle´
+candle2v = sv(sc, [0,0.917,0]);
 
 /*
     teelicht dia = 40
@@ -245,6 +272,19 @@ module base_plate(h=base_height, o=0, is_cutout=false) {
 module base_plate_template1() {
   difference() {
     base_plate(is_cutout=false, o=-milling_gap*2, h=milling_extension);           // milling_gap had the wrong direction :-(
+    
+      translate([0,22,1-0.01])
+      rotate([180,0,0])
+      linear_extrude(height=1)
+      text("cutter 8mm", 9);
+
+      translate([0,11,1-0.01])
+      rotate([180,0,0])
+      linear_extrude(height=1)
+      text("template 17mm", 9);
+  
+
+    
     translate([-(arc_outer_width-arc_thickness)/2,0,-1])
     cylinder(d=3, h=100);
 
@@ -255,11 +295,13 @@ module base_plate_template1() {
     translate([+(arc_outer_width-arc_thickness)/2,0,-1])
     cylinder(d=4, h=100);
 
+    translate([0,0,-1])
+    cylinder(d=4, h=100);
 
       CopyMirror(vec=[1,0,0])
       CopyMirror(vec=[0,1,0])
-      translate([(base_disc/2)*0.53,(base_disc/2)*0.53,milling_gap/2])  // added milling_gap/2 after print
-      //rotate([180,0,0])
+      translate([(base_disc/2)*0.53,(base_disc/2)*0.53,milling_gap/2+2])  // added milling_gap/2 after print
+      rotate([180,0,0])
       m3cut();
 
   }
@@ -291,7 +333,7 @@ module base_plate_template2() {
       linear_extrude(height=1)
       text("cutter 12mm", 9);
 
-      translate([w/2-86,w/2-55,h-2+0.01])
+      translate([w/2-86,w/2-55,h-1+0.01])
       linear_extrude(height=2)
       text("template 17mm", 9);
       
@@ -313,6 +355,13 @@ module base_plate_template2() {
             translate([0,0,base_height/2])
             cylinder(d=base_disc+milling_gap_small*2, h=base_height, $fn=128);
       }
+      
+      CopyMirror(vec=[1,0,0])
+      CopyMirror(vec=[0,1,0])
+      translate([100,100,template_target_extend])
+      m3cut();
+
     }
   }  
 }
+
