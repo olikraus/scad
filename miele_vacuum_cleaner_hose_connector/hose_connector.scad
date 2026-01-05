@@ -2,34 +2,34 @@
 
     Miele vacuum cleaner hose/tube connector for 47mm hose
     
+    (c) olikraus@gmail.com
+
+    CC BY-NC-SA 4.0
+    Attribution-NonCommercial-ShareAlike 4.0 International
+    https://creativecommons.org/licenses/by-nc-sa/4.0/
+    
 */
+
+/* [Configuration] */
+
+// Diameter (mm) of the target to which the adapter/connector should fit. Examples: Bosch POF 1400: 40.4 mm, Bosch PST 750: 31.6 mm, Miele 35mm Nozzles: 34.4
+target_end_diameter = 34.4;
+
+// If target_end_diameter > target_start_diameter, then the diameter becomes more wider. Difference between target_end_diameter and target_start_diameter should be small. Example: Bosch POF 1400: 40.0 mm, Bosch PST 750: 31.2 mm, Miele 35mm Nozzles: 35.0
+target_start_diameter = 35.0;
+
+// Length (mm) of the tube for the target. Examples: Bosch POF 1400: 25 mm, Bosch PST 750: 15 mm, Miele 35mm Nozzles: 15 mm
+target_length = 15;
+
+// Add mount option (M4)
+add_mount = true;
+
+/* [Hidden] */
 
 $fn = 256;
 
-/* [Main Dimensions] */
-
-// Diameter of the target to which the adapter/connector should fit (mm)
-// Bosch POF 1400: 40.4 mm
-// Bosch PST 750: 31.6 mm
-target_end_diameter = 40.4;
-
-// if target_end_diameter > target_start_diameter, then the diameter becomes more wider.
-// difference between target_end_diameter and target_start_diameter should be small
-// Bosch POF 1400: 40.0 mm
-// Bosch PST 750: 31.2 mm
-target_start_diameter = 40.0;
-
-
-// Length of the tube for the target (mm)
-// Bosch POF 1400: 25 mm
-// Bosch PST 750: 15 mm
-target_length = 25;
-
 // Wall thickness of the connector (mm)
 connector_wall_thickness = 3;
-
-/* [Internal Dimensions] */
-
 hose_r = (47.2)/2;      // 47.6
 hose_2nd_r = hose_r-3.2;
 connector_hose_thickness = connector_wall_thickness; //
@@ -55,14 +55,14 @@ connector_length
     +dist_hose_outer_overlap
     +dist_hose_inner_overlap
     +dist_connector_extend;
-connector_outer_dia = hose_r + connector_hose_thickness;
+connector_outer_r = hose_r + connector_hose_thickness;
 
 connector_points = [
         [hose_r, 0],   // innen unten
-        [connector_outer_dia+base_extra_thickness, 0],   // außen unten
-        [connector_outer_dia+base_extra_thickness, dist_hose_side_start],   // außen unten
-        [connector_outer_dia, dist_hose_side_start+base_extra_thickness],  // außen oben
-        [connector_outer_dia, connector_length],  // außen oben
+        [connector_outer_r+base_extra_thickness, 0],   // außen unten
+        [connector_outer_r+base_extra_thickness, dist_hose_side_start],   // außen unten
+        [connector_outer_r, dist_hose_side_start+base_extra_thickness],  // außen oben
+        [connector_outer_r, connector_length],  // außen oben
 
         [adapter_outer_r, connector_length+connector_adapter_transition_length],  // außen oben
                 
@@ -83,6 +83,65 @@ connector_points = [
     ];
 
 //polygon(points = connector_points);
+
+/*
+    M4 Hex Nut
+    d = 7.5
+    
+    If required, rotate around x axis (not the y axis!)
+*/
+module m4nut(nh=4, rh=100) {
+    let( x=1.2 ) {
+        union() {
+            cylinder(d=7.5+x, h = nh, $fn=6);
+            cylinder(d=4.4, h=rh);
+        }
+    }
+}
+
+
+mount_plate_height = 12;
+mount_plate_length = 72;         // should be larger than connector_outer_r*2
+
+module mount_bar(inner_nut=true) {
+    translate([0,0,mount_plate_height])
+    rotate([180,0,0])
+    difference() {
+        translate([-mount_plate_length/2,-mount_plate_height/2,0])
+        cube([mount_plate_length, mount_plate_height, mount_plate_height]);
+
+        translate([-30,0,-0.1])
+        m4nut();
+        if ( inner_nut ) {
+            translate([-20,0,-0.1])
+            m4nut();
+            translate([20,0,-0.1])
+            m4nut();
+        }
+        translate([30,0,-0.1])
+        m4nut();
+    }
+}
+
+
+if ( add_mount )
+difference() {
+    union() {
+        translate([0,connector_outer_r-mount_plate_height/2+3,0])
+        mount_bar();
+
+        translate([0,-connector_outer_r+mount_plate_height/2-3-mount_plate_height/2,mount_plate_height/2])
+        rotate([-90,0,0])
+        mount_bar(inner_nut=false);
+
+
+        translate([-mount_plate_length/2+mount_plate_height, -mount_plate_length/2+mount_plate_height*3/2, 0])
+        cube([mount_plate_length-mount_plate_height*2,mount_plate_length-mount_plate_height*3,mount_plate_height]);
+    }
+    translate([0,0,-0.1])
+    cylinder(r=connector_outer_r-0.1, h=dist_hose_outer_overlap);
+}
+
 
 rotate_extrude(angle = 360)
     polygon(points = connector_points);

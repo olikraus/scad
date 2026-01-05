@@ -1,13 +1,13 @@
 /*
 
     Miele vacuum cleaner hose/tube connector for 47mm hose
-     
+    
     (c) olikraus@gmail.com
 
     CC BY-NC-SA 4.0
     Attribution-NonCommercial-ShareAlike 4.0 International
     https://creativecommons.org/licenses/by-nc-sa/4.0/
-   
+    
 */
 
 $fn = 256;
@@ -17,19 +17,19 @@ $fn = 256;
 // Diameter of the target to which the adapter/connector should fit (mm)
 // Bosch POF 1400: 40.4 mm
 // Bosch PST 750: 31.6 mm
-target_end_diameter = 40.4;
+target_end_diameter = 31.6;
 
 // if target_end_diameter > target_start_diameter, then the diameter becomes more wider.
 // difference between target_end_diameter and target_start_diameter should be small
 // Bosch POF 1400: 40.0 mm
 // Bosch PST 750: 31.2 mm
-target_start_diameter = 40.0;
+target_start_diameter = 31.2;
 
 
 // Length of the tube for the target (mm)
 // Bosch POF 1400: 25 mm
 // Bosch PST 750: 15 mm
-target_length = 25;
+target_length = 15;
 
 // Wall thickness of the connector (mm)
 connector_wall_thickness = 3;
