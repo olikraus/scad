@@ -88,7 +88,7 @@ module wood_arc() {
     M4: headdia=8, headheight=5
 */
 module m3cut() {
-    let(d=3.3, hd=d*2.3) {              // making d=3 a little bit wider
+    let(d=3.4, hd=d*2.3) {              // making d=3 a little bit wider
         union() {
             cylinder(d1=d, d2=hd, h=(hd-d)/2);
             
@@ -154,13 +154,26 @@ module template_2() {
       rotate([180,0,0])
       m3cut();
 
-      translate([arc_outer_width/2*0.98, arc_outer_height*0.4, 7])
+      translate([arc_outer_width/2*0.987, arc_outer_height*0.3, 7])
       rotate([180,0,0])
       m3cut();
 
-      translate([-arc_outer_width/2*0.98, arc_outer_height*0.4, 7])
+      translate([-arc_outer_width/2*0.987, arc_outer_height*0.3, 7])
       rotate([180,0,0])
       m3cut();
+
+      translate([arc_outer_width/2*0.80, arc_outer_height*0.9, 14])
+      m3cut();
+
+      translate([-arc_outer_width/2*0.80, arc_outer_height*0.9, 14])
+      m3cut();
+
+      translate([arc_outer_width/2*0.98, arc_outer_height*0.4, 14])
+      m3cut();
+
+      translate([-arc_outer_width/2*0.98, arc_outer_height*0.4, 14])
+      m3cut();
+
 
       translate([-(arc_outer_width-arc_thickness)/2,-arc_outer_height*0.1,milling_extension+template_target_extend])
       rotate([0,45,0])
@@ -171,6 +184,14 @@ module template_2() {
       rotate([0,45,0])
       translate([-3,0,-3])
       cube([6,arc_outer_height*0.2, 6]);
+
+      translate([-arc_outer_width*0.5,arc_outer_height-10,milling_extension+template_target_extend-1+0.01])
+      linear_extrude(height=1)
+      text("cutter 8mm", 9);
+
+      translate([-arc_outer_width*0.5,arc_outer_height-40,milling_extension+template_target_extend-1+0.01])
+      linear_extrude(height=1)
+      text("screws!", 9);
 
     }
 }
