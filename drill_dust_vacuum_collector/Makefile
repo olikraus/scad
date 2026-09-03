@@ -2,7 +2,7 @@
 .suffixes: .scad .stl .png
 
 
-SCAD=$(wildcard h*.scad r*.scad  m*.scad d*.scad v*.scad)
+SCAD=$(wildcard d*.scad)
 STL=$(SCAD:.scad=.stl)
 TMF=$(SCAD:.scad=.3mf)
 PNG=$(SCAD:.scad=.png)
@@ -36,8 +36,7 @@ SLIC3R_FLAGS+=--duplicate 1
 
 .PHONY: all
 # all: $(STL) $(TMF) $(PNG)
-# all: $(STL)  $(PNG)
-all: $(STL)
+all: $(STL)  $(PNG)
 
 start.gcode:
 	echo "G28 ; Home all axes" >$@
