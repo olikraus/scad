@@ -1,15 +1,59 @@
 /*
 
-    drill dust vacuum dollector
-    
+    drill dust vacuum collector
+     
+    (c) 2026 olikraus@gmail.com
 
-  This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-  To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+    This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 
+    International License. To view a copy of this license, visit 
+    http://creativecommons.org/licenses/by-nc-sa/4.0/
 
-  use "hose_dia" below to adapt this device to your vacuum cleaner
+    You are free to:
+    - Share: Copy and redistribute the material in any medium or format
+    - Adapt: Remix, transform, and build upon the material
+
+    Under the following terms:
+    - Attribution: You must give appropriate credit.
+    - NonCommercial: You may not use the material for commercial purposes.
+    - ShareAlike: If you remix, transform, or build upon the material, you must 
+      distribute your contributions under the same license as the original.
+
+
+
+    Purpose:
+        Self-adhesive drill dust vacuum collector for drilling holes
+
+    Operation:
+        1. Connect the vacuum cleaner to the vacuum connector of the drill dust vacuum collector
+        2. Place the drill dust vacuum collector on the wall
+        3. Switch on the vacuum cleaner (the drill dust vacuum collector will stick to the wall)
+        4. Drill the hole through the drilling opening
+
+    3D Printing:
+        - Tested with PETG
+        - 3D print support is not required
+        - Use inner and outer brim (min 2 mm)
+        - To improve the vacuum, the underside of the drill dust vacuum collector can be painted/varnished
+        - To improve the vacuum, there is a groove on the underside of the drill dust vacuum collector where a self-adhesive sealing tape can be inserted
 
 */
 
+/* [Hose Connector] */
+
+// Inner diameter of the house  (millimeter)
+hose_dia = 34.6;  // [25 : 0.1 : 45]
+// Height of the hose connector (millimeter)
+hose_h = 40; // [35 : 85]
+// Hose wall thickness (millimeter), outer diameter = hose_dia+hose_wall
+hose_wall = 3; // [ 2 : 0.1 : 5]
+
+/* [Sealing Tape] */
+
+// Groove depth for the sealing tape (millimeter)
+frame_insulation_height = 4; // [0 : 0.2 : 6] 
+
+
+/* [Hidden] */
 
 $fn=16;
 
@@ -23,12 +67,8 @@ vac_y_size = arch_dist*5;
 
 frame_insulation_wall = 4;
 frame_insulation_width = 10;
-frame_insulation_height = 4;
 frame_w = frame_insulation_wall*2+frame_insulation_width;
 
-hose_dia = 34.6;
-hose_wall = 3;
-hose_h = 40; 
 
 lid_h = 2;
 
