@@ -20,21 +20,28 @@
 
 
 
-    Purpose:
-        Self-adhesive drill dust vacuum collector for drilling holes
+    # Purpose
 
-    Operation:
-        1. Connect the vacuum cleaner to the vacuum connector of the drill dust vacuum collector
-        2. Place the drill dust vacuum collector on the wall
-        3. Switch on the vacuum cleaner (the drill dust vacuum collector will stick to the wall)
-        4. Drill the hole through the drilling opening
+    Self-adhesive drill dust vacuum collector for drilling holes
 
-    3D Printing:
-        - Tested with PETG
-        - 3D print support is not required
-        - Use inner and outer brim (min 2 mm)
-        - To improve the vacuum, the underside of the drill dust vacuum collector can be painted/varnished
-        - To improve the vacuum, there is a groove on the underside of the drill dust vacuum collector where a self-adhesive sealing tape can be inserted
+    # Usage
+
+    1. Connect the vacuum cleaner to the vacuum connector of the drill dust vacuum collector
+    2. Place the drill dust vacuum collector on the wall
+    3. Switch on the vacuum cleaner (the drill dust vacuum collector will stick to the wall)
+    4. Drill the hole through the drilling opening
+
+    # 3D Printing
+
+    - Tested with PETG
+    - 3D print support is not required
+    - Use inner and outer brim (min 2 mm)
+    - To improve the vacuum, the underside of the drill dust vacuum collector can be painted/varnished
+    - To improve the vacuum, there is a groove on the underside of the drill dust vacuum collector where a self-adhesive sealing tape can be inserted
+
+    # URL
+
+    https://github.com/olikraus/scad/tree/master/drill_dust_vacuum_collector
 
 */
 

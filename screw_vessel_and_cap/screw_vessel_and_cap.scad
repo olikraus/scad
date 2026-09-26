@@ -363,6 +363,15 @@ module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 3, gap=0.4)
     translate([0,0,-0.1])
     cylinder(r=radius+gap, h=pitch*revolutions+1.02, $fn=sections_per_revolution);
   }
+  
+  /*
+  translate([0,0,pitch*revolutions])
+  difference() {
+   cylinder(r=radius+outer_wall, 2, $fn=sections_per_revolution);
+    translate([0,0,-0.01])
+   cylinder(r=radius+outer_wall-thread_width, 2.02, $fn=sections_per_revolution);
+  }
+  */
 }
 
 //radius = 20;
@@ -374,21 +383,26 @@ module InnerThread(radius = 20, pitch=4, revolutions=2, outer_wall = 3, gap=0.4)
 //cap_thickness = 1.4;
 //wall = pitch*0.3+gap+1;
 
-
-translate([0,0,cap_thickness])
-InnerThread(radius, pitch, revolutions, wall);
-cylinder(r=radius+wall, h=cap_thickness);
-
-translate([(radius+wall)*2+2,0,0])
-union() {
-  translate([0,0,vessel_height])
-  OuterThread(radius, pitch, revolutions, wall/2);
-  difference() {
-    cylinder(r=radius+wall, h=vessel_height);
-  translate([0,0,vessel_bottom_thickness])
-    cylinder(r=radius-wall/2, h=vessel_height-vessel_bottom_thickness+0.01);
-  }
+module cap(r=radius) {
+    translate([0,0,cap_thickness])
+    InnerThread(r, pitch, revolutions+0.5, wall);
+    cylinder(r=r+wall, h=cap_thickness);
 }
 
 
-//  OuterThread(10, pitch, 1, 0, $fn=16);
+module vessel(r=radius) {
+    union() {
+      translate([0,0,vessel_height])
+      OuterThread(r, pitch, revolutions, wall/2);
+      difference() {
+        cylinder(r=r+wall, h=vessel_height);
+        translate([0,0,vessel_bottom_thickness])
+        cylinder(r=r-wall/2, h=vessel_height-vessel_bottom_thickness+0.01);
+      }
+    }
+}
+
+cap(r=20);
+translate([(radius+wall)*2+2,0,0])
+vessel(r=20);
+

@@ -31,7 +31,8 @@ SLIC3R_FLAGS+=--layer-height 0.2 --first-layer-height 0.3
 
 
 .PHONY: all
-all: $(STL) $(GCODE) $(PNG)
+# all: $(STL) $(GCODE) $(PNG)
+all: $(STL) $(PNG)
 
 start.gcode:
 	echo "G28 ; Home all axes" >$@

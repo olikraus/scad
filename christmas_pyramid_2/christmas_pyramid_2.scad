@@ -12,9 +12,10 @@ include <base_objects.scad>
   Scrhitte:
   1. Part 1, Template 1: 
     1.1 Mit dem Anschlag an ein Holz anlegen, dann auf das Holz aufschrauben
-    1.2 Mit der Anzeichenhilfe (Ruler) im Abstand der Ruler breite einen Strich einzeichnen und 
+    1.2a Mit der Anzeichenhilfe (Ruler) im Abstand der Ruler breite einen Strich einzeichnen und 
       einmal um das Template fahren
-    1.3 An dem Strich mit der Stichsäge aussägen
+    1.2b Alternativ kann man mit 17mm Kopierhülse und 6mm Fräser eine 3mm Nut erstellen, in der man dann mit der Stichsäge entlagsägt
+    1.3 An dem Strich (oder in der Nut) mit der Stichsäge aussägen
     1.4 Mit 17mm Kopierhülse und 8mm Fräser am Template herumfräsen
   2. Part 1, Template 2:
     2.1 Part 1 in das Template 2 einlegen und mit dem Template umdrehen
@@ -88,10 +89,10 @@ module wood_arc() {
     M4: headdia=8, headheight=5
 */
 module m3cut() {
-    let(d=3.4, hd=d*2.3) {              // making d=3 a little bit wider
+    let(d=4.2, hd=d*2.5) {              // making d=4 wider, so that also 4 will fit
         union() {
             cylinder(d1=d, d2=hd, h=(hd-d)/2);
-            
+              
             translate([0,0,(hd-d)/2-0.005])
             cylinder(d=hd, h=milling_extension);
             
@@ -146,6 +147,7 @@ module template_2() {
       translate([-3,0,-3])
       cube([6,arc_outer_height*3, 6]);
 
+  
       translate([arc_outer_width/2*0.9, arc_outer_height*0.9, 7])
       rotate([180,0,0])
       m3cut();
@@ -162,18 +164,17 @@ module template_2() {
       rotate([180,0,0])
       m3cut();
 
-      translate([arc_outer_width/2*0.80, arc_outer_height*0.9, 14])
+      translate([arc_outer_width/2*0.80, arc_outer_height*0.9, 8])
       m3cut();
 
-      translate([-arc_outer_width/2*0.80, arc_outer_height*0.9, 14])
+      translate([-arc_outer_width/2*0.80, arc_outer_height*0.9, 8])
       m3cut();
 
-      translate([arc_outer_width/2*0.98, arc_outer_height*0.4, 14])
+      translate([arc_outer_width/2*0.97, arc_outer_height*0.45, 8])
       m3cut();
 
-      translate([-arc_outer_width/2*0.98, arc_outer_height*0.4, 14])
+      translate([-arc_outer_width/2*0.97, arc_outer_height*0.45, 8])
       m3cut();
-
 
       translate([-(arc_outer_width-arc_thickness)/2,-arc_outer_height*0.1,milling_extension+template_target_extend])
       rotate([0,45,0])
@@ -188,6 +189,10 @@ module template_2() {
       translate([-arc_outer_width*0.5,arc_outer_height-10,milling_extension+template_target_extend-1+0.01])
       linear_extrude(height=1)
       text("cutter 8mm", 9);
+
+      translate([+arc_outer_width*0.5-73,arc_outer_height-7,milling_extension+template_target_extend-1+0.01])
+      linear_extrude(height=1)
+      text("cutter R=28.6mm", 7);
 
       translate([-arc_outer_width*0.5,arc_outer_height-40,milling_extension+template_target_extend-1+0.01])
       linear_extrude(height=1)
