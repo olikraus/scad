@@ -24,7 +24,7 @@
         0.24mm layer, 0.4 mm nozzle
         
     Infill:
-        Gyroid 20%
+        Gyroid 10%
         
     Filament material:
         PETG
@@ -40,7 +40,7 @@ tube_to_cap_height = 3;
 
 tube_radius = 20;
 
-tube_height = 17;
+tube_height = 96;
 
 
 
@@ -475,24 +475,34 @@ difference() {
 
     /* injection */
     translate([-tube_radius*0.4,tube_radius*0.3,wall]) {
-        cylinder(h=tube_height, d=6);
-        translate([0,0,tube_height/2])
+        cylinder(h=tube_height, d=10);
+        translate([0,0,tube_height-30])
         rotate(-36) 
-        scale([1,2,1])
-        cylinder(h=tube_height, d=11);
+        scale([1.1,2.0,1])
+        cylinder(h=tube_height, d=12.8);
     }
 
 
     /* AAA battery */
-    translate([tube_radius/2,tube_radius*0.20,wall])
+    translate([tube_radius/2,tube_radius*0.28,wall+tube_height-40])
     cylinder(h=tube_height, d=12);
     
     /* pumpcard */
-    translate([0,-(tube_radius-seitenlaenge*0.72),wall])
+    translate([1.5,-(tube_radius-seitenlaenge*0.72),wall + tube_height-74])
     linear_extrude(height = tube_height) {
         rounded_equilateral_triangle(seitenlaenge, eckradius);
     }
     
+    /*
+    translate([0,0,-0.01])
+    difference()
+    {
+        cylinder(r=tube_radius-wall, h =20);
+        rotate(55)
+        translate([-radius*2,4,-0])
+        cube([radius*4, radius*4, tube_height]);
+    }
+    */
 }
 
 translate([0,0,tube_height])
@@ -507,6 +517,6 @@ translate([0,0,tube_height+tube_to_cap_height])
 top_thread(r=radius-0.84);
 
 
-//translate([0, -(radius*2.2+3),0])
-//cap(r=radius-0.84);
+translate([0, -(radius*2.2+3),0])
+cap(r=radius-0.84);
 
