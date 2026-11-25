@@ -1,6 +1,6 @@
 // --- Globale Standardwerte für den Querschnitt & Auflösung ---
-default_w_top      = 20.0;  // Breite Oberkante Gleisbett (mm)
-default_w_bottom   = 20.0;  // Breite Unterkante Gleisbett (mm)
+default_w_top      = 10.0;  // Breite Oberkante Gleisbett (mm)
+default_w_bottom   = 10.0;  // Breite Unterkante Gleisbett (mm)
 default_bed_height = 100.0; // Dicke des Gleisbett-Körpers (mm)
 default_steps      = 60;     // Segmente entlang des Gleises
 default_extra      = 0.0;   // Überlappung (° bei Bögen, mm bei Geraden)
@@ -877,8 +877,43 @@ translate([1300, 0, 0]) n_14963_14926();
 translate([1400, 0, 0]) n_r1_90();
 translate([1500, 0, 0]) n_r2_90();
 
-translate([2000, 0, 0]) n_14967_14926_14966();
 
-translate([2000, 0, 0]) n_r1_270();
-translate([2008.9, 22.2, 0]) n_r2_90();
-translate([1550.4, 24.5, 0]) rotate([0,0,180]) n_r2_90();
+
+translate([2300,0,0])
+// innenring
+union() {
+    translate([0, 0, 0]) n_14967_14926_14966();
+    translate([0, 0, 0]) n_r1_270();
+    translate([8.9, 22.2, 0]) n_r2_90();
+    translate([1550.4-2000, 24.5, 0]) rotate([0,0,180]) n_r2_90();
+}
+
+
+translate([2020,170,0])
+// aussenring
+union() {
+    translate([-194.6, -104.2, 0]) n_14963_14926();  // weiche nach rechts
+    translate([-194.6, -104.2-104.2, 0]) n_14904();  // gerade unter der weiche
+    
+    translate([17.2+104.2+194.6, -104.2, 0]) n_14961_14926();  // weiche nach links
+    translate([17.2+104.2+194.6, -104.2-104.2, 0]) n_14904();  // gerade unter der weiche
+    
+    translate([0,194.6,0])
+    rotate([0,0,90]) {
+        translate([0, 0, 0]) n_r1_90();
+        translate([0, -17.2, 0])n_14903();
+        translate([0, -17.2-104.2, 0]) n_14904();
+        translate([0, -17.2-104.2, 0]) mirror([0,1,0]) n_r1_90();
+    }
+    
+    translate([0,-104.2-104.2,0])
+    mirror([0,1,0])
+    translate([0,194.6,0])
+    rotate([0,0,90]) {
+        translate([0, 0, 0]) n_r1_90();
+        translate([0, -17.2, 0])n_14903();
+        translate([0, -17.2-104.2, 0]) n_14904();
+        translate([0, -17.2-104.2, 0]) mirror([0,1,0]) n_r1_90();
+    }
+}
+
