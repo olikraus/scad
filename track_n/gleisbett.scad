@@ -6,6 +6,20 @@ default_steps      = 4;     // Segmente entlang des Gleises
 default_extra      = 0.0;   // Überlappung (° bei Bögen, mm bei Geraden)
 
 
+module doorway(width = 30, height = 30, length = 100) {
+    hull() {
+        cylinder(d=width, h=height);
+        translate([0,0,height])
+        sphere(d=width);
+        translate([0,length,0]) {
+        cylinder(d=width, h=height);
+        translate([0,0,height])
+        sphere(d=width);
+        }
+    }
+}
+
+
 module door(width = 30, height = 30, depth = 20) {
     union() {
         translate([0,0,height/2])
@@ -1019,7 +1033,10 @@ translate([1600, 0, 0]) n_r1_120();
 
 
 
-h = 48;
+
+h = 50;
+
+
 
 /*
 difference()
@@ -1030,6 +1047,8 @@ difference()
 }
 */
 
+
+
 difference() 
 {
 translate([00,0,5])
@@ -1038,6 +1057,9 @@ union()
 translate([289.3,10,0])
 // innenring
 union() {
+    
+    
+    
     translate([0, 0, h*3.5/12]) n_14967_14926_14966();
     translate([0, 0, h*3.5/12]) n_r1_270();    // innerster kreis
     translate([8.9, 22.2, 0]) n_r2_90(
@@ -1076,6 +1098,15 @@ union() {
     difference() {
 
     union() {
+        
+    translate([-175-20,130-170,-5])
+    cube([62,100,h]);
+
+    translate([-100-20,180-170,-5])
+    rotate([0,0,55])
+    cube([45,90,h*0.95]);
+        
+        
         /* linke seite mit abzweigung nach rechts in den innenring */
         translate([-194.6, -104.2, h]) n_14963_14916();  // weiche nach rechts
         translate([-194.6, -104.2-104.2, h]) 
@@ -1161,11 +1192,25 @@ union() {
             );
         }
         
+    
         
         
     }
-        translate([-179, -90, -0.01])
-        door(depth=280);
+    
+
+        for( i =[0:6] ) {
+            translate([-190,-200+i*40,0.01])
+            rotate([0,0,90])
+            door(depth=40);
+        }
+    
+        translate([-179, 10, -0.01])
+        rotate([0,0,180])
+        doorway(length=230);
+        translate([-179, 10, -0.01])
+        rotate([0,0,-27])
+        doorway(width=32, height=25, length=90);
+    
     }
 
 
