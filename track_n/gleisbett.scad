@@ -244,6 +244,43 @@ module n_14906(
     );
 }
 
+
+module n_14907(
+    starthoehe    = 0.0,
+    startsteigung = true,
+    endhoehe      = 0.0,
+    endsteigung   = true,
+    extra         = default_extra,
+    w_top         = default_w_top,
+    w_bottom      = default_w_bottom,
+    bed_height    = default_bed_height,
+    steps         = default_steps
+) {
+    n_gerade(
+        laenge = 50.0, starthoehe = starthoehe, startsteigung = startsteigung,
+        endhoehe = endhoehe, endsteigung = endsteigung, extra = extra,
+        w_top = w_top, w_bottom = w_bottom, bed_height = bed_height, steps = steps
+    );
+}
+
+module n_14908(
+    starthoehe    = 0.0,
+    startsteigung = true,
+    endhoehe      = 0.0,
+    endsteigung   = true,
+    extra         = default_extra,
+    w_top         = default_w_top,
+    w_bottom      = default_w_bottom,
+    bed_height    = default_bed_height,
+    steps         = default_steps
+) {
+    n_gerade(
+        laenge = 27.9, starthoehe = starthoehe, startsteigung = startsteigung,
+        endhoehe = endhoehe, endsteigung = endsteigung, extra = extra,
+        w_top = w_top, w_bottom = w_bottom, bed_height = bed_height, steps = steps
+    );
+}
+
 // --- Modul n_bogen(): Startwinkel = 0, boolesche Steigungs-Flags & extra-Overlap ---
 module n_bogen(
     radius,
@@ -313,6 +350,27 @@ module n_bogen(
 }
 
 // --- Spur-N-Bögen (Minitrix) ---
+
+
+module n_14916_r1_6(
+    starthoehe    = 0.0,
+    startsteigung = true,
+    endhoehe      = 0.0,
+    endsteigung   = true,
+    extra         = default_extra,
+    w_top         = default_w_top,
+    w_bottom      = default_w_bottom,
+    bed_height    = default_bed_height,
+    steps         = default_steps
+) {
+    translate([-194.6,0,0])
+    n_bogen(
+        radius = 194.6, winkel = 6.0, starthoehe = starthoehe,
+        startsteigung = startsteigung, endhoehe = endhoehe, endsteigung = endsteigung,
+        extra = extra, w_top = w_top, w_bottom = w_bottom, bed_height = bed_height, steps = steps
+    );
+}
+
 
 // Minitrix 14914: R1 = 194.6 mm, 24° (neu ergänzt)
 module n_14914_r1_24(
@@ -524,7 +582,7 @@ module n_14967(
 }
 
 // Minitrix 14961 + 14926: Links-Weiche R1 24° mit angehängtem R2 6°-Bogen am Abzweig
-module n_14961_14926(
+module n_14961_14916(
     starthoehe    = 0.0,
     startsteigung = true,
     endhoehe      = 0.0,
@@ -548,7 +606,7 @@ module n_14961_14926(
         );
         translate([x_end, y_end, 0])
             rotate([0, 0, abz_ang])
-                n_14926_r2_6(
+                n_14916_r1_6(
                     starthoehe = starthoehe, startsteigung = startsteigung,
                     endhoehe = endhoehe, endsteigung = endsteigung, extra = extra,
                     w_top = w_top, w_bottom = w_bottom, bed_height = bed_height, steps = steps
@@ -557,7 +615,7 @@ module n_14961_14926(
 }
 
 // Minitrix 14963 + 14926: Rechts-Weiche R1 24° mit angehängtem R2 6°-Bogen (gespiegelt)
-module n_14963_14926(
+module n_14963_14916(
     starthoehe    = 0.0,
     startsteigung = true,
     endhoehe      = 0.0,
@@ -569,12 +627,61 @@ module n_14963_14926(
     steps         = default_steps
 ) {
     mirror([1, 0, 0])
-        n_14961_14926(
+        n_14961_14916(
             starthoehe = starthoehe, startsteigung = startsteigung,
             endhoehe = endhoehe, endsteigung = endsteigung, extra = extra,
             w_top = w_top, w_bottom = w_bottom, bed_height = bed_height, steps = steps
         );
 }
+
+
+module n_r1_60(
+    starthoehe    = 0.0,
+    startsteigung = true,
+    endhoehe      = 0.0,
+    endsteigung   = true,
+    extra         = default_extra,
+    w_top         = default_w_top,
+    w_bottom      = default_w_bottom,
+    bed_height    = default_bed_height,
+    steps         = default_steps
+) {
+    R1 = 194.6;
+    dh = endhoehe - starthoehe;
+    h1 = starthoehe + dh / 2.0;
+
+    union() {
+        // Segment 1 (0°..30°)
+        n_14912_r1_30(
+            starthoehe    = starthoehe,
+            startsteigung = startsteigung,
+            endhoehe      = h1,
+            endsteigung   = true,
+            extra         = extra,
+            w_top         = w_top,
+            w_bottom      = w_bottom,
+            bed_height    = bed_height,
+            steps         = steps
+        );
+
+        // Segment 2 (30°..60°)
+        translate([R1 * (cos(30) - 1), R1 * sin(30), 0])
+            rotate([0, 0, 30])
+                n_14912_r1_30(
+                    starthoehe    = h1,
+                    startsteigung = true,
+                    endhoehe      = endhoehe,
+                    endsteigung   = endsteigung,
+                    extra         = extra,
+                    w_top         = w_top,
+                    w_bottom      = w_bottom,
+                    bed_height    = bed_height,
+                    steps         = steps
+                );
+    }
+}
+
+
 
 // Dreiersatz R1 (3x 30° = 90°) auf Basis von n_14912_r1_30()
 module n_r1_90(
@@ -627,6 +734,85 @@ module n_r1_90(
             rotate([0, 0, 60])
                 n_14912_r1_30(
                     starthoehe    = h2,
+                    startsteigung = true,
+                    endhoehe      = endhoehe,
+                    endsteigung   = endsteigung,
+                    extra         = extra,
+                    w_top         = w_top,
+                    w_bottom      = w_bottom,
+                    bed_height    = bed_height,
+                    steps         = steps
+                );
+    }
+}
+
+
+module n_r1_120(
+    starthoehe    = 0.0,
+    startsteigung = true,
+    endhoehe      = 0.0,
+    endsteigung   = true,
+    extra         = default_extra,
+    w_top         = default_w_top,
+    w_bottom      = default_w_bottom,
+    bed_height    = default_bed_height,
+    steps         = default_steps
+) {
+    R1 = 194.6;
+    dh = endhoehe - starthoehe;
+    h1 = starthoehe + dh / 4.0;
+    h2 = starthoehe + 2.0 * dh / 4.0;
+    h3 = starthoehe + 3.0 * dh / 4.0;
+
+    union() {
+        // Segment 1 (0°..30°)
+        n_14912_r1_30(
+            starthoehe    = starthoehe,
+            startsteigung = startsteigung,
+            endhoehe      = h1,
+            endsteigung   = true,
+            extra         = extra,
+            w_top         = w_top,
+            w_bottom      = w_bottom,
+            bed_height    = bed_height,
+            steps         = steps
+        );
+
+        // Segment 2 (30°..60°)
+        translate([R1 * (cos(30) - 1), R1 * sin(30), 0])
+            rotate([0, 0, 30])
+                n_14912_r1_30(
+                    starthoehe    = h1,
+                    startsteigung = true,
+                    endhoehe      = h2,
+                    endsteigung   = true,
+                    extra         = extra,
+                    w_top         = w_top,
+                    w_bottom      = w_bottom,
+                    bed_height    = bed_height,
+                    steps         = steps
+                );
+
+        // Segment 3 (60°..90°)
+        translate([R1 * (cos(60) - 1), R1 * sin(60), 0])
+            rotate([0, 0, 60])
+                n_14912_r1_30(
+                    starthoehe    = h2,
+                    startsteigung = true,
+                    endhoehe      = h3,
+                    endsteigung   = true,
+                    extra         = extra,
+                    w_top         = w_top,
+                    w_bottom      = w_bottom,
+                    bed_height    = bed_height,
+                    steps         = steps
+                );
+
+        // Segment 4 (90°..120°)
+        translate([R1 * (cos(90) - 1), R1 * sin(90), 0])
+            rotate([0, 0, 90])
+                n_14912_r1_30(
+                    starthoehe    = h3,
                     startsteigung = true,
                     endhoehe      = endhoehe,
                     endsteigung   = endsteigung,
@@ -851,18 +1037,18 @@ module n_r1_270(
 // --- Beispiele für alle n_xyz()-Module ---
 // =========================================================================
 
+/*
 // Geraden
 translate([0,    0, 0]) n_14903();
 translate([50,   0, 0]) n_14904();
-translate([100,  0, 0]) n_14905();
-translate([150,  0, 0]) n_14906();
+translate([100,  0, 0]) n_14907();
+translate([150,  0, 0]) n_14908();
 
 // Bögen
-translate([200, 0, 0]) n_14914_r1_24();
-translate([300, 0, 0]) n_14912_r1_30();
-translate([400, 0, 0]) n_14924_r2_24();
-translate([500, 0, 0]) n_14922_r2_30();
-translate([600, 0, 0]) n_14926_r2_6();
+translate([200, 0, 0]) n_14912_r1_30();
+translate([250, 0, 0]) n_14916_r1_6();
+translate([300, 0, 0]) n_14922_r2_30();
+translate([350, 0, 0]) n_14926_r2_6();
 
 // Weichen
 translate([ 800, 0, 0]) n_14961();
@@ -870,34 +1056,70 @@ translate([ 900, 0, 0]) n_14963();
 translate([1000, 0, 0]) n_14966();
 translate([1100, 0, 0]) n_14967();
 
-translate([1200, 0, 0]) n_14961_14926();
-translate([1300, 0, 0]) n_14963_14926();
+translate([1200, 0, 0]) n_14961_14916();
+translate([1300, 0, 0]) n_14963_14916();
 
 
 translate([1400, 0, 0]) n_r1_90();
 translate([1500, 0, 0]) n_r2_90();
+translate([1600, 0, 0]) n_r1_120();
+*/
 
 
 
-translate([2300,0,0])
+
+
+
+translate([289.3,10,0])
 // innenring
 union() {
     translate([0, 0, 0]) n_14967_14926_14966();
     translate([0, 0, 0]) n_r1_270();
     translate([8.9, 22.2, 0]) n_r2_90();
     translate([1550.4-2000, 24.5, 0]) rotate([0,0,180]) n_r2_90();
+    translate([-449.6, 24.5, 0]) n_14904();  // anschluss am linken ende    
+    translate([-449.6, 24.5+104.2, 0]) // 120 grad bogen am obigen n_14904
+        mirror([1,0,0]) n_r1_120();
 }
 
 
-translate([2020,170,0])
+
+
+translate([20,170,0])
 // aussenring
 union() {
-    translate([-194.6, -104.2, 0]) n_14963_14926();  // weiche nach rechts
-    translate([-194.6, -104.2-104.2, 0]) n_14904();  // gerade unter der weiche
+    /* linke seite mit abzweigung nach rechts in den innenring */
+    translate([-194.6, -104.2, 0]) n_14963_14916();  // weiche nach rechts
+    translate([-194.6, -104.2-104.2, 0]) n_14904();  // gerade unter der weiche    
+    translate([0,-104.2,0])         // fortfuehrung der weiche nach rechts 
+    rotate([0,0,-30])
+    translate([-194.6,0,0])
+    mirror([1,0,0])
+    n_r1_60();                      // ended dann horizontal
+    translate([0,90.4,0])
+    rotate([0,0,-90])  // ursprung von 14907 ist dann links, führt n_r1_60() weiter
+    n_14907();   
+
     
-    translate([17.2+104.2+194.6, -104.2, 0]) n_14961_14926();  // weiche nach links
+    /* rechte seite mit weiche */
+    translate([17.2+104.2+194.6, -104.2, 0]) n_14961_14916();  // weiche nach links
     translate([17.2+104.2+194.6, -104.2-104.2, 0]) n_14904();  // gerade unter der weiche
     
+    translate([290,-7,0])       // fortführung der linksweiche
+    rotate([0,0,30])
+    n_14908();
+    
+    translate([107.6,-80.2,0])      // fortführung der gerade nach der linksweiche
+    rotate([0,0,30])
+    translate([194.6,0,0])       
+    n_14912_r1_30();
+    
+    translate([204.2,88.6,0]) // verbindung zwischen innen und aussen ring
+    rotate([0,0,62.2])      // passt nicht 100% eigentlich haetten es 60 grad sein sollen
+    n_14904(extra=1);       // auch die laenge passt nicht 100%
+
+    
+    /* oberer halbkreis */
     translate([0,194.6,0])
     rotate([0,0,90]) {
         translate([0, 0, 0]) n_r1_90();
@@ -906,6 +1128,7 @@ union() {
         translate([0, -17.2-104.2, 0]) mirror([0,1,0]) n_r1_90();
     }
     
+    /* unterer halbkreis */
     translate([0,-104.2-104.2,0])
     mirror([0,1,0])
     translate([0,194.6,0])
