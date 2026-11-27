@@ -1,9 +1,20 @@
 // --- Globale Standardwerte für den Querschnitt & Auflösung ---
-default_w_top      = 10.0;  // Breite Oberkante Gleisbett (mm)
-default_w_bottom   = 10.0;  // Breite Unterkante Gleisbett (mm)
+default_w_top      = 20.0;  // Breite Oberkante Gleisbett (mm)
+default_w_bottom   = 20.0;  // Breite Unterkante Gleisbett (mm)
 default_bed_height = 100.0; // Dicke des Gleisbett-Körpers (mm)
-default_steps      = 60;     // Segmente entlang des Gleises
+default_steps      = 4;     // Segmente entlang des Gleises
 default_extra      = 0.0;   // Überlappung (° bei Bögen, mm bei Geraden)
+
+
+module door(width = 30, height = 30, depth = 20) {
+    union() {
+        translate([0,0,height/2])
+        cube([width,depth,height], center=true);
+        translate([0,0,height])
+        rotate([90,0,0])
+        cylinder(d=width,h=depth, center=true);
+    }
+}
 
 // --- Kubische Bézier-Höhenfunktion ---
 function bezier1D(p0, p1, p2, p3, t) =
@@ -23,65 +34,6 @@ function z_profile(t, L, z0, z1, m0, m1) =
 
 function arc_pt(r, ang, z) = [r * cos(ang), r * sin(ang), z];
 
-// --- Basis-Modul: Gebogenes Gleisbett (Bezug: Oberseite) ---
-module gleisbett_bogen(
-    radius,
-    startwinkel,
-    starthoehe,
-    startsteigung,
-    endwinkel,
-    endhoehe,
-    endsteigung,
-    w_top      = default_w_top,
-    w_bottom   = default_w_bottom,
-    bed_height = default_bed_height,
-    steps      = default_steps
-) {
-    d_ang   = endwinkel - startwinkel;
-    arc_len = radius * abs(d_ang) * PI / 180.0;
-
-    rib = w_bottom / 2;
-    rit = w_top / 2;
-    rob = w_bottom / 2;
-    rot = w_top / 2;
-
-    points = [
-        for (i = [0 : steps])
-            let(
-                t   = i / steps,
-                ang = startwinkel + t * d_ang,
-                zt  = z_profile(t, arc_len, starthoehe, endhoehe, startsteigung, endsteigung),
-                zb  = zt - bed_height
-            )
-            each [
-                arc_pt(radius - rib, ang, zb),
-                arc_pt(radius + rob, ang, zb),
-                arc_pt(radius + rot, ang, zt),
-                arc_pt(radius - rit, ang, zt)
-            ]
-    ];
-
-    cw = d_ang < 0;
-
-    side_faces = [
-        for (i = [0 : steps - 1])
-            let(a = i * 4, b = (i + 1) * 4)
-            each [
-                cw ? [a + 0, a + 1, b + 1, b + 0] : [a + 0, b + 0, b + 1, a + 1],
-                cw ? [a + 1, a + 2, b + 2, b + 1] : [a + 1, b + 1, b + 2, a + 2],
-                cw ? [a + 2, a + 3, b + 3, b + 2] : [a + 2, b + 2, b + 3, a + 3],
-                cw ? [a + 3, a + 0, b + 0, b + 3] : [a + 3, b + 3, b + 0, a + 0]
-            ]
-    ];
-
-    last = steps * 4;
-    start_cap = cw ? [0, 1, 2, 3] : [0, 3, 2, 1];
-    end_cap   = cw ? [last + 1, last + 0, last + 3, last + 2] : [last + 1, last + 2, last + 3, last + 0];
-
-    faces = concat(side_faces, [start_cap, end_cap]);
-
-    polyhedron(points = points, faces = faces, convexity = 10);
-}
 
 // --- Basis-Modul: Gerades Gleisbett (direkte Polyhedron-Implementierung) ---
 module gleisbett_gerade(
@@ -132,8 +84,8 @@ module gleisbett_gerade(
     ];
 
     last = steps * 4;
-    start_cap = [0, 3, 2, 1];
-    end_cap   = [last + 1, last + 2, last + 3, last + 0];
+    start_cap = [1, 2, 3, 0]; // [0, 3, 2, 1];
+    end_cap   = [last + 3, last + 2, last + 1, last + 0]; // [last + 1, last + 2, last + 3, last + 0];
 
     faces = concat(side_faces, [start_cap, end_cap]);
 
@@ -320,10 +272,10 @@ module n_bogen(
                 zb  = zt - bed_height
             )
             each [
-                arc_pt(radius - rib, ang, zb),
-                arc_pt(radius + rob, ang, zb),
+                arc_pt(radius - rit, ang, zt),
                 arc_pt(radius + rot, ang, zt),
-                arc_pt(radius - rit, ang, zt)
+                arc_pt(radius + rob, ang, zb),
+                arc_pt(radius - rib, ang, zb)
             ]
     ];
 
@@ -341,8 +293,8 @@ module n_bogen(
     ];
 
     last = steps * 4;
-    start_cap = cw ? [0, 1, 2, 3] : [0, 3, 2, 1];
-    end_cap   = cw ? [last + 1, last + 0, last + 3, last + 2] : [last + 1, last + 2, last + 3, last + 0];
+    start_cap = cw ? [0, 3, 2, 1] : [0, 1, 2, 3];
+    end_cap   = cw ? [last + 1, last + 2, last + 3, last + 0] : [last + 1, last + 0, last + 3, last + 2];
 
     faces = concat(side_faces, [start_cap, end_cap]);
 
@@ -1067,19 +1019,51 @@ translate([1600, 0, 0]) n_r1_120();
 
 
 
+h = 48;
 
+/*
+difference()
+{
+    translate([0, 0, 20]) n_14904();
+    translate([0,0,-100])
+    cube([400,400,200], center=true);
+}
+*/
 
-
+difference() 
+{
+translate([00,0,5])
+union()
+{
 translate([289.3,10,0])
 // innenring
 union() {
-    translate([0, 0, 0]) n_14967_14926_14966();
-    translate([0, 0, 0]) n_r1_270();
-    translate([8.9, 22.2, 0]) n_r2_90();
-    translate([1550.4-2000, 24.5, 0]) rotate([0,0,180]) n_r2_90();
-    translate([-449.6, 24.5, 0]) n_14904();  // anschluss am linken ende    
+    translate([0, 0, h*3.5/12]) n_14967_14926_14966();
+    translate([0, 0, h*3.5/12]) n_r1_270();    // innerster kreis
+    translate([8.9, 22.2, 0]) n_r2_90(
+            starthoehe    = h*3.5/12,
+            startsteigung = true,
+            endhoehe      = h*7.2/12,
+            endsteigung   = true
+    
+    );
+    
+    translate([1550.4-2000, 24.5, 0]) rotate([0,0,180]) n_r2_90(
+            starthoehe    = h*0/12,
+            startsteigung = false,
+            endhoehe      = h*3.5/12,
+            endsteigung   = true
+    );
+    
+    translate([-449.6, 24.5, 0]) n_14904();  // anschluss am linken ende, null-neveau    
+    
     translate([-449.6, 24.5+104.2, 0]) // 120 grad bogen am obigen n_14904
-        mirror([1,0,0]) n_r1_120();
+        mirror([1,0,0]) n_r1_120(
+            starthoehe    = h*0/12,
+            startsteigung = false,
+            endhoehe      = h*2.8/12,
+            endsteigung   = true
+   );
 }
 
 
@@ -1088,55 +1072,142 @@ union() {
 translate([20,170,0])
 // aussenring
 union() {
-    /* linke seite mit abzweigung nach rechts in den innenring */
-    translate([-194.6, -104.2, 0]) n_14963_14916();  // weiche nach rechts
-    translate([-194.6, -104.2-104.2, 0]) n_14904();  // gerade unter der weiche    
-    translate([0,-104.2,0])         // fortfuehrung der weiche nach rechts 
-    rotate([0,0,-30])
-    translate([-194.6,0,0])
-    mirror([1,0,0])
-    n_r1_60();                      // ended dann horizontal
-    translate([0,90.4,0])
-    rotate([0,0,-90])  // ursprung von 14907 ist dann links, führt n_r1_60() weiter
-    n_14907();   
+
+    difference() {
+
+    union() {
+        /* linke seite mit abzweigung nach rechts in den innenring */
+        translate([-194.6, -104.2, h]) n_14963_14916();  // weiche nach rechts
+        translate([-194.6, -104.2-104.2, h]) 
+            n_14904(
+            );  // gerade unter der weiche    
+        translate([0,-104.2,0])         // fortfuehrung der weiche nach rechts 
+        rotate([0,0,-30])
+        translate([-194.6,0,0])
+        mirror([1,0,0])
+        n_r1_60(
+                starthoehe    = h*12/12,
+                startsteigung = false,
+                endhoehe      = h*8/12,
+                endsteigung   = true
+        
+            );                      // ended dann horizontal
+        translate([0,90.4,0])
+        rotate([0,0,-90])  // ursprung von 14907 ist dann links, führt n_r1_60() weiter
+        n_14907(
+                starthoehe    = h*8/12,
+                startsteigung = true,
+                endhoehe      = h*7.2/12,
+                endsteigung   = true
+        );   
+        
+        /* oberer halbkreis */
+        translate([0,194.6,0])
+        rotate([0,0,90]) {
+            translate([0, 0, 0]) n_r1_90(
+                        starthoehe    = h*9/12,
+                        startsteigung = true,
+                        endhoehe      = h*12/12,
+                        endsteigung   = true
+            );
+            translate([0, -17.2, 0])n_14903(
+                        starthoehe    = h*8.8/12,
+                        startsteigung = true,
+                        endhoehe      = h*9/12,
+                        endsteigung   = true
+            );
+            translate([0, -17.2-104.2, 0]) n_14904(
+                        starthoehe    = h*8/12,
+                        startsteigung = true,
+                        endhoehe      = h*8.8/12,
+                        endsteigung   = true
+            );
+            translate([0, -17.2-104.2, 0]) mirror([0,1,0]) n_r1_90(
+                        starthoehe    = h*8/12,
+                        startsteigung = true,
+                        endhoehe      = h*5/12,
+                        endsteigung   = false
+            );
+        }
+        
+        /* unterer halbkreis */
+        translate([0,-104.2-104.2,0])
+        mirror([0,1,0])
+        translate([0,194.6,0])
+        rotate([0,0,90]) {
+            translate([0, 0, 0]) n_r1_90(
+                        starthoehe    = h*9/12,
+                        startsteigung = true,
+                        endhoehe      = h*12/12,
+                        endsteigung   = false
+            );
+            translate([0, -17.2, 0])n_14903(
+                        starthoehe    = h*8.8/12,
+                        startsteigung = true,
+                        endhoehe      = h*9/12,
+                        endsteigung   = true
+            );
+            translate([0, -17.2-104.2, 0]) n_14904(
+                        starthoehe    = h*8/12,
+                        startsteigung = true,
+                        endhoehe      = h*8.8/12,
+                        endsteigung   = true
+            );
+            translate([0, -17.2-104.2, 0]) mirror([0,1,0]) n_r1_90(
+                        starthoehe    = h*8/12,
+                        startsteigung = true,
+                        endhoehe      = h*5/12,
+                        endsteigung   = false
+            );
+        }
+        
+        
+        
+    }
+        translate([-179, -90, -0.01])
+        door(depth=280);
+
+    }
 
     
     /* rechte seite mit weiche */
-    translate([17.2+104.2+194.6, -104.2, 0]) n_14961_14916();  // weiche nach links
-    translate([17.2+104.2+194.6, -104.2-104.2, 0]) n_14904();  // gerade unter der weiche
+    translate([17.2+104.2+194.6, -104.2, h*5/12]) 
+        n_14961_14916();  // weiche nach links
+    translate([17.2+104.2+194.6, -104.2-104.2, h*5/12]) n_14904(
+    );  // gerade unter der weiche
     
     translate([290,-7,0])       // fortführung der linksweiche
     rotate([0,0,30])
-    n_14908();
+    n_14908(
+                    starthoehe    = h*5/12,
+                    startsteigung = false,
+                    endhoehe      = h*4.8/12,
+                    endsteigung   = true
+    );
     
     translate([107.6,-80.2,0])      // fortführung der gerade nach der linksweiche
     rotate([0,0,30])
     translate([194.6,0,0])       
-    n_14912_r1_30();
+    n_14912_r1_30(
+                    starthoehe    = h*4.8/12,
+                    startsteigung = true,
+                    endhoehe      = h*3.8/12,
+                    endsteigung   = true
+    );
     
     translate([204.2,88.6,0]) // verbindung zwischen innen und aussen ring
     rotate([0,0,62.2])      // passt nicht 100% eigentlich haetten es 60 grad sein sollen
-    n_14904(extra=1);       // auch die laenge passt nicht 100%
+    n_14904(extra=2,
+        starthoehe    = h*3.8/12,
+        startsteigung = true,
+        endhoehe      = h*2.8/12,
+        endsteigung   = true
+    );       // auch die laenge passt nicht 100%
 
     
-    /* oberer halbkreis */
-    translate([0,194.6,0])
-    rotate([0,0,90]) {
-        translate([0, 0, 0]) n_r1_90();
-        translate([0, -17.2, 0])n_14903();
-        translate([0, -17.2-104.2, 0]) n_14904();
-        translate([0, -17.2-104.2, 0]) mirror([0,1,0]) n_r1_90();
-    }
-    
-    /* unterer halbkreis */
-    translate([0,-104.2-104.2,0])
-    mirror([0,1,0])
-    translate([0,194.6,0])
-    rotate([0,0,90]) {
-        translate([0, 0, 0]) n_r1_90();
-        translate([0, -17.2, 0])n_14903();
-        translate([0, -17.2-104.2, 0]) n_14904();
-        translate([0, -17.2-104.2, 0]) mirror([0,1,0]) n_r1_90();
-    }
 }
 
+}  // overall union
+translate([0,0,-100])
+cube([1000,1000,200], center=true);
+}  // difference
